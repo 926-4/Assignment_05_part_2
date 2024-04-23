@@ -1,0 +1,68 @@
+﻿<Page x:Class="UBB_SE_2024_Team_42.GUI.SearchQuestionPage"
+          xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:UBB_SE_2024_Team_42"
+    mc:Ignorable="d"
+    Title="Search Question" Height="562" Width="800">
+    <Grid Background="#625ed7">
+        
+        <!-- Top DockPanel -->
+        <DockPanel LastChildFill="False" Margin="0,0,0,450">
+            <Image x:Name="Logo" RenderTransformOrigin="0.47,0.466" DockPanel.Dock="Left" Width="100" Height="71"/>
+            <TextBox x:Name="SearchBox" TextWrapping="Wrap" Text="" Width="282" Height="21" TextChanged="SearchBox_TextChanged"/>
+            <Button x:Name="searchButton" Content="Search" Width="76" Height="28" Click="searchButton_Click"/>
+            <Button x:Name="AskNewQuestion" Content="AskNewQuestion" Width="NaN" Height="27" Click="askQuestion_Click"/>
+            <Button x:Name="ProfileButton" Content="Profile" Width="NaN" Height="37" Click="openProfile_Click"/>
+            <Button x:Name="StatisticsButton" Content="See Statistics" Click="StatisticsButton_Click"/>
+        </DockPanel>
+
+        <!-- Middle DockPanel -->
+        <DockPanel LastChildFill="False" Margin="0,96,0,390">
+            <ComboBox x:Name="CategorySelector" Width="100" Height="30" ItemsSource="{Binding Categories}" DisplayMemberPath="CategoryName" SelectionChanged="CategorySelector_SelectionChanged"/>
+            <Button x:Name="NewestSortButton" Content="Newest" Width="NaN" Height="28"/>
+            <Button x:Name="MostUpvotesSortButton" Content="MostUpvoted" Width="NaN" Height="29" Click="MostUpvotesSortButton_Click"/>
+            <Button x:Name="MostAnswers" Content="MostAnswers" Width="NaN" Height="29" Click="MostAnswers_Click"/>
+            <CheckBox x:Name="HideUnAnsweredCheckBox" Content="Hide Unanswered" Width="124" Height="14" Checked="HideUnAnsweredCheckBox_Checked" Click="HideUnAnsweredCheckBox_Click"/>
+        </DockPanel>
+        <!--<ScrollViewer>
+            <StackPanel>-->
+                <!-- ListView -->
+        <DockPanel LastChildFill="False" Margin="0,156,0,0" HorizontalAlignment="Center" Width="800">
+            <ItemsControl x:Name="QuestionList"  DockPanel.Dock="Top" Height="388" Width="656" ItemsSource="{Binding Posts}" Tag="{Binding Posts}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border>
+                            <StackPanel>
+                                <DockPanel>
+                                    <Image/>
+                                    <!-- Set Source property -->
+                                    <StackPanel>
+                                        <Button Content="{Binding Title}" FontWeight="Bold" Click="OnQuestion_Click"/>
+                                        <TextBlock Text="{Binding Date}" FontSize="8px"/>
+                                    </StackPanel>
+                                    <Image/>
+                                    <!-- Set Source property -->
+                                </DockPanel>
+                                <TextBlock Text="{Binding Content}"/>
+                                <DockPanel>
+                                    <DockPanel>
+                                        <!--Tags-->
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <!--Num Answers-->
+                                        <!--Score-->
+                                    </DockPanel>
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </DockPanel>
+            <!--</StackPanel>
+        </ScrollViewer>-->
+        <Frame x:Name="SearchFrame"/>
+    </Grid>
+</Page>

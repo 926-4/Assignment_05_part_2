@@ -1,0 +1,26 @@
+﻿<Window x:Class="UBB_SE_2024_Team_42.GUI.AddComment"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UBB_SE_2024_Team_42.GUI"
+        mc:Ignorable="d"
+        Title="AddComment" Height="450" Width="800">
+    <Grid Background="#625ed7" Margin="0,0,-186,-141">
+        <RadioButton x:Name="Comment_Radio" Content="Comment" Margin="10,31,845,515" FontSize="22" GroupName="Add_Comment_Group" Checked="Comment_Radio_Checked"/>
+        <RadioButton x:Name="Answer_Radio" Content="Answer" Margin="10,65,837,487" GroupName="Add_Comment_Group" FontSize="22" Checked="Answer_Radio_Checked"/>
+        <Button x:Name="Submit_Button" Margin="849,491,23,20" RenderTransformOrigin="0.5,0.5" Content="Submit" Foreground="#FFFDFDFD" FontSize="20" FontFamily="Gadugi" Click="Submit_Button_Click">
+            <Button.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black"/>
+                    <GradientStop Color="#FF3300FF" Offset="1"/>
+                    <GradientStop Color="#FF2200AA" Offset="0.304"/>
+                </LinearGradientBrush>
+            </Button.Background>
+        </Button>
+        <Button x:Name="Cancel_Button" Margin="686,491,170,20" Background="#FF6643F0" FontSize="20" Content="Cancel" Foreground="#FFF9F9F9" Click="Cancel_Button_Click"/>
+
+
+        <local:CoolTextBox Margin="149,77,237,99" RenderTransformOrigin="0.632,0.471"></local:CoolTextBox>
+    </Grid>
+</Window>

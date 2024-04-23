@@ -1,0 +1,14 @@
+﻿<Window x:Class="UBB_SE_2024_Team_42.GUI.AreYouSurePopUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UBB_SE_2024_Team_42.GUI"
+        mc:Ignorable="d"
+        Title="AreYouSurePopUp" Height="450" Width="800">
+    <Grid Background="#FFA691F8">
+        <TextBlock Text="Are you sure?" Margin="31,63,142,292" FontSize="57" Foreground="white"></TextBlock>
+        <Button Margin="285,263,328,79" Content="No" FontSize="37" FontWeight="Bold" Click="CancelDeleteOn_Click" Background="#FF6643F0" Foreground="#FFFAFAFA"></Button>
+        <Button Margin="559,263,41,79" Content="Yes" FontSize="37" FontWeight="Bold" Click="DeleteOn_Click" Background="#FF3300FF" Foreground="#FFFAF6F6"></Button>
+    </Grid>
+</Window>

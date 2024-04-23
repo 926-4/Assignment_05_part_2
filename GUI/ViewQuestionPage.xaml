@@ -1,0 +1,46 @@
+﻿<Page x:Class="UBB_SE_2024_Team_42.GUI.ViewQuestionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:UBB_SE_2024_Team_42.GUI"
+      mc:Ignorable="d" 
+      d:DesignHeight="1200" d:DesignWidth="1200"
+      Title="ViewQuestionPage">
+
+    <Grid Background="#625ed7">
+        <ScrollViewer >
+            <StackPanel >
+                <TextBlock x:Name="Category" Text="{Binding Category}"  FontSize="18" Width="937" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+                <TextBlock x:Name="Question_Title" Text="{Binding Title}" FontSize="36"/>
+                <!--TODO: Special String made in the background and bound here-->
+                <TextBlock x:Name="Question_Details" Text="TODO make change the text to a string of type 12/02/2003 by USERNAME" FontSize="20"/>
+                <TextBlock x:Name="Question_Content" Text="{Binding Content}" FontSize="20" Height="514"/>
+                <DockPanel Width="1006">
+                    <ItemsControl Width="614" ItemsSource="{Binding Tags}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Content="{Binding TagName}"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <Button x:Name="Back" Content="Back" Width="120" Height="54" Click="Back_Click"/>
+                    <Button x:Name="Reply" Content="Reply" Height="54" Width="213" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                </DockPanel>
+                <ItemsControl Height="483" ItemsSource="{Binding Comments}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:Comment Content="{Binding Content}" DatePosted="{Binding datePosted}"></local:Comment>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+        <Frame x:Name="ViewQuestionFrame" Navigated="ViewQuestionFrame_Navigated"/>
+    </Grid>
+</Page>

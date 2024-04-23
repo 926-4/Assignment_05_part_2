@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="UBB_SE_2024_Team_42.Domain.Badge" Collapsed="true">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAIAAAAAAAAAAGAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Badge.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Domain.Category" Collapsed="true">
+    <Position X="11.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAEAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Domain.Notification" Collapsed="true">
+    <Position X="7.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAEEAAAAAAAAAAAAAACAAAAACAAAAAA=</HashCode>
+      <FileName>Domain\Notification.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Domain.Post" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAABAACAgAAAAEEACAAAAoAAAQAAACBAAAAAAgAAAE=</HashCode>
+      <FileName>Domain\Post.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Domain.Question" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAEAAAAAAAAAAAAAEAAAAAAAAAACAA=</HashCode>
+      <FileName>Domain\Question.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Domain.Tag" Collapsed="true">
+    <Position X="11.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAQAAAAAAAAAACAA=</HashCode>
+      <FileName>Domain\Tag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Domain.User" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAACgEAAAAAAgAAACAAEAAAQAAAAAAAAA=</HashCode>
+      <FileName>Domain\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Domain.Vote" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAEAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Domain\Vote.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.AddComment" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAEAAAAAQQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\AddComment.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.AreYouSurePopUp" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="9" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\AreYouSurePopUp.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.Comment" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAkgAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\Comment.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.CoolTextBox" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAEIAABAAAAAAAAAAAAAAAAACAAAACA=</HashCode>
+      <FileName>GUI\CoolTextBox.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.CreateQuestionPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3" Y="1" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAEAAAAEgAABAAAAAAAAAA=</HashCode>
+      <FileName>GUI\CreateQuestionPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.EditPost" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAQAAAQAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>GUI\EditPost.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.MiniProfile" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAgAAEgAAAAAAEQEAAAAAAAAA=</HashCode>
+      <FileName>GUI\MiniProfile.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.SearchQuestionPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="7.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQBAAAJAgAAAAAAABAAICAAWgAAAEAAAAECAAAIAQAA=</HashCode>
+      <FileName>GUI\SearchQuestionPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.SettingsPop_Up" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAABAAQAEAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>GUI\SettingsPop-Up.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.Statistics" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>GUI\Statistics.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.ViewQuestionPage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAABAAAAAAQAAAAAAAEAIAAAAAAAAIAA=</HashCode>
+      <FileName>GUI\ViewQuestionPage.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.GUI.WindowManager" Collapsed="true">
+    <Position X="9.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAACAAAAAAAAAAAAAAAAQAAAAEAAAAAAAAA=</HashCode>
+      <FileName>GUI\WindowManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Repository.Repository" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAEACAAAABIAAAICAgAAQACgAEAAAAQKIAABAAAGA=</HashCode>
+      <FileName>Repository\Repository.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.Service.Service" Collapsed="true">
+    <Position X="12.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gACAAASAACACoAAAgCAAAAAACgAkAAAAAIOACBAAACA=</HashCode>
+      <FileName>Service\Service.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.App" Collapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UBB_SE_2024_Team_42.MainWindow" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
