@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UBB_SE_2024_Team_42.Domain;
+using UBB_SE_2024_Team_42.Domain.Posts;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
@@ -33,7 +33,7 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void Edit_Button_Click(object sender, RoutedEventArgs e)
         {
-                Question question = _manager.Repository.getQuestion(_id);
+                Question question = _manager.Repository.GetQuestion(_id);
                 EditPost window = new EditPost(_manager, question);
                 this.Close();
                 window.Show();

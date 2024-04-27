@@ -14,7 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using UBB_SE_2024_Team_42.Domain;
+using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Domain.tag;
 using UBB_SE_2024_Team_42.Service;
 
 namespace UBB_SE_2024_Team_42.GUI
@@ -22,7 +23,7 @@ namespace UBB_SE_2024_Team_42.GUI
     /// <summary>
     /// Interaction logic for ViewQuestionPage.xaml
     /// </summary>
-    
+
     public partial class ViewQuestionPage : Page
     {
         private WindowManager _manager;
@@ -37,7 +38,7 @@ namespace UBB_SE_2024_Team_42.GUI
             Service.Service service = _manager.Service;
             //Service service = _manager.Service;
             DataContext = this;
-            Comments = new ObservableCollection<Post>(service.getRepliesOfPost(question.PostID));
+            Comments = new ObservableCollection<Post>(service.GetRepliesOfPost(question.PostID));
             Tags = new ObservableCollection<Tag>(service.getTagsOfQuestion(question.PostID));
         }
 

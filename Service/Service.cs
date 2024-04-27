@@ -1,47 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UBB_SE_2024_Team_42.Domain;
-using UBB_SE_2024_Team_42.GUI;
-using UBB_SE_2024_Team_42.Repository;
+﻿using UBB_SE_2024_Team_42.Domain;
+using UBB_SE_2024_Team_42.Domain.badge;
+using UBB_SE_2024_Team_42.Domain.category;
+using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Domain.Reactions;
+using UBB_SE_2024_Team_42.Domain.tag;
+using UBB_SE_2024_Team_42.Domain.user;
 
 namespace UBB_SE_2024_Team_42.Service
 {
     public class Service
     {
-        private Repository.Repository repository;
+        private readonly Repository.Repository repository;
 
         List<Question> currentQuestions;
 
-        // no other fields required for now
 
         public Service(Repository.Repository repository)
         {
             this.repository = repository;
-            currentQuestions = getAllQuestions();
+            currentQuestions = GetAllQuestions();
         }
 
-        public User getUser(long userId)
+        public User GetUser(long userId)
         {
-            return repository.getUser(userId);
+            return repository.GetUser(userId);
         }
 
-        public List<Question> getAllQuestions()
+        public List<Question> GetAllQuestions()
         {
-            return repository.getAllQuestions();
+            return repository.GetAllQuestions();
         }
 
-        public List<Post> getRepliesOfPost(long postId)
+        public List<IPost> GetRepliesOfPost(long postId)
         {
-            return repository.getRepliesOfPost(postId);
+            return repository.GetRepliesOfPost(postId);
         }
 
         public List<Question> getQuestionsOfCategory(Category category)
         {
-            List<Question> questions = repository.getAllQuestions();
-            List<Question> filteredQuestions = new List<Question>();
+            List<Question> questions = repository.GetAllQuestions();
+            List<Question> filteredQuestions = [];
 
             foreach (Question question in questions)
             {
@@ -54,14 +52,14 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<Question> getQuestionsWithAtLeastOneAnswer()
         {
-            List<Question> questions = repository.getAllQuestions();
+            List<Question> questions = repository.GetAllQuestions();
             List<Question> filteredQuestions = new List<Question>();
 
             foreach (Question question in questions)
             {
-                foreach (Post post in repository.getRepliesOfPost(question.PostID))
+                foreach (Post post in repository.GetRepliesOfPost(question.PostID))
                 {
-                    if (post.PostType == Post.ANSWER_TYPE)
+                    if (post is Answer)
                     {
                         filteredQuestions.Add(question);
                         break;
@@ -74,16 +72,16 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<Question> searchQuestion(string textToBeSearchedBy)
         {
-            List<Question> questions = repository.getAllQuestions();
+            List<Question> questions = repository.GetAllQuestions();
             List<Question> filteredQuestions = new List<Question>();
 
             foreach (Question question in questions)
             {
                 bool addedQuestionToList = false;
 
-                foreach (Tag tag in question.Tags)
+                foreach (ITag tag in question.Tags)
                 {
-                    if (textToBeSearchedBy.Contains(tag.TagName))
+                    if (textToBeSearchedBy.Contains(tag.Name))
                     {
                         filteredQuestions.Add(question);
                         addedQuestionToList = true;
@@ -116,12 +114,12 @@ namespace UBB_SE_2024_Team_42.Service
             foreach (Question question in listOfQuestions)
             {
                 long questionId = question.PostID;
-                List<Vote> votesForQuestion = this.repository.getVotesOfPost(questionId);
+                List<Reaction> votesForQuestion = this.repository.GetVotesOfPost(questionId);
                 int voteCount = getVoteScore(votesForQuestion);
                 hash[question] = voteCount;
             }
 
-            //sortedListOfQuestions = hash.OrderBy(x => x.Value);
+            //sortedListOfQuestions = hash.OrderBy(x => x.ReactionValue);
             hash.OrderBy(x => x.Value);
             sortedListOfQuestions = hash.Keys.ToList();
 
@@ -135,12 +133,12 @@ namespace UBB_SE_2024_Team_42.Service
             return questions;
         }
 
-        private int getVoteScore(List<Vote> voteList)
+        private int getVoteScore(List<Reaction> voteList)
         {
             int score = 0;
             for (int i = 0; i < voteList.Count; i++)
             {
-                score += voteList[i].VoteValue;
+                score += voteList[i].ReactionValue;
             }
             return score;
         }
@@ -154,7 +152,7 @@ namespace UBB_SE_2024_Team_42.Service
             {
                 int numberOfAnswers = 0;
                 long questionId = question.PostID;
-                List<Post> repliesFromPost = this.repository.getRepliesOfPost(questionId);
+                List<Post> repliesFromPost = this.repository.GetRepliesOfPost(questionId);
                 foreach (Post post in repliesFromPost)
                 {
                     if (post.PostType == Post.ANSWER_TYPE)
@@ -179,13 +177,13 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<Question> sortQuestionsByDateAscending()
         {
-            Dictionary<Question, DateTime> hash = new Dictionary<Question, DateTime>();
+            Dictionary<Question, DateTime> hash = [];
             List<Question> listOfQuestions = currentQuestions;
             List<Question> sortedListOfQuestions;
             foreach (Question question in listOfQuestions)
             {
                 //long questionId = question.PostID;
-                hash[question] = question.datePosted;
+                hash[question] = question.DatePosted;
             }
 
             hash.OrderBy(x => x.Value);
@@ -202,7 +200,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<Category> getAllCategories()
         {
-            return repository.getAllCategories();
+            return repository.GetAllCategories();
         }
 
         public List<Question> getCurrentQuestions()
@@ -227,7 +225,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<Tag> getTagsOfQuestion(long questionId)
         {
-            return this.repository.getTagsOfQuestion(questionId);
+            return this.repository.GetTagsOfQuestion(questionId);
         }
 
 
@@ -235,7 +233,7 @@ namespace UBB_SE_2024_Team_42.Service
         public void addQuestion(string title, string content, Category category)
         {
             Question question = new Question(0, 1, title, category, content, new DateTime(), new DateTime(), "question", null, null);
-            repository.addQuestion(question);
+            repository.AddQuestion(question);
 
         }
 
@@ -244,7 +242,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<Badge> getBadgesOfUser(long userId)
         {
-            return this.repository.getBadgesOfUser(userId);
+            return repository.GetBadgesOfUser(userId);
         }
     }
 }

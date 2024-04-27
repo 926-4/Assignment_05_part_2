@@ -1,14 +1,8 @@
 ﻿using UBB_SE_2024_Team_42.Utils;
 
-namespace UBB_SE_2024_Team_42.Domain
+namespace UBB_SE_2024_Team_42.Domain.notification
 {
-    internal enum NotificationOption
-    {
-        NONE,
-        REPLY,
-        BADGE
-    }
-    public class Notification
+    public class Notification : INotification
     {
         public long NotificationId { get; }
         public string Text { get; set; }
@@ -50,7 +44,8 @@ namespace UBB_SE_2024_Team_42.Domain
 
         public override string ToString()
         {
-            return $"Notification{{notificationID: {NotificationId}, postID: {PostID}, badgeID: {BadgeID}\n" + $"notificationText: {Text}}} \n";
+            return $"Notification{{notificationID: {NotificationId}, postID: {PostID}, badgeID: {BadgeID}\n"
+                + $"notificationText: {Text}}} \n";
         }
 
     }

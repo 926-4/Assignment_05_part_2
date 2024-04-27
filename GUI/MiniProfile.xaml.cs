@@ -12,7 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UBB_SE_2024_Team_42.Domain;
+using UBB_SE_2024_Team_42.Domain.Posts;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
