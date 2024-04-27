@@ -11,6 +11,7 @@ using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.tag;
 using UBB_SE_2024_Team_42.Domain.user;
+using static UBB_SE_2024_Team_42.Domain.Posts.PostFactory;
 
 namespace UBB_SE_2024_Team_42.Repository
 {
@@ -480,27 +481,25 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
         }
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //Boti lucreaza aici
         public void updatePost(Post oldPost, Post newPost)
         {
             SqlConnection connection = new SqlConnection(sqlConnectionString);
             connection.Open();
-            SqlCommand command = null;
+            SqlCommand? command = null;
 
-            if (oldPost.PostType == Post.ANSWER_TYPE)
+            switch (oldPost.GetType())
             {
-                command = new SqlCommand("updateAnswer", connection);
-                command.Parameters.AddWithValue("@answerId", oldPost.PostID);
-                command.Parameters.AddWithValue("@content", newPost.Content);
-
-
-
-            }
-            else if (oldPost.PostType == Post.COMMENT_TYPE)
-            {
-                command = new SqlCommand("updateComment", connection);
-                command.Parameters.AddWithValue("@commentId", oldPost.PostID);
-                command.Parameters.AddWithValue("@content", newPost.Content);
-
+                case Type t when t == typeof(Answer):
+                    command = new SqlCommand("UpdateAnswer", connection);
+                    command.Parameters.AddWithValue("@answerId", newPost.PostID);
+                    command.Parameters.AddWithValue("@content", newPost.Content);
+                    break;
+                case Type t when t == typeof(Comment):
+                    command = new SqlCommand("UpdateComment",connection);
+                    command.Parameters.AddWithValue("@commentId",newPost.PostID);
+                    command.Parameters.AddWithValue("@content", newPost.Content);
+                    break;
             }
 
             if (command != null)
@@ -511,7 +510,7 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
 
         }
-        public List<Post> getAnswersOfUser(long userId)
+        public List<Answer> getAnswersOfUser(long userId)
         {
             SqlConnection connection = new SqlConnection(sqlConnectionString);
             connection.Open();
@@ -520,24 +519,32 @@ namespace UBB_SE_2024_Team_42.Repository
             DataTable dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
 
-            List<Post> answerList = new List<Post>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            List<Answer> answerList = [];
+            foreach (DataRow row in dataTable.Rows)
             {
-                string type = dataTable.Rows[i]["type"].ToString();
-                List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                if (type == Post.ANSWER_TYPE)
-
-                    answerList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
-                                          dataTable.Rows[i]["content"].ToString(), type, voteList,
-                                          Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+                string type = row["type"]?.ToString() ?? "";
+                if ((PostType)Enum.Parse(typeof(PostType), type) == PostType.ANSWER)
+                {
+                    answerList.Add(new Answer(Convert.ToInt64(row["id"]), Convert.ToInt64(row["userId"]), Convert.ToString(row["content"]), Convert.ToDateTime(row["datePosted"]), Convert.ToDateTime(row["dateOfLastEdit"]), GetVotesOfPost(Convert.ToInt64(row["id"]))));
+                }
             }
+            //for (int i = 0; i < dataTable.Rows.Count; i++)
+            //{
+            //    string type = dataTable.Rows[i]["type"].ToString();
+            //    List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //    if (type == Post.ANSWER_TYPE)
+
+            //        answerList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
+            //                              dataTable.Rows[i]["content"].ToString(), type, voteList,
+            //                              Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+            //}
 
             connection.Close();
 
             return answerList;
 
         }
-        public List<Post> getCommentsOfUser(long userId)
+        public List<Comment> getCommentsOfUser(long userId)
         {
             SqlConnection connection = new SqlConnection(sqlConnectionString);
             connection.Open();
@@ -546,29 +553,49 @@ namespace UBB_SE_2024_Team_42.Repository
             DataTable dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
 
-            List<Post> commentList = new List<Post>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            List<Comment> commentList = [];
+
+            foreach(DataRow row in  dataTable.Rows)
             {
-                string type = dataTable.Rows[i]["type"].ToString();
-                List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                if (type == Post.COMMENT_TYPE)
+                string type = row["type"]?.ToString() ?? "";
+                if((PostType)Enum.Parse(typeof(PostType), type) == PostType.COMMENT)
                 {
-                    DateTime datePosted = Convert.ToDateTime(dataTable.Rows[i]["datePosted"]);
+                    //big sex aici
                     DateTime dateOfLastEdit;
                     try
                     {
-                        dateOfLastEdit = Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]);
-
+                        dateOfLastEdit = Convert.ToDateTime(row["dateOfLastEdit"]);
                     }
                     catch (Exception e)
                     {
                         dateOfLastEdit = DateTime.Today;
                     }
-                    commentList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
-                                          dataTable.Rows[i]["content"].ToString(), type, voteList,
-                                          Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+                    commentList.Add(new Comment(Convert.ToInt64(row["id"]), Convert.ToInt64(row["userId"]), Convert.ToString(row["content"]), Convert.ToDateTime(row["datePosted"]), dateOfLastEdit, GetVotesOfPost(Convert.ToInt64(row["id"]))));
                 }
             }
+            // cam asta s-a intamplat cand codul asta a primit validare la pull request https://www.youtube.com/watch?v=rR4n-0KYeKQ
+            //for (int i = 0; i < dataTable.Rows.Count; i++)
+            //{
+            //    string type = dataTable.Rows[i]["type"].ToString();
+            //    List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //    if (type == Post.COMMENT_TYPE)
+            //    {
+            //        DateTime datePosted = Convert.ToDateTime(dataTable.Rows[i]["datePosted"]);
+            //        DateTime dateOfLastEdit;
+            //        try
+            //        {
+            //            dateOfLastEdit = Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]);
+
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            dateOfLastEdit = DateTime.Today;
+            //        }
+            //        commentList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
+            //                              dataTable.Rows[i]["content"].ToString(), type, voteList,
+            //                              Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+            //    }
+            //}
             connection.Close();
 
             return commentList;
@@ -583,25 +610,34 @@ namespace UBB_SE_2024_Team_42.Repository
             DataTable dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
 
-            List<Question> questionList = new List<Question>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            List<Question> questionList = [];
+            foreach(DataRow row in dataTable.Rows) 
             {
-                string type = dataTable.Rows[i]["type"].ToString();
-                List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                if (type == Post.QUESTION_TYPE)
+                string type = row["type"]?.ToString() ?? "";
+                if((PostType)Enum.Parse(typeof(PostType), type) == PostType.QUESTION)
                 {
-                    List<Tag> tagList = GetTagsOfQuestion(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                    Category category = GetCategory(Convert.ToInt64(dataTable.Rows[i]["categoryId"]));
-
-                    questionList.Add(new Question(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userId"]),
-                                dataTable.Rows[i]["title"].ToString(), category,
-                                dataTable.Rows[i]["content"].ToString(),
-                                Convert.ToDateTime(dataTable.Rows[i]["datePosted"]),
-                                dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]), dataTable.Rows[i]["type"].ToString(),
-                                voteList, tagList));
-
+                    //aici nu prea putem sa scoatem warningul doar cu suppress
+                    questionList.Add(new Question(Convert.ToInt64(row["id"]), Convert.ToString(row["title"]), GetCategory(Convert.ToInt64(row["categoryId"])), GetTagsOfQuestion(Convert.ToInt64(row["id"])), Convert.ToInt64(row["userId"]), Convert.ToString(row["content"]), Convert.ToDateTime(row["datePosted"]), Convert.ToDateTime(row["dateOfLastEdit"]), GetVotesOfPost(Convert.ToInt64(row["id"]))));
                 }
             }
+            //for (int i = 0; i < dataTable.Rows.Count; i++)
+            //{
+            //    string type = dataTable.Rows[i]["type"].ToString();
+            //    List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //    if (type == Post.QUESTION_TYPE)
+            //    {
+            //        List<Tag> tagList = GetTagsOfQuestion(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //        Category category = GetCategory(Convert.ToInt64(dataTable.Rows[i]["categoryId"]));
+
+            //        questionList.Add(new Question(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userId"]),
+            //                    dataTable.Rows[i]["title"].ToString(), category,
+            //                    dataTable.Rows[i]["content"].ToString(),
+            //                    Convert.ToDateTime(dataTable.Rows[i]["datePosted"]),
+            //                    dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]), dataTable.Rows[i]["type"].ToString(),
+            //                    voteList, tagList));
+
+            //    }
+            //}
             //questionList.Add(new Question(8, 3, "question", new Category(8, "category"), "content", new DateTime(), new DateTime(), "type", new List<Reaction>(), new List<Tag>() ));
             connection.Close();
             return questionList;
