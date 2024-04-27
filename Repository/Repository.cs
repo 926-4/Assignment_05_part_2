@@ -548,7 +548,7 @@ namespace UBB_SE_2024_Team_42.Repository
         {
             SqlConnection connection = new SqlConnection(sqlConnectionString);
             connection.Open();
-            SqlCommand command = new SqlCommand("select * from dbo.getCommentByUserId(" + userId + ")", connection);
+            SqlCommand command = new SqlCommand("select * from dbo.getPostsByUserId(" + userId + ")", connection);
             SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
             DataTable dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
