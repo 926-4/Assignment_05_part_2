@@ -610,25 +610,34 @@ namespace UBB_SE_2024_Team_42.Repository
             DataTable dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
 
-            List<Question> questionList = new List<Question>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            List<Question> questionList = [];
+            foreach(DataRow row in dataTable.Rows) 
             {
-                string type = dataTable.Rows[i]["type"].ToString();
-                List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                if (type == Post.QUESTION_TYPE)
+                string type = row["type"]?.ToString() ?? "";
+                if((PostType)Enum.Parse(typeof(PostType), type) == PostType.QUESTION)
                 {
-                    List<Tag> tagList = GetTagsOfQuestion(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                    Category category = GetCategory(Convert.ToInt64(dataTable.Rows[i]["categoryId"]));
-
-                    questionList.Add(new Question(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userId"]),
-                                dataTable.Rows[i]["title"].ToString(), category,
-                                dataTable.Rows[i]["content"].ToString(),
-                                Convert.ToDateTime(dataTable.Rows[i]["datePosted"]),
-                                dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]), dataTable.Rows[i]["type"].ToString(),
-                                voteList, tagList));
-
+                    //aici nu prea putem sa scoatem warningul doar cu suppress
+                    questionList.Add(new Question(Convert.ToInt64(row["id"]), Convert.ToString(row["title"]), GetCategory(Convert.ToInt64(row["categoryId"])), GetTagsOfQuestion(Convert.ToInt64(row["id"])), Convert.ToInt64(row["userId"]), Convert.ToString(row["content"]), Convert.ToDateTime(row["datePosted"]), Convert.ToDateTime(row["dateOfLastEdit"]), GetVotesOfPost(Convert.ToInt64(row["id"]))));
                 }
             }
+            //for (int i = 0; i < dataTable.Rows.Count; i++)
+            //{
+            //    string type = dataTable.Rows[i]["type"].ToString();
+            //    List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //    if (type == Post.QUESTION_TYPE)
+            //    {
+            //        List<Tag> tagList = GetTagsOfQuestion(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //        Category category = GetCategory(Convert.ToInt64(dataTable.Rows[i]["categoryId"]));
+
+            //        questionList.Add(new Question(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userId"]),
+            //                    dataTable.Rows[i]["title"].ToString(), category,
+            //                    dataTable.Rows[i]["content"].ToString(),
+            //                    Convert.ToDateTime(dataTable.Rows[i]["datePosted"]),
+            //                    dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]), dataTable.Rows[i]["type"].ToString(),
+            //                    voteList, tagList));
+
+            //    }
+            //}
             //questionList.Add(new Question(8, 3, "question", new Category(8, "category"), "content", new DateTime(), new DateTime(), "type", new List<Reaction>(), new List<Tag>() ));
             connection.Close();
             return questionList;
