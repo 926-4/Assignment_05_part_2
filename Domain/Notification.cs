@@ -1,32 +1,56 @@
-﻿using System.Dynamic;
+﻿using UBB_SE_2024_Team_42.Utils;
 
 namespace UBB_SE_2024_Team_42.Domain
 {
+    internal enum NotificationOption
+    {
+        NONE,
+        REPLY,
+        BADGE
+    }
     public class Notification
     {
         public long NotificationId { get; }
         public string Text { get; set; }
-        public long PostID { get; }
-        public long BadgeID {  get; } 
-
-        public Notification(long newNotficationID, long newPostID, long newBadgeID)
+        public long? PostID { get; }
+        public long? BadgeID { get; }
+        internal Notification(NotificationOption option, long ReferenceID)
         {
-            this.NotificationId = newNotficationID;
-            this.PostID = newPostID;
-            this.BadgeID = BadgeID;
-            if (newPostID != null)
+            NotificationId = IDGenerator.RandomLong();
+            switch (option)
             {
-                this.Text = "Someone replied to one of your posts";
+                case NotificationOption.NONE:
+                    Text = "?";
+                    break;
+                case NotificationOption.REPLY:
+                    Text = "Someone replied to one of your posts";
+                    PostID = ReferenceID;
+                    break;
+                case NotificationOption.BADGE:
+                    Text = "You have a new badge";
+                    BadgeID = ReferenceID;
+                    break;
+                default:
+                    throw new NotImplementedException();
             }
-            else if (newBadgeID != null)
-            {
-                this.Text = "You have a new badge";
-            }
+
+        }
+
+        internal Notification(long newNotficationID, long? newPostID, long? newBadgeID)
+        {
+            NotificationId = newNotficationID;
+            PostID = newPostID;
+            BadgeID = newBadgeID;
+            Text = newPostID != null
+                ? "Someone replied to one of your posts"
+                : newBadgeID != null
+                    ? "You have a new badge"
+                    : "?";
         }
 
         public override string ToString()
         {
-            return $"Notification(notificationID: {NotificationId}, postID: {PostID}, badgeID: {BadgeID}) \n" + $"notificationText: {Text} \n";
+            return $"Notification{{notificationID: {NotificationId}, postID: {PostID}, badgeID: {BadgeID}\n" + $"notificationText: {Text}}} \n";
         }
 
     }
