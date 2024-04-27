@@ -455,20 +455,20 @@ namespace UBB_SE_2024_Team_42.Repository
             switch (post.GetType())
             {
                 case Type t when t == typeof(Answer):
-                    command = new SqlCommand("addAnswer", connection);
+                    command = new SqlCommand("AddAnswer", connection);
                     command.Parameters.AddWithValue("@userId", post.UserID);
                     command.Parameters.AddWithValue("@content", post.Content);
                     command.Parameters.AddWithValue("@postId", post.PostID);
                     break;
                 case Type t when t == typeof(Comment):
-                    command = new SqlCommand("addComment", connection);
+                    command = new SqlCommand("AddComment", connection);
                     command.Parameters.AddWithValue("@userId", post.UserID);
                     command.Parameters.AddWithValue("@content", post.Content);
                     command.Parameters.AddWithValue("@postId", post.PostID);
                     break;
             }
 
-            SqlCommand reply_command = new SqlCommand("addReply", connection);
+            SqlCommand reply_command = new SqlCommand("AddReply", connection);
             reply_command.Parameters.AddWithValue("@idOfPostRepliedOn", postRepliedOn.PostID);
             reply_command.Parameters.AddWithValue("@idOfReply", post.PostID);
             if (command != null)
