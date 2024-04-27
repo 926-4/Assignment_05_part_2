@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using UBB_SE_2024_Team_42.Domain;
+using UBB_SE_2024_Team_42.Domain.Posts;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
@@ -32,7 +32,7 @@ namespace UBB_SE_2024_Team_42.GUI
         private void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
             string text = Coolest_TextBox_Ever.Text;
-            Post newPost = new Post(_post.PostID, _post.UserID, text, _post.PostType, _post.VoteList, _post.datePosted, _post.dateOfLastEdit);
+            Post newPost = new Post(_post.PostID, _post.UserID, text, _post.PostType, _post.Reactions, _post.DatePosted, _post.DateOfLastEdit);
             _manager.Repository.updatePost(_post, newPost);
         }
 

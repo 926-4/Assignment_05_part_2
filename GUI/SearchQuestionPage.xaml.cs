@@ -10,9 +10,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using UBB_SE_2024_Team_42.Domain;
 using UBB_SE_2024_Team_42.Service;
 using UBB_SE_2024_Team_42.Repository;
+using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Domain.category;
 namespace UBB_SE_2024_Team_42.GUI
 {
     /// <summary>
