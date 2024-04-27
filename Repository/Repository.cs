@@ -544,38 +544,58 @@ namespace UBB_SE_2024_Team_42.Repository
             return answerList;
 
         }
-        public List<Post> getCommentsOfUser(long userId)
+        public List<Comment> getCommentsOfUser(long userId)
         {
             SqlConnection connection = new SqlConnection(sqlConnectionString);
             connection.Open();
-            SqlCommand command = new SqlCommand("select * from dbo.getPostsByUserId(" + userId + ")", connection);
+            SqlCommand command = new SqlCommand("select * from dbo.getCommentByUserId(" + userId + ")", connection);
             SqlDataAdapter dataAdapter = new SqlDataAdapter(command);
             DataTable dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
 
-            List<Post> commentList = new List<Post>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            List<Comment> commentList = [];
+
+            foreach(DataRow row in  dataTable.Rows)
             {
-                string type = dataTable.Rows[i]["type"].ToString();
-                List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                if (type == Post.COMMENT_TYPE)
+                string type = row["type"]?.ToString() ?? "";
+                if((PostType)Enum.Parse(typeof(PostType), type) == PostType.COMMENT)
                 {
-                    DateTime datePosted = Convert.ToDateTime(dataTable.Rows[i]["datePosted"]);
+                    //big sex aici
                     DateTime dateOfLastEdit;
                     try
                     {
-                        dateOfLastEdit = Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]);
-
+                        dateOfLastEdit = Convert.ToDateTime(row["dateOfLastEdit"]);
                     }
                     catch (Exception e)
                     {
                         dateOfLastEdit = DateTime.Today;
                     }
-                    commentList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
-                                          dataTable.Rows[i]["content"].ToString(), type, voteList,
-                                          Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+                    commentList.Add(new Comment(Convert.ToInt64(row["id"]), Convert.ToInt64(row["userId"]), Convert.ToString(row["content"]), Convert.ToDateTime(row["datePosted"]), dateOfLastEdit, GetVotesOfPost(Convert.ToInt64(row["id"]))));
                 }
             }
+            // cam asta s-a intamplat cand codul asta a primit validare la pull request https://www.youtube.com/watch?v=rR4n-0KYeKQ
+            //for (int i = 0; i < dataTable.Rows.Count; i++)
+            //{
+            //    string type = dataTable.Rows[i]["type"].ToString();
+            //    List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //    if (type == Post.COMMENT_TYPE)
+            //    {
+            //        DateTime datePosted = Convert.ToDateTime(dataTable.Rows[i]["datePosted"]);
+            //        DateTime dateOfLastEdit;
+            //        try
+            //        {
+            //            dateOfLastEdit = Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"]);
+
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            dateOfLastEdit = DateTime.Today;
+            //        }
+            //        commentList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
+            //                              dataTable.Rows[i]["content"].ToString(), type, voteList,
+            //                              Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), dataTable.Rows[i]["dateOfLastEdit"] == DBNull.Value ? Convert.ToDateTime(dataTable.Rows[i]["datePosted"]) : Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+            //    }
+            //}
             connection.Close();
 
             return commentList;
