@@ -11,6 +11,7 @@ using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.tag;
 using UBB_SE_2024_Team_42.Domain.user;
+using static UBB_SE_2024_Team_42.Domain.Posts.PostFactory;
 
 namespace UBB_SE_2024_Team_42.Repository
 {
@@ -509,7 +510,7 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
 
         }
-        public List<Post> getAnswersOfUser(long userId)
+        public List<Answer> getAnswersOfUser(long userId)
         {
             SqlConnection connection = new SqlConnection(sqlConnectionString);
             connection.Open();
@@ -518,17 +519,25 @@ namespace UBB_SE_2024_Team_42.Repository
             DataTable dataTable = new DataTable();
             dataAdapter.Fill(dataTable);
 
-            List<Post> answerList = new List<Post>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            List<Answer> answerList = [];
+            foreach (DataRow row in dataTable.Rows)
             {
-                string type = dataTable.Rows[i]["type"].ToString();
-                List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
-                if (type == Post.ANSWER_TYPE)
-
-                    answerList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
-                                          dataTable.Rows[i]["content"].ToString(), type, voteList,
-                                          Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+                string type = row["type"]?.ToString() ?? "";
+                if ((PostType)Enum.Parse(typeof(PostType), type) == PostType.ANSWER)
+                {
+                    answerList.Add(new Answer(Convert.ToInt64(row["id"]), Convert.ToInt64(row["userId"]), Convert.ToString(row["content"]), Convert.ToDateTime(row["datePosted"]), Convert.ToDateTime(row["dateOfLastEdit"]), GetVotesOfPost(Convert.ToInt64(row["id"]))));
+                }
             }
+            //for (int i = 0; i < dataTable.Rows.Count; i++)
+            //{
+            //    string type = dataTable.Rows[i]["type"].ToString();
+            //    List<Reaction> voteList = GetVotesOfPost(Convert.ToInt64(dataTable.Rows[i]["id"]));
+            //    if (type == Post.ANSWER_TYPE)
+
+            //        answerList.Add(new Post(Convert.ToInt64(dataTable.Rows[i]["id"]), Convert.ToInt64(dataTable.Rows[i]["userID"]),
+            //                              dataTable.Rows[i]["content"].ToString(), type, voteList,
+            //                              Convert.ToDateTime(dataTable.Rows[i]["datePosted"]), Convert.ToDateTime(dataTable.Rows[i]["dateOfLastEdit"])));
+            //}
 
             connection.Close();
 
