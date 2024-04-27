@@ -480,27 +480,25 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
         }
         // -------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //Boti lucreaza aici
         public void updatePost(Post oldPost, Post newPost)
         {
             SqlConnection connection = new SqlConnection(sqlConnectionString);
             connection.Open();
-            SqlCommand command = null;
+            SqlCommand? command = null;
 
-            if (oldPost.PostType == Post.ANSWER_TYPE)
+            switch (oldPost.GetType())
             {
-                command = new SqlCommand("updateAnswer", connection);
-                command.Parameters.AddWithValue("@answerId", oldPost.PostID);
-                command.Parameters.AddWithValue("@content", newPost.Content);
-
-
-
-            }
-            else if (oldPost.PostType == Post.COMMENT_TYPE)
-            {
-                command = new SqlCommand("updateComment", connection);
-                command.Parameters.AddWithValue("@commentId", oldPost.PostID);
-                command.Parameters.AddWithValue("@content", newPost.Content);
-
+                case Type t when t == typeof(Answer):
+                    command = new SqlCommand("UpdateAnswer", connection);
+                    command.Parameters.AddWithValue("@answerId", newPost.PostID);
+                    command.Parameters.AddWithValue("@content", newPost.Content);
+                    break;
+                case Type t when t == typeof(Comment):
+                    command = new SqlCommand("UpdateComment",connection);
+                    command.Parameters.AddWithValue("@commentId",newPost.PostID);
+                    command.Parameters.AddWithValue("@content", newPost.Content);
+                    break;
             }
 
             if (command != null)
