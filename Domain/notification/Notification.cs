@@ -1,6 +1,6 @@
 ﻿using UBB_SE_2024_Team_42.Utils;
 
-namespace UBB_SE_2024_Team_42.Domain.notification
+namespace UBB_SE_2024_Team_42.Domain.Notification
 {
     public class Notification : INotification
     {
@@ -8,7 +8,7 @@ namespace UBB_SE_2024_Team_42.Domain.notification
         public string Text { get; set; }
         public long? PostID { get; }
         public long? BadgeID { get; }
-        internal Notification(NotificationOption option, long ReferenceID)
+        internal Notification(NotificationOption option, long referenceID)
         {
             NotificationId = IDGenerator.RandomLong();
             switch (option)
@@ -18,16 +18,15 @@ namespace UBB_SE_2024_Team_42.Domain.notification
                     break;
                 case NotificationOption.REPLY:
                     Text = "Someone replied to one of your posts";
-                    PostID = ReferenceID;
+                    PostID = referenceID;
                     break;
                 case NotificationOption.BADGE:
                     Text = "You have a new badge";
-                    BadgeID = ReferenceID;
+                    BadgeID = referenceID;
                     break;
                 default:
                     throw new NotImplementedException();
             }
-
         }
 
         internal Notification(long newNotficationID, long? newPostID, long? newBadgeID)
@@ -47,6 +46,5 @@ namespace UBB_SE_2024_Team_42.Domain.notification
             return $"Notification{{notificationID: {NotificationId}, postID: {PostID}, badgeID: {BadgeID}\n"
                 + $"notificationText: {Text}}} \n";
         }
-
     }
 }

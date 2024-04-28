@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
-using UBB_SE_2024_Team_42.Domain.badge;
-using UBB_SE_2024_Team_42.Domain.category;
-using UBB_SE_2024_Team_42.Domain.notification;
+using UBB_SE_2024_Team_42.Domain.Badge;
+using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Domain.Notification;
 
-namespace UBB_SE_2024_Team_42.Domain.user
+namespace UBB_SE_2024_Team_42.Domain.User
 {
     public interface IUser
     {

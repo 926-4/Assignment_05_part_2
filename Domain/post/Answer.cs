@@ -1,6 +1,6 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Utils;
-using UBB_SE_2024_Team_42.Utils.functionbros;
+using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {
@@ -19,13 +19,12 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Answer(long postingUserID, string content)
         {
-
             PostID = IDGenerator.RandomLong();
             UserID = postingUserID;
             Content = content;
             DatePosted = DateTime.Now;
             DateOfLastEdit = DateTime.Now;
-            Reactions = [];
+            Reactions = new ();
         }
 
         internal Answer(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)

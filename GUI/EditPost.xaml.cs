@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using UBB_SE_2024_Team_42.Domain;
 using UBB_SE_2024_Team_42.Domain.Posts;
 
 namespace UBB_SE_2024_Team_42.GUI
@@ -20,20 +9,23 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class EditPost : Window
     {
-        private TextPost _post;
-        private WindowManager _manager;
-        public EditPost(WindowManager manager, TextPost post)
+        private readonly IPost post;
+        private readonly WindowManager manager;
+        public EditPost(WindowManager manager, IPost post)
         {
-            _manager = manager;
-            _post = post;
+            this.manager = manager;
+            this.post = post;
             InitializeComponent();
         }
 
         private void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
             string text = Coolest_TextBox_Ever.Text;
-            TextPost newPost = new Post(_post.PostID, _post.UserID, text, _post.PostType, _post.Reactions, _post.DatePosted, _post.DateOfLastEdit);
-            _manager.Repository.UpdatePost(_post, newPost);
+            post.Content = text;
+            post.DateOfLastEdit = DateTime.Now;
+            // This is not fine leaving this here until someone fixes
+            TextPost newPost = new (post.UserID, text);
+            manager.Repository.UpdatePost(post, newPost);
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)

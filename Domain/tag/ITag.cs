@@ -1,4 +1,4 @@
-﻿namespace UBB_SE_2024_Team_42.Domain.tag
+﻿namespace UBB_SE_2024_Team_42.Domain.Tag
 {
     public interface ITag
     {

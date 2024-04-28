@@ -1,11 +1,11 @@
 ﻿using System.Drawing;
-using UBB_SE_2024_Team_42.Domain.badge;
-using UBB_SE_2024_Team_42.Domain.category;
-using UBB_SE_2024_Team_42.Domain.notification;
+using UBB_SE_2024_Team_42.Domain.Badge;
+using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Domain.Notification;
 using UBB_SE_2024_Team_42.Utils;
-using UBB_SE_2024_Team_42.Utils.functionbros;
+using UBB_SE_2024_Team_42.Utils.Functionals;
 
-namespace UBB_SE_2024_Team_42.Domain.user
+namespace UBB_SE_2024_Team_42.Domain.User
 {
     public class User : IUser
     {
@@ -15,21 +15,21 @@ namespace UBB_SE_2024_Team_42.Domain.user
         public List<ICategory> CategoriesModeratedList { get; set; }
         public List<IBadge> BadgeList { get; set; }
         public Image? ProfilePicture { get; set; }
-        public User() 
+        public User()
         {
             UserID = IDGenerator.RandomLong();
-            UserName = "";
-            NotificationList = [];
-            CategoriesModeratedList = [];
-            BadgeList = [];
+            UserName = string.Empty;
+            NotificationList = new ();
+            CategoriesModeratedList = new ();
+            BadgeList = new ();
         }
         public User(string username)
         {
             UserID = IDGenerator.RandomLong();
             UserName = username;
-            NotificationList = [];
-            CategoriesModeratedList = [];
-            BadgeList = [];
+            NotificationList = new ();
+            CategoriesModeratedList = new ();
+            BadgeList = new ();
         }
         internal User(long userID, string userName, List<INotification> notificationList, List<ICategory> categoriesModeratedList, List<IBadge> badgeList)
         {

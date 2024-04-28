@@ -32,23 +32,23 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         public Question(long userID, string content)
         {
             Ipost = new TextPost(userID, content);
-            Title = "";
+            Title = string.Empty;
             Category = null;
-            Tags = [];
+            Tags = new ();
         }
         public Question(long userID, string content, ICategory category)
         {
             Ipost = new TextPost(userID, content);
-            Title = "";
+            Title = string.Empty;
             Category = category;
-            Tags = [];
+            Tags = new ();
         }
         public Question(long userID, string content, ICategory category, string title)
         {
             Ipost = new TextPost(userID, content);
             Title = title;
             Category = category;
-            Tags = [];
+            Tags = new ();
         }
 
         public Question(string title, ICategory category, long userID, string content)
@@ -56,7 +56,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Ipost = new TextPost(userID, content);
             Title = title;
             Category = category;
-            Tags = [];
+            Tags = new ();
         }
         public Question(String title, ICategory category, List<ITag> tags, long userID, string content)
         {

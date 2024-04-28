@@ -1,9 +1,21 @@
-﻿namespace UBB_SE_2024_Team_42.Domain.tag
+﻿using UBB_SE_2024_Team_42.Utils;
+
+namespace UBB_SE_2024_Team_42.Domain.Tag
 {
-    public class Tag(long newTagId, string newTagName) : ITag
+    public class Tag : ITag
     {
-        public long Id { get; } = newTagId;
-        public string Name { get; set; } = newTagName;
+        public long Id { get; }
+        public string Name { get; set; }
+        public Tag()
+        {
+            Id = IDGenerator.RandomLong();
+            Name = "None";
+        }
+        internal Tag(long newTagId, string newTagName)
+        {
+            Id = newTagId;
+            Name = newTagName;
+        }
         public override string ToString() => $"Tag {{id: {Id}, name: {Name}}}";
     }
 }

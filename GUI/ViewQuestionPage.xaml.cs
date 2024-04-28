@@ -36,7 +36,7 @@ namespace UBB_SE_2024_Team_42.GUI
             this.manager = manager;
             InitializeComponent();
             Service.Service service = this.manager.Service;
-            // Service service = _manager.Service;
+            // Service service = manager.Service;
             DataContext = this;
             Comments = new ObservableCollection<IPost>(service.GetRepliesOfPost(question.PostID));
             Tags = new ObservableCollection<ITag>(service.GetTagsOfQuestion(question.PostID));
