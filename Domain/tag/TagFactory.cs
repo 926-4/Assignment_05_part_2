@@ -22,11 +22,11 @@ namespace UBB_SE_2024_Team_42.Domain.Tag
             return this;
         }
 
-        public TagFactory Get()
+        public Tag Get()
         {
             Tag returnValue = Instance;
             Instance = new ();
-            return this;
+            return returnValue;
         }
     }
 }
