@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using UBB_SE_2024_Team_42.Domain;
 using UBB_SE_2024_Team_42.Domain.Posts;
-using UBB_SE_2024_Team_42.Domain.tag;
-using UBB_SE_2024_Team_42.Service;
+using UBB_SE_2024_Team_42.Domain.Tag;
 
 namespace UBB_SE_2024_Team_42.GUI
 {

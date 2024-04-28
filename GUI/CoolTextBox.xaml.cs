@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows;
 
 namespace UBB_SE_2024_Team_42.GUI
@@ -13,7 +12,6 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void MarkdownTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
         }
 
         private void ItalicButton_Click(object sender, RoutedEventArgs e)
@@ -47,8 +45,6 @@ namespace UBB_SE_2024_Team_42.GUI
             // ApplyTo formatting to selected text
             string newText = text.Insert(selectionStart, formattingTag);
             newText = newText.Insert(selectionStart + selectionLength + formattingTag.Length, formattingTag);
-
-
 
             // Update TextBox text and selection
             MarkdownTextBox.Text = newText;

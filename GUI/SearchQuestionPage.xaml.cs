@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using UBB_SE_2024_Team_42.Domain.category;
+using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Posts;
 namespace UBB_SE_2024_Team_42.GUI
 {
