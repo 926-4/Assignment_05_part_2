@@ -146,13 +146,12 @@ namespace UBB_SE_2024_Team_42.Repository
             DataTable dataTable = new();
             dataAdapter.Fill(dataTable);
 
-            User user = new(
-                            userId,
-                            dataTable.Rows[0]["name"]?.ToString() ?? "",
-                            GetNotificationsOfUser(userId),
-                            GetCategoriesModeratedByUser(userId),
-                            GetBadgesOfUser(userId)
-                        );
+            User user = new UserFactory().NewUser()
+                .SetName(dataTable.Rows[0]["name"]?.ToString() ?? "")
+                .SetNotificationList(GetNotificationsOfUser(userId))
+                .SetCategoriesModeratedList(GetCategoriesModeratedByUser(userId))
+                .SetBadgeList(GetBadgesOfUser(userId))
+                .Get();
 
             connection.Close();
             return user;
