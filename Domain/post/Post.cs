@@ -7,12 +7,13 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     public class Post : IPost
     {
 
-        public long PostID { get; }
-        public long UserID { get; }
+        public long PostID { get; set; }
+        public long UserID { get; set; }
         public string Content { get; set; }
-        public DateTime DatePosted { get; }
+        public DateTime DatePosted { get; set; }
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
+        public Post() { }
         public Post(long postingUserID, string content)
         {
 

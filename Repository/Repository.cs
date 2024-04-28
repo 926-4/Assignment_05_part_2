@@ -7,6 +7,7 @@ using UBB_SE_2024_Team_42.Domain;
 using UBB_SE_2024_Team_42.Domain.badge;
 using UBB_SE_2024_Team_42.Domain.category;
 using UBB_SE_2024_Team_42.Domain.notification;
+using UBB_SE_2024_Team_42.Domain.post;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.tag;
@@ -291,18 +292,31 @@ namespace UBB_SE_2024_Team_42.Repository
             ICategory category = GetCategory(Convert.ToInt64(firstRow["categoryId"]));
 
             connection.Close();
-            return new Question(
-                Convert.ToInt64(firstRow["id"]),
-                                firstRow["title"]?.ToString() ?? "",
-                category,
-                tagList,
-                Convert.ToInt64(firstRow["userId"]),
-                                firstRow["content"]?.ToString() ?? "",
-             Convert.ToDateTime(firstRow["datePosted"]),
-                                firstRow["dateOfLastEdit"] == DBNull.Value
-                                    ? Convert.ToDateTime(firstRow["datePosted"])
-                                    : Convert.ToDateTime(firstRow["dateOfLastEdit"]),
-                                voteList);
+            //return new Question(
+            //    Convert.ToInt64(firstRow["id"]),
+            //                    firstRow["title"]?.ToString() ?? "",
+            //    category,
+            //    tagList,
+            //    Convert.ToInt64(firstRow["userId"]),
+            //                    firstRow["content"]?.ToString() ?? "",
+            // Convert.ToDateTime(firstRow["datePosted"]),
+            //                    firstRow["dateOfLastEdit"] == DBNull.Value
+            //                        ? Convert.ToDateTime(firstRow["datePosted"])
+            //                        : Convert.ToDateTime(firstRow["dateOfLastEdit"]),
+            //                    voteList);
+            return new QuestionFactory().NewQuestion()
+                .SetId(Convert.ToInt64(firstRow["id"]))
+                .SetTitle(firstRow["title"]?.ToString() ?? "")
+                .SetCategory(category)
+                .SetTags(tagList)
+                .SetUserId(Convert.ToInt64(firstRow["userId"]))
+                .SetContent(firstRow["content"]?.ToString() ?? "")
+                .SetPostTime(Convert.ToDateTime(firstRow["datePosted"]))
+                .SetEditTime(firstRow["dateOfLastEdit"] == DBNull.Value
+                                   ? Convert.ToDateTime(firstRow["datePosted"])
+                                                      : Convert.ToDateTime(firstRow["dateOfLastEdit"]))
+                .SetVoteList(voteList)
+                .GetQuestion();
         }
 
         public List<Question> GetAllQuestions()

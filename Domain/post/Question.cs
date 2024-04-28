@@ -8,7 +8,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     public class Question : Post
     {
         public string? Title { get; set; }
-        public ICategory? Category { get; }
+        public ICategory? Category { get; set; }
 
         public List<ITag> Tags { get; set; }
         public Question(String title, ICategory category, long userID, string content) : base(userID, content)
@@ -38,6 +38,11 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Category = category;
             Tags = tags;
         }
+
+        public Question()
+        {
+        }
+
         public override string ToString()
         {
             return $"Question(postID: {PostID}, userID: {UserID}, title:{Title} , category: {Category}) \n"
