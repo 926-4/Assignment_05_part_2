@@ -26,8 +26,8 @@ namespace UBB_SE_2024_Team_42.GUI
         public ObservableCollection<IQuestion> Questions { get; set; }
         public ObservableCollection<IPost> Answers { get; set; }
 
-        private Service.Service service;
-        private WindowManager manager;
+        private readonly Service.Service service;
+        private readonly WindowManager manager;
 
         public MiniProfile(WindowManager manager)
         {
@@ -38,23 +38,19 @@ namespace UBB_SE_2024_Team_42.GUI
             // we're getting the profile of the user with id 3
             Answers = new ObservableCollection<IPost>(service.GetCommentsOfUser(3));
             Questions = new ObservableCollection<IQuestion>(service.GetQuestionsOfUser(1));
-            //Badges = new ObservableCollection<Badge>(service.getBadgesOfUser(1));
             DataContext = this; // Set DataContext to enable data binding
         }
 
         private void BadgeList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void QuestionList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void AnswerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
     }
 }

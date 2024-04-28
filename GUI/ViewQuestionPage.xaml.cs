@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UBB_SE_2024_Team_42.Domain;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.tag;
 using UBB_SE_2024_Team_42.Service;
@@ -23,34 +24,32 @@ namespace UBB_SE_2024_Team_42.GUI
     /// <summary>
     /// Interaction logic for ViewQuestionPage.xaml
     /// </summary>
-
     public partial class ViewQuestionPage : Page
     {
-        private WindowManager _manager;
-        public ObservableCollection<TextPost> Comments { get; set; }
-        public ObservableCollection<Tag> Tags  { get; set; }
-        private Question _question;
-        public ViewQuestionPage(WindowManager manager, Question question)
+        private readonly WindowManager manager;
+        public ObservableCollection<IPost> Comments { get; set; }
+        public ObservableCollection<ITag> Tags { get; set; }
+        private readonly IQuestion question;
+        public ViewQuestionPage(WindowManager manager, IQuestion question)
         {
-            _question = question;
-            _manager = manager;
+            this.question = question;
+            this.manager = manager;
             InitializeComponent();
-            Service.Service service = _manager.Service;
-            //Service service = _manager.Service;
+            Service.Service service = this.manager.Service;
+            // Service service = _manager.Service;
             DataContext = this;
-            Comments = new ObservableCollection<TextPost>(service.GetRepliesOfPost(question.PostID));
-            Tags = new ObservableCollection<Tag>(service.GetTagsOfQuestion(question.PostID));
+            Comments = new ObservableCollection<IPost>(service.GetRepliesOfPost(question.PostID));
+            Tags = new ObservableCollection<ITag>(service.GetTagsOfQuestion(question.PostID));
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            ViewQuestionFrame.Navigate(new SearchQuestionPage(_manager));
-            //ViewQuestionFrame.Visibility = Visibility.Collapsed;
+            ViewQuestionFrame.Navigate(new SearchQuestionPage(manager));
+            // ViewQuestionFrame.Visibility = Visibility.Collapsed;
         }
 
         private void ViewQuestionFrame_Navigated(object sender, NavigationEventArgs e)
         {
-
         }
     }
 }
