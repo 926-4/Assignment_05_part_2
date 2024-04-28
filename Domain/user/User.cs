@@ -15,6 +15,7 @@ namespace UBB_SE_2024_Team_42.Domain.user
         public List<Category> CategoriesModeratedList { get; set; }
         public List<Badge> BadgeList { get; set; }
         public Image? ProfilePicture { get; set; }
+        public User() { }
         public User(string username)
         {
             UserID = IDGenerator.RandomLong();
