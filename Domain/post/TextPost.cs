@@ -7,9 +7,9 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     public class TextPost : IPost
     {
         public long PostID { get; }
-        public long UserID { get; }
+        public long UserID { get; set; }
         public string Content { get; set; }
-        public DateTime DatePosted { get; }
+        public DateTime DatePosted { get; set; }
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
         public TextPost(long postingUserID, string content)
@@ -31,6 +31,14 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             DateOfLastEdit = editTime;
             Reactions = reactions;
         }
+
+        public TextPost()
+        {
+            PostID = IDGenerator.RandomLong();
+            Content = "None";
+            Reactions = new ();
+        }
+
         public override string ToString()
         {
             return $"TextPost {{postID: {PostID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})\n" +

@@ -8,11 +8,11 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     {
         public long PostID { get; }
 
-        public long UserID { get; }
+        public long UserID { get; set; }
 
         public string Content { get; set; }
 
-        public DateTime DatePosted { get; }
+        public DateTime DatePosted { get; set; }
 
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
@@ -36,6 +36,14 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             DateOfLastEdit = editTime;
             Reactions = reactions;
         }
+
+        public Answer()
+        {
+            PostID = IDGenerator.RandomLong();
+            Content = "None";
+            Reactions = new ();
+        }
+
         public override string ToString()
         {
             return $"Answer {{postID: {PostID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit}) \n"
