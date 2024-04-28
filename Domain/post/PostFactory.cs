@@ -28,6 +28,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             {
                 PostType.COMMENT => new Comment(postID, userID, content, postDate, editDate, reactions),
                 PostType.TEXT_POST => new TextPost(postID, userID, content, postDate, editDate, reactions),
+                PostType.ANSWER => new Answer(postID, userID, content, postDate, editDate, reactions),
                 _ => throw new NotImplementedException()
             };
         }
