@@ -1,12 +1,10 @@
 ﻿using UBB_SE_2024_Team_42.Domain;
-using UBB_SE_2024_Team_42.Domain.badge;
-using UBB_SE_2024_Team_42.Domain.category;
+using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
-using UBB_SE_2024_Team_42.Domain.tag;
 using UBB_SE_2024_Team_42.Domain.Tag;
-using UBB_SE_2024_Team_42.Domain.user;
+using UBB_SE_2024_Team_42.Domain.User;
 using UBB_SE_2024_Team_42.Utils;
 using UBB_SE_2024_Team_42.Utils.Functionals;
 
@@ -116,7 +114,7 @@ namespace UBB_SE_2024_Team_42.Service
             Dictionary<IQuestion, int> sortedQuestionToReactionValueMap =
                 questionToReactionValueMap.OrderBy(questionValuePair => questionValuePair.Value).ToDictionary();
 
-            return [.. sortedQuestionToReactionValueMap.Keys];
+            return sortedQuestionToReactionValueMap.Keys.ToList();
         }
 
         public List<IQuestion> GetQuestionsSortedByScoreDescending()
@@ -157,7 +155,7 @@ namespace UBB_SE_2024_Team_42.Service
             }
 
             var sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
-            sortedListOfQuestions = [.. sortedMap.Keys];
+            sortedListOfQuestions = sortedMap.Keys.ToList();
             return sortedListOfQuestions;
         }
 
@@ -179,7 +177,7 @@ namespace UBB_SE_2024_Team_42.Service
             }
 
             Dictionary<IQuestion, DateTime> sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
-            sortedListOfQuestions = [.. sortedMap.Keys];
+            sortedListOfQuestions = sortedMap.Keys.ToList();
             return sortedListOfQuestions;
         }
 

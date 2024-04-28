@@ -1,9 +1,7 @@
-﻿using System.IO.Packaging;
-using System.Windows.Media.TextFormatting;
-using UBB_SE_2024_Team_42.Domain.category;
+﻿using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Reactions;
-using UBB_SE_2024_Team_42.Domain.tag;
-using UBB_SE_2024_Team_42.Utils.functionbros;
+using UBB_SE_2024_Team_42.Domain.Tag;
+using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {
@@ -11,41 +9,50 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     {
         public string? Title { get; set; }
         public ICategory? Category { get; }
-        private readonly IPost Ipost;
+        private readonly IPost ipost;
 
         public List<ITag> Tags { get; set; }
 
-        public long PostID => Ipost.PostID;
+        public long PostID => ipost.PostID;
 
-        public long UserID => Ipost.UserID;
+        public long UserID => ipost.UserID;
 
-        public string Content => Ipost.Content;
+        public string Content => ipost.Content;
 
-        public DateTime DatePosted => Ipost.DatePosted;
+        public DateTime DatePosted => ipost.DatePosted;
 
-        public DateTime DateOfLastEdit => Ipost.DateOfLastEdit;
-        public List<IReaction> Reactions => Ipost.Reactions;
+        public DateTime DateOfLastEdit => ipost.DateOfLastEdit;
+        public List<IReaction> Reactions => ipost.Reactions;
 
-        string IPost.Content { get => Ipost.Content; set { Ipost.Content = value; } }
-        DateTime IPost.DateOfLastEdit { get => Ipost.DateOfLastEdit; set { Ipost.DateOfLastEdit = value; } }
-        List<IReaction> IPost.Reactions { get => Ipost.Reactions; set { Ipost.Reactions = value; } }
+        string IPost.Content
+        {
+            get => ipost.Content; set { ipost.Content = value; }
+        }
+        DateTime IPost.DateOfLastEdit
+        {
+            get => ipost.DateOfLastEdit; set { ipost.DateOfLastEdit = value; }
+        }
+        List<IReaction> IPost.Reactions
+        {
+            get => ipost.Reactions; set { ipost.Reactions = value; }
+        }
         public Question(long userID, string content)
         {
-            Ipost = new TextPost(userID, content);
+            ipost = new TextPost(userID, content);
             Title = string.Empty;
             Category = null;
             Tags = new ();
         }
         public Question(long userID, string content, ICategory category)
         {
-            Ipost = new TextPost(userID, content);
+            ipost = new TextPost(userID, content);
             Title = string.Empty;
             Category = category;
             Tags = new ();
         }
         public Question(long userID, string content, ICategory category, string title)
         {
-            Ipost = new TextPost(userID, content);
+            ipost = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = new ();
@@ -53,20 +60,20 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Question(string title, ICategory category, long userID, string content)
         {
-            Ipost = new TextPost(userID, content);
+            ipost = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = new ();
         }
-        public Question(String title, ICategory category, List<ITag> tags, long userID, string content)
+        public Question(string title, ICategory category, List<ITag> tags, long userID, string content)
         {
-            Ipost = new TextPost(userID, content);
+            ipost = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = tags;
         }
         public Question(long postID,
-                        String title,
+                        string title,
                         ICategory category,
                         List<ITag> tags,
                         long userID,
@@ -75,7 +82,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
                         DateTime editTime,
                         List<IReaction> reactions)
         {
-            Ipost = new TextPost(postID, userID, content, postTime, editTime, reactions);
+            ipost = new TextPost(postID, userID, content, postTime, editTime, reactions);
             Title = title;
             Category = category;
             Tags = tags;
@@ -88,5 +95,4 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
                 + $"tags: {CollectionStringifier<ITag>.ApplyTo(Tags)}";
         }
     }
-
 }
