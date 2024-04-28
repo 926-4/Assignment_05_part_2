@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UBB_SE_2024_Team_42.Domain.Reactions
+﻿namespace UBB_SE_2024_Team_42.Domain.Reactions
 {
     internal class ReactionFactory
     {
