@@ -226,11 +226,11 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
             return new Question(
                 Convert.ToInt64(firstRow["id"]),
-                                firstRow["title"]?.ToString() ?? "",
+                                firstRow["title"]?.ToString() ?? string.Empty,
                 category,
                 tagList,
                 Convert.ToInt64(firstRow["userId"]),
-                                firstRow["content"]?.ToString() ?? "",
+                                firstRow["content"]?.ToString() ?? string.Empty,
              Convert.ToDateTime(firstRow["datePosted"]),
                                 firstRow["dateOfLastEdit"] == DBNull.Value
                                     ? Convert.ToDateTime(firstRow["datePosted"])
@@ -240,11 +240,11 @@ namespace UBB_SE_2024_Team_42.Repository
 
         public List<IQuestion> GetAllQuestions()
         {
-            SqlConnection connection = new(sqlConnectionString);
+            SqlConnection connection = new (sqlConnectionString);
             connection.Open();
-            SqlCommand command = new("select * from dbo.getAllQuestions()", connection);
-            SqlDataAdapter dataAdapter = new(command);
-            DataTable dataTable = new();
+            SqlCommand command = new ("select * from dbo.getAllQuestions()", connection);
+            SqlDataAdapter dataAdapter = new (command);
+            DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
 
             List<IQuestion> questionList = [];
@@ -270,15 +270,15 @@ namespace UBB_SE_2024_Team_42.Repository
             DataRow firstRow = dataTable.Rows[0];
             connection.Close();
 
-            return (new Category(Convert.ToInt64(firstRow["id"]), firstRow["name"]?.ToString() ?? ""));
+            return new Category(Convert.ToInt64(firstRow["id"]), firstRow["name"]?.ToString() ?? string.Empty);
         }
 
         public List<IPost> GetRepliesOfPost(long postId)
         {
-            SqlConnection connection = new(sqlConnectionString);
+            SqlConnection connection = new (sqlConnectionString);
             connection.Open();
-            SqlCommand command = new("select * from dbo.GetAllRepliesOfPost(" + postId + ")", connection);
-            SqlDataAdapter dataAdapter = new(command);
+            SqlCommand command = new ("select * from dbo.GetAllRepliesOfPost(" + postId + ")", connection);
+            SqlDataAdapter dataAdapter = new (command);
             DataTable dataTable = new();
             dataAdapter.Fill(dataTable);
 
