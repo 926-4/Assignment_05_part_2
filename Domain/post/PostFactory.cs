@@ -6,7 +6,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     {
         internal enum PostType
         {
-            POST,
+            TEXT_POST,
             QUESTION,
             ANSWER,
             COMMENT
@@ -16,7 +16,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             return option switch
             {
                 PostType.COMMENT => new Comment(userID, content),
-                PostType.POST => new Post(userID, content),
+                PostType.TEXT_POST => new TextPost(userID, content),
                 PostType.QUESTION => new Question(userID, content),
                 PostType.ANSWER => new Answer(userID, content),
                 _ => throw new NotImplementedException()
@@ -27,7 +27,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             return option switch
             {
                 PostType.COMMENT => new Comment(postID, userID, content, postDate, editDate, reactions),
-                PostType.POST => new Post(postID, userID, content, postDate, editDate, reactions),
+                PostType.TEXT_POST => new TextPost(postID, userID, content, postDate, editDate, reactions),
                 _ => throw new NotImplementedException()
             };
         }

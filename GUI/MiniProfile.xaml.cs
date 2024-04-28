@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UBB_SE_2024_Team_42.Domain;
 using UBB_SE_2024_Team_42.Domain.Posts;
 
 namespace UBB_SE_2024_Team_42.GUI
@@ -22,8 +23,8 @@ namespace UBB_SE_2024_Team_42.GUI
     public partial class MiniProfile : Window
     {
         // public ObservableCollection<Badge> Badges { get; set; }
-        public ObservableCollection<Question> Questions { get; set; }
-        public ObservableCollection<Post> Answers { get; set; }
+        public ObservableCollection<IQuestion> Questions { get; set; }
+        public ObservableCollection<IPost> Answers { get; set; }
 
         private Service.Service service;
         private WindowManager manager;
@@ -35,8 +36,8 @@ namespace UBB_SE_2024_Team_42.GUI
             this.manager = manager;
             // sorry for what's coming
             // we're getting the profile of the user with id 3
-            Answers = new ObservableCollection<Post>(service.getCommentsOfUser(3));
-            Questions = new ObservableCollection<Question>(service.getQuestionsOfUser(1));
+            Answers = new ObservableCollection<IPost>(service.GetCommentsOfUser(3));
+            Questions = new ObservableCollection<IQuestion>(service.GetQuestionsOfUser(1));
             //Badges = new ObservableCollection<Badge>(service.getBadgesOfUser(1));
             DataContext = this; // Set DataContext to enable data binding
         }

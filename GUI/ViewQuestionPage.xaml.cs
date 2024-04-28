@@ -27,7 +27,7 @@ namespace UBB_SE_2024_Team_42.GUI
     public partial class ViewQuestionPage : Page
     {
         private WindowManager _manager;
-        public ObservableCollection<Post> Comments { get; set; }
+        public ObservableCollection<TextPost> Comments { get; set; }
         public ObservableCollection<Tag> Tags  { get; set; }
         private Question _question;
         public ViewQuestionPage(WindowManager manager, Question question)
@@ -38,8 +38,8 @@ namespace UBB_SE_2024_Team_42.GUI
             Service.Service service = _manager.Service;
             //Service service = _manager.Service;
             DataContext = this;
-            Comments = new ObservableCollection<Post>(service.GetRepliesOfPost(question.PostID));
-            Tags = new ObservableCollection<Tag>(service.getTagsOfQuestion(question.PostID));
+            Comments = new ObservableCollection<TextPost>(service.GetRepliesOfPost(question.PostID));
+            Tags = new ObservableCollection<Tag>(service.GetTagsOfQuestion(question.PostID));
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

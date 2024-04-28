@@ -4,7 +4,7 @@ using UBB_SE_2024_Team_42.Utils.functionbros;
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {
-    public class Post : IPost
+    public class TextPost : IPost
     {
 
         public long PostID { get; }
@@ -13,7 +13,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         public DateTime DatePosted { get; }
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
-        public Post(long postingUserID, string content)
+        public TextPost(long postingUserID, string content)
         {
 
             PostID = IDGenerator.RandomLong();
@@ -24,7 +24,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Reactions = [];
         }
 
-        internal Post(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
+        internal TextPost(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
         {
             PostID = postID;
             UserID = userID;
@@ -35,7 +35,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         }
         public override string ToString()
         {
-            return $"Post {{postID: {PostID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})\n" +
+            return $"TextPost {{postID: {PostID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})\n" +
                 $"{Content}\n" +
                 $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}}}";
         }

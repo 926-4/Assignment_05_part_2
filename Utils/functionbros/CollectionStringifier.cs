@@ -2,10 +2,12 @@
 {
     internal class CollectionStringifier<T>
     {
-        private static readonly CollectionReducer<T, string> listReducer =
-            new(transformer: e => e?.ToString() ?? "",
-                aggregator: (e1, e2) => $"{e1} {e2}",
-                defaultResult: "None");
-        internal static string ApplyTo(List<T> list) => listReducer.TransformAndReduce(list);
+        private static readonly CollectionReducer<T, string> reducer =
+            new(mapper: e => e?.ToString() ?? "",
+                folder: (e1, e2) => $"{e1} {e2}",
+                defaultResult: "None"
+                );
+
+        internal static Func<IEnumerable<T>, string> ApplyTo = (list) => reducer.MapThenFold(list);
     }
 }

@@ -30,7 +30,7 @@ namespace UBB_SE_2024_Team_42.GUI
         {
             InitializeComponent();
             this.manager = manager;
-            Categories = new ObservableCollection<Category>(manager.Service.getAllCategories());
+            Categories = new ObservableCollection<Category>(manager.Service.GetAllCategories());
             DataContext = this;
 
         }
@@ -46,7 +46,7 @@ namespace UBB_SE_2024_Team_42.GUI
             string content=ContentBox.GetText();
             Category category = (Category)CategoryBox1.SelectedItem;
 
-            manager.Service.addQuestion(title, content, category);
+            manager.Service.AddQuestion(title, content, category);
             CreateQuestionFrame.Navigate(new SearchQuestionPage(manager));
             DataContext = this;
         }

@@ -20,9 +20,9 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class EditPost : Window
     {
-        private Post _post;
+        private TextPost _post;
         private WindowManager _manager;
-        public EditPost(WindowManager manager, Post post)
+        public EditPost(WindowManager manager, TextPost post)
         {
             _manager = manager;
             _post = post;
@@ -32,8 +32,8 @@ namespace UBB_SE_2024_Team_42.GUI
         private void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
             string text = Coolest_TextBox_Ever.Text;
-            Post newPost = new Post(_post.PostID, _post.UserID, text, _post.PostType, _post.Reactions, _post.DatePosted, _post.DateOfLastEdit);
-            _manager.Repository.updatePost(_post, newPost);
+            TextPost newPost = new Post(_post.PostID, _post.UserID, text, _post.PostType, _post.Reactions, _post.DatePosted, _post.DateOfLastEdit);
+            _manager.Repository.UpdatePost(_post, newPost);
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)

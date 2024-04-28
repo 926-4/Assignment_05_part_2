@@ -21,17 +21,17 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class SearchQuestionPage : Page
     {
-        public ObservableCollection<Question> Posts { get; set; }
-        public ObservableCollection<Category> Categories { get; set; }
+        public ObservableCollection<IQuestion> Posts { get; set; }
+        public ObservableCollection<ICategory> Categories { get; set; }
         private Service.Service service;
         private WindowManager manager;
         public SearchQuestionPage(WindowManager manager)
         {
             InitializeComponent();
             service = manager.Service;
-            Posts = new ObservableCollection<Question>(service.sortQuestionsByDateDescending());
+            Posts = new ObservableCollection<IQuestion>(service.SortQuestionsByDateDescending());
             this.manager = manager;
-            Categories = new ObservableCollection<Category>(service.getAllCategories());
+            Categories = new ObservableCollection<ICategory>(service.GetAllCategories());
             DataContext = this; // Set DataContext to enable data binding
         }
 
@@ -49,9 +49,9 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Question> searchedQuestions = service.searchQuestion(this.SearchBox.Text);
+            List<IQuestion> searchedQuestions = service.FindQuestionsByPartialStringInAnyField(SearchBox.Text);
             Posts.Clear();
-            foreach (Question question in searchedQuestions)
+            foreach (IQuestion question in searchedQuestions)
             {
                 Posts.Add(question);
             }
@@ -62,10 +62,10 @@ namespace UBB_SE_2024_Team_42.GUI
         {
             //service.getQuestionsOfCategory()
             var selectedCategory = this.CategorySelector.SelectedItem as Category;
-            List<Question> questionsOfCategory = service.getQuestionsOfCategory(selectedCategory);
+            List<IQuestion> questionsOfCategory = service.GetQuestionsOfCategory(selectedCategory);
             //Posts = service.getQuestionsOfCategory(selectedCategory) as ObservableCollection<Posts>;
             Posts.Clear();
-            foreach (Question question in questionsOfCategory)
+            foreach (IQuestion question in questionsOfCategory)
             {
                 Posts.Add(question);
             }
@@ -74,9 +74,9 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void NewestSortButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Question> questions = service.sortQuestionsByDateDescending();
+            List<IQuestion> questions = service.SortQuestionsByDateDescending();
             Posts.Clear();
-            foreach (Question question in questions)
+            foreach (IQuestion question in questions)
             {
                 Posts.Add(question);
             }
@@ -85,9 +85,9 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void MostUpvotesSortButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Question> questions = service.sortQuestionsByScoreDescending();
+            List<IQuestion> questions = service.GetQuestionsSortedByScoreDescending();
             Posts.Clear();
-            foreach (Question question in questions)
+            foreach (IQuestion question in questions)
             {
                 Posts.Add(question);
             }
@@ -96,9 +96,9 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void MostAnswers_Click(object sender, RoutedEventArgs e)
         {
-            List<Question> questions = service.sortQuestionsByNumberOfAnswersDescending();
+            List<Question> questions = service.SortQuestionsByNumberOfAnswersDescending();
             Posts.Clear();
-            foreach (Question question in questions)
+            foreach (IQuestion question in questions)
             {
                 Posts.Add(question);
             }
@@ -113,25 +113,24 @@ namespace UBB_SE_2024_Team_42.GUI
         private void HideUnAnsweredCheckBox_Click(object sender, RoutedEventArgs e)
         {
             List<Question> questions;
-            if (this.HideUnAnsweredCheckBox.IsChecked == true)
+            if (HideUnAnsweredCheckBox.IsChecked == true)
             { 
-               questions = service.getQuestionsWithAtLeastOneAnswer();
+               questions = service.GetQuestionsWithAtLeastOneAnswer();
             }
             else
             {
                 questions = service.getCurrentQuestions();
             }
             Posts.Clear();
-            foreach (Question question in questions)
+            foreach (IQuestion question in questions)
             {
                 Posts.Add(question);
             }
             DataContext = this;
         }
-        //OnQuestion_Click
         private void OnQuestion_Click(object sender, RoutedEventArgs e)
         {
-            Question myQuestion = (Question)((Button)sender).DataContext;
+            IQuestion myQuestion = (IQuestion)((Button)sender).DataContext;
             SearchFrame.Navigate(new ViewQuestionPage(manager, myQuestion));
         }
 
@@ -142,14 +141,13 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void openProfile_Click(object sender, RoutedEventArgs e)
         {
-            //SearchFrame.Navigate(new MiniProfile(manager));
-            MiniProfile miniProfile = new MiniProfile(manager);
+            MiniProfile miniProfile = new(manager);
             miniProfile.Show();
         }
 
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-            Statistics statistics = new Statistics(manager);
+            Statistics statistics = new(manager);
             statistics.Show();
         }
     }

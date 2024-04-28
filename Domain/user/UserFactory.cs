@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Navigation;
+﻿using UBB_SE_2024_Team_42.Domain.badge;
+using UBB_SE_2024_Team_42.Domain.category;
+using UBB_SE_2024_Team_42.Domain.notification;
 
 namespace UBB_SE_2024_Team_42.Domain.user
 {
     internal class UserFactory
     {
-        public User? Instance;
+        public User Instance = new();
         public UserFactory NewUser()
         {
             Instance = new();
@@ -18,17 +17,17 @@ namespace UBB_SE_2024_Team_42.Domain.user
             Instance.UserName = name;
             return this;
         }
-        public UserFactory SetNotificationList(List<notification.Notification> notifications)
+        public UserFactory SetNotificationList(List<INotification> notifications)
         {
             Instance.NotificationList = notifications;
             return this;
         }
-        public UserFactory SetCategoriesModeratedList(List<category.Category> categories)
+        public UserFactory SetCategoriesModeratedList(List<ICategory> categories)
         {
             Instance.CategoriesModeratedList = categories;
             return this;
         }
-        public UserFactory SetBadgeList(List<badge.Badge> badges)
+        public UserFactory SetBadgeList(List<IBadge> badges)
         {
             Instance.BadgeList = badges;
             return this;
@@ -36,7 +35,7 @@ namespace UBB_SE_2024_Team_42.Domain.user
         public User Get()
         {
             User returnValue = Instance;
-            Instance = null;
+            Instance = new();
             return returnValue;
         }
     }

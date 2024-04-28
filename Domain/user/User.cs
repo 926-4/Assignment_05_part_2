@@ -11,11 +11,18 @@ namespace UBB_SE_2024_Team_42.Domain.user
     {
         public long UserID { get; }
         public string UserName { get; set; }
-        public List<Notification> NotificationList { get; set; }
-        public List<Category> CategoriesModeratedList { get; set; }
-        public List<Badge> BadgeList { get; set; }
+        public List<INotification> NotificationList { get; set; }
+        public List<ICategory> CategoriesModeratedList { get; set; }
+        public List<IBadge> BadgeList { get; set; }
         public Image? ProfilePicture { get; set; }
-        public User() { }
+        public User() 
+        {
+            UserID = IDGenerator.RandomLong();
+            UserName = "";
+            NotificationList = [];
+            CategoriesModeratedList = [];
+            BadgeList = [];
+        }
         public User(string username)
         {
             UserID = IDGenerator.RandomLong();
@@ -24,7 +31,7 @@ namespace UBB_SE_2024_Team_42.Domain.user
             CategoriesModeratedList = [];
             BadgeList = [];
         }
-        internal User(long userID, string userName, List<Notification> notificationList, List<Category> categoriesModeratedList, List<Badge> badgeList)
+        internal User(long userID, string userName, List<INotification> notificationList, List<ICategory> categoriesModeratedList, List<IBadge> badgeList)
         {
             UserID = userID;
             UserName = userName;
@@ -32,9 +39,9 @@ namespace UBB_SE_2024_Team_42.Domain.user
             CategoriesModeratedList = categoriesModeratedList;
             BadgeList = badgeList;
         }
-        private string ToStringNotificationList() => CollectionStringifier<Notification>.ApplyTo(NotificationList);
-        private string ToStringCategoryList() => CollectionStringifier<Category>.ApplyTo(CategoriesModeratedList);
-        private string ToStringBadgeList() => CollectionStringifier<Badge>.ApplyTo(BadgeList);
+        private string ToStringNotificationList() => CollectionStringifier<INotification>.ApplyTo(NotificationList);
+        private string ToStringCategoryList() => CollectionStringifier<ICategory>.ApplyTo(CategoriesModeratedList);
+        private string ToStringBadgeList() => CollectionStringifier<IBadge>.ApplyTo(BadgeList);
 
         public override string ToString()
         {

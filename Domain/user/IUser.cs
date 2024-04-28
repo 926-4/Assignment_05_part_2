@@ -7,9 +7,9 @@ namespace UBB_SE_2024_Team_42.Domain.user
 {
     public interface IUser
     {
-        List<Badge> BadgeList { get; set; }
-        List<Category> CategoriesModeratedList { get; set; }
-        List<Notification> NotificationList { get; set; }
+        List<IBadge> BadgeList { get; set; }
+        List<ICategory> CategoriesModeratedList { get; set; }
+        List<INotification> NotificationList { get; set; }
         Image? ProfilePicture { get; set; }
         long UserID { get; }
         string UserName { get; set; }

@@ -5,6 +5,8 @@ using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.tag;
 using UBB_SE_2024_Team_42.Domain.user;
+using UBB_SE_2024_Team_42.Utils;
+using UBB_SE_2024_Team_42.Utils.functionbros;
 
 namespace UBB_SE_2024_Team_42.Service
 {
@@ -12,7 +14,7 @@ namespace UBB_SE_2024_Team_42.Service
     {
         private readonly Repository.Repository repository;
 
-        List<Question> currentQuestions;
+        List<IQuestion> currentQuestions;
 
 
         public Service(Repository.Repository repository)
@@ -21,12 +23,12 @@ namespace UBB_SE_2024_Team_42.Service
             currentQuestions = GetAllQuestions();
         }
 
-        public User GetUser(long userId)
+        public IUser GetUser(long userId)
         {
             return repository.GetUser(userId);
         }
 
-        public List<Question> GetAllQuestions()
+        public List<IQuestion> GetAllQuestions()
         {
             return repository.GetAllQuestions();
         }
@@ -36,46 +38,33 @@ namespace UBB_SE_2024_Team_42.Service
             return repository.GetRepliesOfPost(postId);
         }
 
-        public List<Question> getQuestionsOfCategory(Category category)
+        public List<IQuestion> GetQuestionsOfCategory(ICategory category)
         {
-            List<Question> questions = repository.GetAllQuestions();
-            List<Question> filteredQuestions = [];
+            List<IQuestion> questions = repository.GetAllQuestions();
+            List<IQuestion> filteredQuestions = [];
 
-            foreach (Question question in questions)
+            foreach (IQuestion question in questions)
             {
-                if (question.Category.CategoryName == category.CategoryName)
+                if ((question.Category?.CategoryName ?? "") == category.CategoryName)
                     filteredQuestions.Add(question);
             }
-            currentQuestions = filteredQuestions;
             return filteredQuestions;
         }
 
-        public List<Question> getQuestionsWithAtLeastOneAnswer()
+        public List<IQuestion> GetQuestionsWithAtLeastOneAnswer()
         {
-            List<Question> questions = repository.GetAllQuestions();
-            List<Question> filteredQuestions = new List<Question>();
-
-            foreach (Question question in questions)
-            {
-                foreach (Post post in repository.GetRepliesOfPost(question.PostID))
-                {
-                    if (post is Answer)
-                    {
-                        filteredQuestions.Add(question);
-                        break;
-                    }
-                }
-            }
-            //currentQuestions = filteredQuestions;
+            static bool isAnswer(IPost ipost) => (ipost is Answer);
+            bool questionHasAtLeastOneAnswer(IQuestion question) => repository.GetRepliesOfPost(question.PostID).Any(isAnswer);
+            List<IQuestion> filteredQuestions = repository.GetAllQuestions().Where(questionHasAtLeastOneAnswer).ToList();
             return filteredQuestions;
         }
 
-        public List<Question> searchQuestion(string textToBeSearchedBy)
+        public List<IQuestion> FindQuestionsByPartialStringInAnyField(string textToBeSearchedBy)
         {
-            List<Question> questions = repository.GetAllQuestions();
-            List<Question> filteredQuestions = new List<Question>();
+            List<IQuestion> questions = repository.GetAllQuestions();
+            List<IQuestion> filteredQuestions = [];
 
-            foreach (Question question in questions)
+            foreach (IQuestion question in questions)
             {
                 bool addedQuestionToList = false;
 
@@ -91,7 +80,7 @@ namespace UBB_SE_2024_Team_42.Service
 
                 if (!addedQuestionToList)
                 {
-                    string[] keywords = question.Title.Split(' ');
+                    string[] keywords = question.Title?.Split(' ') ?? [];
                     foreach (string keyword in keywords)
                     {
                         if (textToBeSearchedBy.Contains(keyword))
@@ -102,60 +91,58 @@ namespace UBB_SE_2024_Team_42.Service
                     }
                 }
             }
-            currentQuestions = filteredQuestions;
             return filteredQuestions;
         }
 
-        public List<Question> sortQuestionsByScoreAscending()
+        public List<IQuestion> GetQuestionsSortedByScoreAscending()
         {
-            Dictionary<Question, int> hash = new Dictionary<Question, int>();
-            List<Question> listOfQuestions = currentQuestions;
-            List<Question> sortedListOfQuestions;
-            foreach (Question question in listOfQuestions)
-            {
-                long questionId = question.PostID;
-                List<Reaction> votesForQuestion = this.repository.GetVotesOfPost(questionId);
-                int voteCount = getVoteScore(votesForQuestion);
-                hash[question] = voteCount;
-            }
+            static int getReactionValue(IReaction ireaction) => ireaction.ReactionValue;
+            Dictionary<IQuestion, int> questionToReactionValueMap = [];
+            List<IQuestion> listOfQuestions = currentQuestions;
+            CollectionSummer<IReaction> reactionValueSummer = new(getReactionValue);
 
-            //sortedListOfQuestions = hash.OrderBy(x => x.ReactionValue);
-            hash.OrderBy(x => x.Value);
-            sortedListOfQuestions = hash.Keys.ToList();
 
-            return sortedListOfQuestions;
+            void addMappingForQuestion(IQuestion question) =>
+                questionToReactionValueMap[question] = GetReactionScore(repository.GetVotesOfPostByPostID(question.PostID));
+
+            listOfQuestions.ForEach(addMappingForQuestion);
+
+            Dictionary<IQuestion, int> sortedQuestionToReactionValueMap =
+                questionToReactionValueMap.OrderBy(questionValuePair => questionValuePair.Value).ToDictionary();
+
+            return [.. sortedQuestionToReactionValueMap.Keys];
         }
 
-        public List<Question> sortQuestionsByScoreDescending()
+        public List<IQuestion> GetQuestionsSortedByScoreDescending()
         {
-            List<Question> questions = sortQuestionsByScoreAscending();
+            List<IQuestion> questions = GetQuestionsSortedByScoreAscending();
             questions.Reverse();
             return questions;
         }
 
-        private int getVoteScore(List<Reaction> voteList)
+        private static int GetReactionScore(List<IReaction> voteList)
         {
-            int score = 0;
-            for (int i = 0; i < voteList.Count; i++)
-            {
-                score += voteList[i].ReactionValue;
-            }
-            return score;
+            static int getReactionValue(IReaction ireaction) => ireaction.ReactionValue;
+            CollectionReducer<IReaction, int> summer = new(
+                mapper: getReactionValue,
+                folder: (x, y) => x + y,
+                defaultResult: 0);
+            return summer.MapThenFold(voteList);
         }
 
-        public List<Question> sortQuestionsByNumberOfAnswersAscending()
+        public List<IQuestion> SortQuestionsByNumberOfAnswersAscending()
         {
-            Dictionary<Question, int> hash = new Dictionary<Question, int>();
-            List<Question> listOfQuestions = currentQuestions;
-            List<Question> sortedListOfQuestions;
-            foreach (Question question in listOfQuestions)
+            Dictionary<IQuestion, int> hash = [];
+            List<IQuestion> listOfQuestions = currentQuestions;
+            List<IQuestion> sortedListOfQuestions;
+            foreach (IQuestion question in listOfQuestions)
             {
                 int numberOfAnswers = 0;
                 long questionId = question.PostID;
-                List<Post> repliesFromPost = this.repository.GetRepliesOfPost(questionId);
-                foreach (Post post in repliesFromPost)
+                List<IPost> repliesFromPost = repository.GetRepliesOfPost(questionId);
+                foreach (IPost ipost in repliesFromPost)
                 {
-                    if (post.PostType == Post.ANSWER_TYPE)
+                    if (ipost is Answer)
                     {
                         numberOfAnswers += 1;
                     }
@@ -164,75 +151,75 @@ namespace UBB_SE_2024_Team_42.Service
             }
 
             hash.OrderBy(x => x.Value);
-            sortedListOfQuestions = hash.Keys.ToList();
+            sortedListOfQuestions = [.. hash.Keys];
             return sortedListOfQuestions;
         }
 
-        public List<Question> sortQuestionsByNumberOfAnswersDescending()
+        public List<IQuestion> SortQuestionsByNumberOfAnswersDescending()
         {
-            List<Question> questions = sortQuestionsByNumberOfAnswersAscending();
+            List<IQuestion> questions = SortQuestionsByNumberOfAnswersAscending();
             questions.Reverse();
             return questions;
         }
 
-        public List<Question> sortQuestionsByDateAscending()
+        public List<IQuestion> SortQuestionsByDateAscending()
         {
-            Dictionary<Question, DateTime> hash = [];
-            List<Question> listOfQuestions = currentQuestions;
-            List<Question> sortedListOfQuestions;
-            foreach (Question question in listOfQuestions)
+            Dictionary<IQuestion, DateTime> hash = [];
+            List<IQuestion> listOfQuestions = currentQuestions;
+            List<IQuestion> sortedListOfQuestions;
+            foreach (IQuestion question in listOfQuestions)
             {
-                //long questionId = question.PostID;
                 hash[question] = question.DatePosted;
             }
 
             hash.OrderBy(x => x.Value);
-            sortedListOfQuestions = hash.Keys.ToList();
+            sortedListOfQuestions = [.. hash.Keys];
             return sortedListOfQuestions;
         }
 
-        public List<Question> sortQuestionsByDateDescending()
+        public List<IQuestion> SortQuestionsByDateDescending()
         {
-            List<Question> questions = sortQuestionsByDateAscending();
+            List<IQuestion> questions = SortQuestionsByDateAscending();
             questions.Reverse();
             return questions;
         }
 
-        public List<Category> getAllCategories()
+        public List<ICategory> GetAllCategories()
         {
             return repository.GetAllCategories();
         }
 
-        public List<Question> getCurrentQuestions()
+        public List<IQuestion> getCurrentQuestions()
         {
             return currentQuestions;
         }
 
-        public List<Post> getAnswersOfUser(long userId)
+        public List<IPost> GetAnswersOfUser(long userId)
         {
-            return this.repository.getAnswersOfUser(userId);
+            return repository.GetAnswersOfUser(userId);
         }
 
-        public List<Question> getQuestionsOfUser(long userId)
+        public List<IQuestion> GetQuestionsOfUser(long userId)
         {
-            return this.repository.getQuestionsOfUser(userId);
+            return repository.GetQuestionsOfUser(userId);
         }
 
-        public List<Post> getCommentsOfUser(long userId)
+        public List<IPost> GetCommentsOfUser(long userId)
         {
-            return this.repository.getCommentsOfUser(userId);
+            return repository.GetCommentsOfUser(userId);
         }
 
-        public List<Tag> getTagsOfQuestion(long questionId)
+        public List<ITag> GetTagsOfQuestion(long questionId)
         {
-            return this.repository.GetTagsOfQuestion(questionId);
+            return repository.GetTagsOfQuestion(questionId);
         }
 
 
 
-        public void addQuestion(string title, string content, Category category)
+        public void AddQuestion(string title, string content, Category category)
         {
-            Question question = new Question(0, 1, title, category, content, new DateTime(), new DateTime(), "question", null, null);
+            long userID = IDGenerator.RandomLong();
+            Question question = new(userID, content, category, title); 
             repository.AddQuestion(question);
 
         }
@@ -240,7 +227,7 @@ namespace UBB_SE_2024_Team_42.Service
 
 
 
-        public List<Badge> getBadgesOfUser(long userId)
+        public List<IBadge> getBadgesOfUser(long userId)
         {
             return repository.GetBadgesOfUser(userId);
         }
