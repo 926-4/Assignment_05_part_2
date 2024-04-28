@@ -5,7 +5,7 @@ namespace UBB_SE_2024_Team_42.Domain.Category
     public class Category : ICategory
     {
         public long CategoryID { get; }
-        public string CategoryName { get; }
+        public string CategoryName { get; set; }
         public Category()
         {
             CategoryID = IDGenerator.RandomLong();

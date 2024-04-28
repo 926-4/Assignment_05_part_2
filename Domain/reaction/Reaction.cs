@@ -3,7 +3,7 @@
     public class Reaction : IReaction
     {
         public int ReactionValue { get; set; }
-        public long ReacterUserID { get; }
+        public long ReacterUserID { get; set; }
         public Reaction(long voterId)
         {
             ReacterUserID = voterId;
@@ -14,6 +14,11 @@
             ReactionValue = voteValue;
             ReacterUserID = voterID;
         }
+
+        public Reaction()
+        {
+        }
+
         public override string ToString()
         {
             return $"ReactionValue: {ReactionValue}, ReacterUserID: {ReacterUserID}) \n";

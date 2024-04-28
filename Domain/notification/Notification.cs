@@ -6,8 +6,8 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
     {
         public long NotificationId { get; }
         public string Text { get; set; }
-        public long? PostID { get; }
-        public long? BadgeID { get; }
+        public long? PostID { get; set; }
+        public long? BadgeID { get; set; }
         internal Notification(NotificationOption option, long referenceID)
         {
             NotificationId = IDGenerator.RandomLong();
@@ -39,6 +39,12 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
                 : newBadgeID != null
                     ? "You have a new badge"
                     : "?";
+        }
+
+        public Notification()
+        {
+            NotificationId = IDGenerator.RandomLong();
+            Text = "None";
         }
 
         public override string ToString()
