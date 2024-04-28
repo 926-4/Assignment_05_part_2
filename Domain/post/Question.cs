@@ -9,11 +9,11 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     {
         public string? Title { get; set; }
         public ICategory? Category { get; }
-        private readonly IPost ipost;
+        private IPost IPost { get; set; }
 
         public List<ITag> Tags { get; set; }
 
-        public long PostID => ipost.PostID;
+        public long PostID => IPost.PostID;
 
         public long UserID => ipost.UserID;
 
@@ -87,6 +87,13 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Category = category;
             Tags = tags;
         }
+
+        public Question()
+        {
+            ipost = new TextPost();
+            Tags = new ();
+        }
+
         public override string ToString()
         {
             return $"Question(postID: {PostID}, userID: {UserID}, title:{Title} , category: {Category}) \n"

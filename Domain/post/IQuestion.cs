@@ -5,7 +5,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 {
     public interface IQuestion : IPost
     {
-        ICategory? Category { get; }
+        ICategory? Category { get; set; }
         List<ITag> Tags { get; set; }
         string? Title { get; set; }
     }
