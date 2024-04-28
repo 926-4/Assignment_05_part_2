@@ -8,51 +8,61 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     public class Question : IQuestion
     {
         public string? Title { get; set; }
-        public ICategory? Category { get; }
-        private IPost IPost { get; set; }
+        public ICategory? Category { get; set; }
+        public IPost Post { get; set; }
 
         public List<ITag> Tags { get; set; }
 
-        public long PostID => IPost.PostID;
+        public long PostID => Post.PostID;
 
-        public long UserID => ipost.UserID;
+        public long UserID => Post.UserID;
 
-        public string Content => ipost.Content;
+        public string Content => Post.Content;
 
-        public DateTime DatePosted => ipost.DatePosted;
+        public DateTime DatePosted => Post.DatePosted;
 
-        public DateTime DateOfLastEdit => ipost.DateOfLastEdit;
-        public List<IReaction> Reactions => ipost.Reactions;
+        public DateTime DateOfLastEdit => Post.DateOfLastEdit;
+        public List<IReaction> Reactions => Post.Reactions;
+
+        long IPost.UserID
+        {
+            get => Post.UserID; set { Post.UserID = value; }
+        }
 
         string IPost.Content
         {
-            get => ipost.Content; set { ipost.Content = value; }
+            get => Post.Content; set { Post.Content = value; }
+        }
+        DateTime IPost.DatePosted
+        {
+            get => Post.DatePosted; set { Post.DatePosted = value; }
         }
         DateTime IPost.DateOfLastEdit
         {
-            get => ipost.DateOfLastEdit; set { ipost.DateOfLastEdit = value; }
+            get => Post.DateOfLastEdit; set { Post.DateOfLastEdit = value; }
         }
         List<IReaction> IPost.Reactions
         {
-            get => ipost.Reactions; set { ipost.Reactions = value; }
+            get => Post.Reactions; set { Post.Reactions = value; }
         }
+
         public Question(long userID, string content)
         {
-            ipost = new TextPost(userID, content);
+            Post = new TextPost(userID, content);
             Title = string.Empty;
             Category = null;
             Tags = new ();
         }
         public Question(long userID, string content, ICategory category)
         {
-            ipost = new TextPost(userID, content);
+            Post = new TextPost(userID, content);
             Title = string.Empty;
             Category = category;
             Tags = new ();
         }
         public Question(long userID, string content, ICategory category, string title)
         {
-            ipost = new TextPost(userID, content);
+            Post = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = new ();
@@ -60,14 +70,14 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Question(string title, ICategory category, long userID, string content)
         {
-            ipost = new TextPost(userID, content);
+            Post = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = new ();
         }
         public Question(string title, ICategory category, List<ITag> tags, long userID, string content)
         {
-            ipost = new TextPost(userID, content);
+            Post = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = tags;
@@ -82,7 +92,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
                         DateTime editTime,
                         List<IReaction> reactions)
         {
-            ipost = new TextPost(postID, userID, content, postTime, editTime, reactions);
+            Post = new TextPost(postID, userID, content, postTime, editTime, reactions);
             Title = title;
             Category = category;
             Tags = tags;
@@ -90,7 +100,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Question()
         {
-            ipost = new TextPost();
+            Post = new TextPost();
             Tags = new ();
         }
 
