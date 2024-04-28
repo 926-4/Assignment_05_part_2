@@ -20,37 +20,40 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class Statistics : Window
     {
-        private WindowManager _manager;
+        private readonly WindowManager manager;
         public Statistics(WindowManager manager)
         {
             InitializeComponent();
-            _manager = manager;
+            this.manager = manager;
             ThisWeek.Text = FilterQuestionsByLast7Days().ToString();
             ThisMonth.Text = FilterQuestionsAnsweredThisMonth().ToString();
             ThisYear.Text = FilterQuestionsAnsweredLastYear().ToString();
         }
-        
+
         public int FilterQuestionsByLast7Days()
         {
             DateTime currentDate = DateTime.Now;
             DateTime dateSevenDaysAgo = currentDate.AddDays(-7);
-            List<Question> questionsWithinLast7Days = _manager.Repository.GetAllQuestions()
+            List<IQuestion> questionsWithinLast7Days = manager.Repository.GetAllQuestions()
                 .Where(question => question.DatePosted >= dateSevenDaysAgo && question.DatePosted <= currentDate)
                 .ToList();
 
             int numberOfQuestion = 0;
-            foreach(Question question in questionsWithinLast7Days) 
-                numberOfQuestion ++;
+            foreach (IQuestion question in questionsWithinLast7Days)
+            {
+                numberOfQuestion++;
+            }
+
             return numberOfQuestion;
         }
 
         public int FilterQuestionsAnsweredThisMonth()
         {
             DateTime currentDate = DateTime.Now;
-            DateTime firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+            DateTime firstDayOfMonth = new (currentDate.Year, currentDate.Month, 1);
             DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
-            List<Question> questionsAnsweredThisMonth = _manager.Repository.GetAllQuestions()
+            List<IQuestion> questionsAnsweredThisMonth = manager.Repository.GetAllQuestions()
                 .Where(question => question.DatePosted >= firstDayOfMonth && question.DatePosted <= lastDayOfMonth)
                 .ToList();
 
@@ -61,10 +64,10 @@ namespace UBB_SE_2024_Team_42.GUI
         public int FilterQuestionsAnsweredLastYear()
         {
             DateTime currentDate = DateTime.Now;
-            DateTime firstDayOfLastYear = new DateTime(currentDate.Year - 1, 1, 1);
-            DateTime lastDayOfLastYear = new DateTime(currentDate.Year - 1, 12, 31);
+            DateTime firstDayOfLastYear = new (currentDate.Year - 1, 1, 1);
+            DateTime lastDayOfLastYear = new (currentDate.Year - 1, 12, 31);
 
-            List<Question> questionsAnsweredLastYear = _manager.Repository.GetAllQuestions()
+            List<IQuestion> questionsAnsweredLastYear = manager.Repository.GetAllQuestions()
                 .Where(question => question.DatePosted >= firstDayOfLastYear && question.DatePosted <= lastDayOfLastYear)
                 .ToList();
 

@@ -1,5 +1,5 @@
-﻿using UBB_SE_2024_Team_42.Domain.category;
-using UBB_SE_2024_Team_42.Domain.tag;
+﻿using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Domain.Tag;
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {

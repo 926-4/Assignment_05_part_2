@@ -2,11 +2,11 @@
 {
     internal class IDGenerator
     {
-        static readonly Random generator = new();
+        private static readonly Random Generator = new ();
         public static long RandomLong()
         {
-            int prefix = generator.Next();
-            int suffix = generator.Next();
+            int prefix = Generator.Next();
+            int suffix = Generator.Next();
             return (((long)prefix) << sizeof(int)) + suffix;
         }
     }

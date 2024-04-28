@@ -1,12 +1,11 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Utils;
-using UBB_SE_2024_Team_42.Utils.functionbros;
+using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {
     public class TextPost : IPost
     {
-
         public long PostID { get; }
         public long UserID { get; }
         public string Content { get; set; }
@@ -15,13 +14,12 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         public List<IReaction> Reactions { get; set; }
         public TextPost(long postingUserID, string content)
         {
-
             PostID = IDGenerator.RandomLong();
             UserID = postingUserID;
             Content = content;
             DatePosted = DateTime.Now;
             DateOfLastEdit = DateTime.Now;
-            Reactions = [];
+            Reactions = new ();
         }
 
         internal TextPost(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)

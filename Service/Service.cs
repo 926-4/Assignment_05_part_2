@@ -1,12 +1,12 @@
 ﻿using UBB_SE_2024_Team_42.Domain;
-using UBB_SE_2024_Team_42.Domain.badge;
-using UBB_SE_2024_Team_42.Domain.category;
+using UBB_SE_2024_Team_42.Domain.Badge;
+using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
-using UBB_SE_2024_Team_42.Domain.tag;
-using UBB_SE_2024_Team_42.Domain.user;
+using UBB_SE_2024_Team_42.Domain.Tag;
+using UBB_SE_2024_Team_42.Domain.User;
 using UBB_SE_2024_Team_42.Utils;
-using UBB_SE_2024_Team_42.Utils.functionbros;
+using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Service
 {
@@ -40,10 +40,10 @@ namespace UBB_SE_2024_Team_42.Service
         {
             if (category == null)
             {
-                return [];
+                return new List<IQuestion>();
             }
             List<IQuestion> questions = repository.GetAllQuestions();
-            List<IQuestion> filteredQuestions = [];
+            List<IQuestion> filteredQuestions = new ();
 
             foreach (IQuestion question in questions)
             {
@@ -66,7 +66,7 @@ namespace UBB_SE_2024_Team_42.Service
         public List<IQuestion> FindQuestionsByPartialStringInAnyField(string textToBeSearchedBy)
         {
             List<IQuestion> questions = repository.GetAllQuestions();
-            List<IQuestion> filteredQuestions = [];
+            List<IQuestion> filteredQuestions = new ();
 
             foreach (IQuestion question in questions)
             {
@@ -84,7 +84,7 @@ namespace UBB_SE_2024_Team_42.Service
 
                 if (!addedQuestionToList)
                 {
-                    string[] keywords = question.Title?.Split(' ') ?? [];
+                    string[] keywords = question.Title?.Split(' ') ?? Array.Empty<string>();
                     foreach (string keyword in keywords)
                     {
                         if (textToBeSearchedBy.Contains(keyword))
@@ -102,7 +102,7 @@ namespace UBB_SE_2024_Team_42.Service
         {
             static int GetReactionValue(IReaction ireaction) => ireaction.ReactionValue;
 
-            Dictionary<IQuestion, int> questionToReactionValueMap = [];
+            Dictionary<IQuestion, int> questionToReactionValueMap = new ();
 
             List<IQuestion> listOfQuestions = currentQuestions;
             CollectionSummer<IReaction> reactionValueSummer = new (GetReactionValue);
@@ -114,7 +114,7 @@ namespace UBB_SE_2024_Team_42.Service
             Dictionary<IQuestion, int> sortedQuestionToReactionValueMap =
                 questionToReactionValueMap.OrderBy(questionValuePair => questionValuePair.Value).ToDictionary();
 
-            return [.. sortedQuestionToReactionValueMap.Keys];
+            return sortedQuestionToReactionValueMap.Keys.ToList();
         }
 
         public List<IQuestion> GetQuestionsSortedByScoreDescending()
@@ -136,7 +136,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> SortQuestionsByNumberOfAnswersAscending()
         {
-            Dictionary<IQuestion, int> hash = [];
+            Dictionary<IQuestion, int> hash = new ();
             List<IQuestion> listOfQuestions = currentQuestions;
             List<IQuestion> sortedListOfQuestions;
             foreach (IQuestion question in listOfQuestions)
@@ -155,7 +155,7 @@ namespace UBB_SE_2024_Team_42.Service
             }
 
             var sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
-            sortedListOfQuestions = [.. sortedMap.Keys];
+            sortedListOfQuestions = sortedMap.Keys.ToList();
             return sortedListOfQuestions;
         }
 
@@ -168,7 +168,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> SortQuestionsByDateAscending()
         {
-            Dictionary<IQuestion, DateTime> hash = [];
+            Dictionary<IQuestion, DateTime> hash = new ();
             List<IQuestion> listOfQuestions = currentQuestions;
             List<IQuestion> sortedListOfQuestions;
             foreach (IQuestion question in listOfQuestions)
@@ -177,7 +177,7 @@ namespace UBB_SE_2024_Team_42.Service
             }
 
             Dictionary<IQuestion, DateTime> sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
-            sortedListOfQuestions = [.. sortedMap.Keys];
+            sortedListOfQuestions = sortedMap.Keys.ToList();
             return sortedListOfQuestions;
         }
 

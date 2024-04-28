@@ -10,19 +10,17 @@ namespace UBB_SE_2024_Team_42.GUI
             InitializeComponent();
         }
 
-        // Dependency property for Content
-        public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(string), typeof(Comment), new PropertyMetadata(""));
+        public static new readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register("Content", typeof(string), typeof(Comment), new PropertyMetadata(string.Empty));
 
-        public string Content
+        public new string Content
         {
-            get { return (string)GetValue(ContentProperty); }
+            get => (string)GetValue(ContentProperty);
             set { SetValue(ContentProperty, value); }
         }
 
-        // Dependency property for datePosted
         public static readonly DependencyProperty DatePostedProperty =
-            DependencyProperty.Register("DatePosted", typeof(string), typeof(Comment), new PropertyMetadata(""));
+            DependencyProperty.Register("DatePosted", typeof(string), typeof(Comment), new PropertyMetadata(string.Empty));
 
         public string DatePosted
         {
@@ -32,7 +30,6 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void Settings_Button_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

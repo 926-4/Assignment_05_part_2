@@ -1,10 +1,10 @@
-﻿namespace UBB_SE_2024_Team_42.Domain.notification
+﻿namespace UBB_SE_2024_Team_42.Domain.Notification
 {
     public interface INotification
     {
-        long? BadgeID { get; }
         long NotificationId { get; }
-        long? PostID { get; }
         string Text { get; set; }
+        long? BadgeID { get; }
+        long? PostID { get; }
     }
 }

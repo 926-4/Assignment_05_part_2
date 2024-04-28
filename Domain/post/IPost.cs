@@ -1,5 +1,5 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Reactions;
-using UBB_SE_2024_Team_42.Utils;
+using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Domain
 {
@@ -11,7 +11,8 @@ namespace UBB_SE_2024_Team_42.Domain
         DateTime DatePosted { get; }
         DateTime DateOfLastEdit { get; set; }
         List<IReaction> Reactions { get; set; }
-        int Score() => Reactions.Select(reaction => reaction.ReactionValue).Aggregate((r1, r2) => r1 + r2);
-        void AddReaction(IReaction reaction) => Reactions.Add(reaction) ;
+        private static readonly Func<IReaction, int> MapReactionToInt = (IReaction ireaction) => ireaction.ReactionValue;
+        int Score() => CollectionSummerFactory<IReaction>.GetFromMapping(MapReactionToInt).ApplyTo(Reactions);
+        void AddReaction(IReaction reaction) => Reactions.Add(reaction);
     }
 }
