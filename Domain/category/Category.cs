@@ -4,7 +4,7 @@ namespace UBB_SE_2024_Team_42.Domain.Category
 {
     public class Category : ICategory
     {
-        public long ID { get; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public Category()
         {
