@@ -12,20 +12,20 @@ namespace UBB_SE_2024_Team_42.Repository
     public interface IRepository
     {
         void AddQuestion(IQuestion question);
-        List<ICategory> GetAllCategories();
-        List<IQuestion> GetAllQuestions();
-        List<IUser> GetAllUsers();
-        List<IAnswer> GetAnswersOfUser(long userId);
-        List<IBadge> GetBadgesOfUser(long userId);
-        List<ICategory> GetCategoriesModeratedByUser(long userId);
+        IEnumerable<ICategory> GetAllCategories();
+        IEnumerable<IQuestion> GetAllQuestions();
+        IEnumerable<IUser> GetAllUsers();
+        IEnumerable<IAnswer> GetAnswersOfUser(long userId);
+        IEnumerable<IBadge> GetBadgesOfUser(long userId);
+        IEnumerable<ICategory> GetCategoriesModeratedByUser(long userId);
         ICategory GetCategoryByID(long categoryId);
-        List<IComment> GetCommentsOfUser(long userId);
-        List<INotification> GetNotificationsOfUser(long userId);
+        IEnumerable<IComment> GetCommentsOfUser(long userId);
+        IEnumerable<INotification> GetNotificationsOfUser(long userId);
         IQuestion GetQuestion(long questionId);
-        List<IQuestion> GetQuestionsOfUser(long userId);
-        List<IReaction> GetReactionsOfPostByPostID(long postId);
-        List<IPost> GetRepliesOfPost(long postId);
-        List<ITag> GetTagsOfQuestion(long questionId);
+        IEnumerable<IQuestion> GetQuestionsOfUser(long userId);
+        IEnumerable<IReaction> GetReactionsOfPostByPostID(long postId);
+        IEnumerable<IPost> GetRepliesOfPost(long postId);
+        IEnumerable<ITag> GetTagsOfQuestion(long questionId);
         IUser GetUser(long userId);
         void UpdatePost(IPost oldPost, IPost newPost);
     }

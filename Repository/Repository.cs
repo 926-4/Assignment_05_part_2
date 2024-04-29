@@ -20,22 +20,22 @@ namespace UBB_SE_2024_Team_42.Repository
     public class Repository : IRepository
     {
         private readonly string sqlConnectionString = @"Data Source = CAMFRIGLACLUJ; Initial Catalog = Team42DB;Integrated Security = True";
-        private readonly NotificationFactory notificationFactory = new();
-        private readonly CategoryFactory categoryFactory = new();
-        private readonly BadgeFactory badgeFactory = new();
-        private readonly UserFactory userFactory = new();
-        private readonly ReactionFactory reactionFactory = new();
-        private readonly TagFactory tagFactory = new();
-        private readonly AnswerFactory answerFactory = new();
-        private readonly CommentFactory commentFactory = new();
+        private readonly NotificationFactory notificationFactory = new ();
+        private readonly CategoryFactory categoryFactory = new ();
+        private readonly BadgeFactory badgeFactory = new ();
+        private readonly UserFactory userFactory = new ();
+        private readonly ReactionFactory reactionFactory = new ();
+        private readonly TagFactory tagFactory = new ();
+        private readonly AnswerFactory answerFactory = new ();
+        private readonly CommentFactory commentFactory = new ();
         private static Image? CellInDBToBadgeImage(object dataRowCell) => Image.FromStream(new MemoryStream((byte[])dataRowCell));
         private DataTable QueryDB(string sqlStatement)
         {
-            SqlConnection connection = new(sqlConnectionString);
+            SqlConnection connection = new (sqlConnectionString);
             connection.Open();
-            SqlCommand command = new(sqlStatement, connection);
-            SqlDataAdapter dataAdapter = new(command);
-            DataTable dataTable = new();
+            SqlCommand command = new (sqlStatement, connection);
+            SqlDataAdapter dataAdapter = new (command);
+            DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
             connection.Close();
             return dataTable;
@@ -63,9 +63,9 @@ namespace UBB_SE_2024_Team_42.Repository
             long userId = Convert.ToInt64(row["id"]);
             return userFactory.NewUser()
                               .SetName(row["name"].ToString() ?? string.Empty)
-                              .SetNotificationList(GetNotificationsOfUser(userId))
-                              .SetCategoriesModeratedList(GetCategoriesModeratedByUser(userId))
-                              .SetBadgeList(GetBadgesOfUser(userId))
+                              .SetNotificationList(GetNotificationsOfUser(userId).ToList())
+                              .SetCategoriesModeratedList(GetCategoriesModeratedByUser(userId).ToList())
+                              .SetBadgeList(GetBadgesOfUser(userId).ToList())
                               .Get();
         }
         private IReaction RowInDBToIReaction(DataRow row)
@@ -85,7 +85,7 @@ namespace UBB_SE_2024_Team_42.Repository
                .SetContent(Convert.ToString(row["content"]) ?? string.Empty)
                .SetDatePosted(Convert.ToDateTime(row["datePosted"]))
                .SetDateOfLastEdit(Convert.ToDateTime(row["dateOfLastEdit"]))
-               .SetReactions(GetReactionsOfPostByPostID(Convert.ToInt64(row["id"])))
+               .SetReactions(GetReactionsOfPostByPostID(Convert.ToInt64(row["id"])).ToList())
                .Get();
         private IComment RowInDBToComment(DataRow row)
             => commentFactory.NewComment()
@@ -101,8 +101,8 @@ namespace UBB_SE_2024_Team_42.Repository
         {
             long questionId = Convert.ToInt64(row["id"]);
             long userId = Convert.ToInt64(row["userId"]);
-            List<ITag> tagList = GetTagsOfQuestion(questionId);
-            List<IReaction> voteList = GetReactionsOfPostByPostID(questionId);
+            List<ITag> tagList = GetTagsOfQuestion(questionId).ToList();
+            List<IReaction> voteList = GetReactionsOfPostByPostID(questionId).ToList();
             ICategory category = GetCategoryByID(Convert.ToInt64(row["categoryId"]));
             DateTime postDate = Convert.ToDateTime(row["datePosted"]);
             DateTime lastEditDate = DateTime.TryParse(row["dateOfLastEdit"].ToString(), out DateTime editDate)
@@ -123,66 +123,58 @@ namespace UBB_SE_2024_Team_42.Repository
                                         .GetQuestion();
         }
 
-        public List<INotification> GetNotificationsOfUser(long userId)
+        public IEnumerable<INotification> GetNotificationsOfUser(long userId)
             => QueryDB("select * from dbo.getNotificationsOfUser(" + userId + ")")
                 .AsEnumerable()
-                .Select(RowInDBToNotification)
-                .ToList();
+                .Select(RowInDBToNotification);
 
-        public List<ICategory> GetCategoriesModeratedByUser(long userId)
+        public IEnumerable<ICategory> GetCategoriesModeratedByUser(long userId)
             => QueryDB("select * from dbo.getCategoriesModeratedByUser(" + userId + ")")
                 .AsEnumerable()
-                .Select(RowInDBToCategory)
-                .ToList();
+                .Select(RowInDBToCategory);
 
-        public List<IBadge> GetBadgesOfUser(long userId)
+        public IEnumerable<IBadge> GetBadgesOfUser(long userId)
             => QueryDB("select * from dbo.getBadgesOfUser(" + userId + ")")
                 .AsEnumerable()
-                .Select(RowInDBToBadge)
-                .ToList();
+                .Select(RowInDBToBadge);
 
         public IUser GetUser(long userId) => RowInDBToUser(QueryDB("select * from dbo.getUser(" + userId + ")").Rows[0]);
 
-        public List<IUser> GetAllUsers()
+        public IEnumerable<IUser> GetAllUsers()
             => QueryDB("select * from dbo.getAllUsers()")
                 .AsEnumerable()
-                .Select(RowInDBToUser)
-                .ToList();
+                .Select(RowInDBToUser);
 
-        public List<IReaction> GetReactionsOfPostByPostID(long postId)
+        public IEnumerable<IReaction> GetReactionsOfPostByPostID(long postId)
             => QueryDB("select * from dbo.getVotesOfPost(" + postId + ")")
                 .AsEnumerable()
-                .Select(RowInDBToIReaction)
-                .ToList();
+                .Select(RowInDBToIReaction);
 
-        public List<ICategory> GetAllCategories()
+        public IEnumerable<ICategory> GetAllCategories()
             => QueryDB("select * from dbo.getAllCategories()")
                 .AsEnumerable()
-                .Select(RowInDBToCategory)
-                .ToList();
+                .Select(RowInDBToCategory);
 
-        public List<ITag> GetTagsOfQuestion(long questionId)
+        public IEnumerable<ITag> GetTagsOfQuestion(long questionId)
             => QueryDB("select * from dbo.getTagById(" + questionId + ")")
                 .AsEnumerable()
-                .Select(RowInDBToTag)
-                .ToList();
+                .Select(RowInDBToTag);
 
         public IQuestion GetQuestion(long questionId)
             => RowInDBToQuestion(QueryDB("select * from dbo.getQuestionByID(" + questionId + ")").Rows[0]);
 
-        public List<IQuestion> GetAllQuestions()
+        public IEnumerable<IQuestion> GetAllQuestions()
             => QueryDB("select * from dbo.getAllQuestions()")
             .AsEnumerable()
-            .Select(RowInDBToQuestion)
-            .ToList();
+            .Select(RowInDBToQuestion);
 
         public ICategory GetCategoryByID(long categoryId) =>
             RowInDBToCategory(QueryDB("select * from dbo.getCategoryByID(" + categoryId + ")").Rows[0]);
 
-        public List<IPost> GetRepliesOfPost(long postId)
+        public IEnumerable<IPost> GetRepliesOfPost(long postId)
         {
             var dataTable = QueryDB("select * from dbo.GetAllRepliesOfPost(" + postId + ")");
-            List<IPost> postList = new();
+            List<IPost> postList = new ();
             foreach (DataRow row in dataTable.Rows)
             {
                 IPost newPost;
@@ -192,9 +184,9 @@ namespace UBB_SE_2024_Team_42.Repository
                 DateTime dateOfLastEdit = row["dateOfLastEdit"] == DBNull.Value
                     ? datePosted
                     : Convert.ToDateTime(row["dateOfLastEdit"]);
-                string type = row["type"]?.ToString() ?? string.Empty;
-                string content = row["content"]?.ToString() ?? string.Empty;
-                List<IReaction> votes = GetReactionsOfPostByPostID(postId);
+                string type = row["type"].ToString() ?? string.Empty;
+                string content = row["content"].ToString() ?? string.Empty;
+                List<IReaction> votes = GetReactionsOfPostByPostID(postId).ToList();
                 PostType postType = type switch
                 {
                     "post" => PostType.TEXT_POST,
@@ -205,9 +197,9 @@ namespace UBB_SE_2024_Team_42.Repository
                 };
                 if (postType == PostType.QUESTION)
                 {
-                    string title = row["title"]?.ToString() ?? string.Empty;
+                    string title = row["title"].ToString() ?? string.Empty;
                     ICategory category = GetCategoryByID(Convert.ToInt64(row["categoryId"]));
-                    List<ITag> tags = GetTagsOfQuestion(postId);
+                    List<ITag> tags = GetTagsOfQuestion(postId).ToList();
                     newPost = new Question(postId, title, category, tags, userId, content, datePosted, dateOfLastEdit, votes);
                 }
                 else
@@ -222,9 +214,9 @@ namespace UBB_SE_2024_Team_42.Repository
 
         public void AddQuestion(IQuestion question)
         {
-            SqlConnection sqlConnection = new(sqlConnectionString);
+            SqlConnection sqlConnection = new (sqlConnectionString);
             sqlConnection.Open();
-            SqlCommand command = new("addQuestion", sqlConnection);
+            SqlCommand command = new ("addQuestion", sqlConnection);
             command.Parameters.AddWithValue("@userID", question.UserID);
             command.Parameters.AddWithValue("@content", question.Content);
             command.Parameters.AddWithValue("@title", question.Title);
@@ -239,7 +231,7 @@ namespace UBB_SE_2024_Team_42.Repository
             {
                 return;
             }
-            SqlConnection connection = new(sqlConnectionString);
+            SqlConnection connection = new (sqlConnectionString);
             connection.Open();
             SqlCommand command;
             switch (oldPost.GetType())
@@ -261,25 +253,22 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
         }
 
-        public List<IAnswer> GetAnswersOfUser(long userId)
+        public IEnumerable<IAnswer> GetAnswersOfUser(long userId)
             => QueryDB("select * from dbo.getPostsByUserId(" + userId + ")")
                 .AsEnumerable()
                 .Where(Filters.DataRowRepresentsAnswer)
-                .Select(RowInDBToAnswer)
-                .ToList();
+                .Select(RowInDBToAnswer);
 
-        public List<IComment> GetCommentsOfUser(long userId)
+        public IEnumerable<IComment> GetCommentsOfUser(long userId)
             => QueryDB("select * from dbo.getPostsByUserId(" + userId + ")")
                 .AsEnumerable()
                 .Where(Filters.DataRowRepresentsComment)
-                .Select(RowInDBToComment)
-                .ToList();
+                .Select(RowInDBToComment);
 
-        public List<IQuestion> GetQuestionsOfUser(long userId)
+        public IEnumerable<IQuestion> GetQuestionsOfUser(long userId)
         => QueryDB("select * from dbo.getPostsByUserId(" + userId + ")")
             .AsEnumerable()
             .Where(Filters.DataRowRepresentsQuestion)
-            .Select(RowInDBToQuestion)
-            .ToList();
+            .Select(RowInDBToQuestion);
     }
 }

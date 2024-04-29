@@ -29,7 +29,7 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         public Badge Get()
         {
             Badge returnValue = instance;
-            instance = new();
+            instance = new ();
             return returnValue;
         }
 

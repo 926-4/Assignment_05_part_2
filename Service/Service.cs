@@ -1,6 +1,7 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.Category;
-using UBB_SE_2024_Team_42.Domain.post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Post;
+using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
@@ -28,12 +29,12 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> GetAllQuestions()
         {
-            return repository.GetAllQuestions();
+            return repository.GetAllQuestions().ToList();
         }
 
         public List<IPost> GetRepliesOfPost(long postId)
         {
-            return repository.GetRepliesOfPost(postId);
+            return repository.GetRepliesOfPost(postId).ToList();
         }
 
         public List<IQuestion> GetQuestionsOfCategory(ICategory? category)
@@ -42,7 +43,7 @@ namespace UBB_SE_2024_Team_42.Service
             {
                 return new List<IQuestion>();
             }
-            List<IQuestion> questions = repository.GetAllQuestions();
+            List<IQuestion> questions = repository.GetAllQuestions().ToList();
             List<IQuestion> filteredQuestions = new ();
 
             foreach (IQuestion question in questions)
@@ -65,7 +66,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> FindQuestionsByPartialStringInAnyField(string textToBeSearchedBy)
         {
-            List<IQuestion> questions = repository.GetAllQuestions();
+            List<IQuestion> questions = repository.GetAllQuestions().ToList();
             List<IQuestion> filteredQuestions = new ();
 
             foreach (IQuestion question in questions)
@@ -107,7 +108,7 @@ namespace UBB_SE_2024_Team_42.Service
             List<IQuestion> listOfQuestions = currentQuestions;
             CollectionSummer<IReaction> reactionValueSummer = new (GetReactionValue);
             void AddMappingForQuestion(IQuestion question) =>
-                questionToReactionValueMap[question] = GetReactionScore(repository.GetReactionsOfPostByPostID(question.ID));
+                questionToReactionValueMap[question] = GetReactionScore(repository.GetReactionsOfPostByPostID(question.ID).ToList());
 
             listOfQuestions.ForEach(AddMappingForQuestion);
 
@@ -143,7 +144,7 @@ namespace UBB_SE_2024_Team_42.Service
             {
                 int numberOfAnswers = 0;
                 long questionId = question.ID;
-                List<IPost> repliesFromPost = repository.GetRepliesOfPost(questionId);
+                List<IPost> repliesFromPost = repository.GetRepliesOfPost(questionId).ToList();
                 foreach (IPost ipost in repliesFromPost)
                 {
                     if (ipost is Answer)
@@ -190,7 +191,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<ICategory> GetAllCategories()
         {
-            return repository.GetAllCategories();
+            return repository.GetAllCategories().ToList();
         }
 
         public List<IQuestion> GetCurrentQuestions()
@@ -198,24 +199,24 @@ namespace UBB_SE_2024_Team_42.Service
             return currentQuestions;
         }
 
-        public List<IPost> GetAnswersOfUser(long userId)
+        public List<IAnswer> GetAnswersOfUser(long userId)
         {
-            return repository.GetAnswersOfUser(userId);
+            return repository.GetAnswersOfUser(userId).ToList();
         }
 
         public List<IQuestion> GetQuestionsOfUser(long userId)
         {
-            return repository.GetQuestionsOfUser(userId);
+            return repository.GetQuestionsOfUser(userId).ToList();
         }
 
-        public List<IPost> GetCommentsOfUser(long userId)
+        public List<IComment> GetCommentsOfUser(long userId)
         {
-            return repository.GetCommentsOfUser(userId);
+            return repository.GetCommentsOfUser(userId).ToList();
         }
 
         public List<ITag> GetTagsOfQuestion(long questionId)
         {
-            return repository.GetTagsOfQuestion(questionId);
+            return repository.GetTagsOfQuestion(questionId).ToList();
         }
 
         public void AddQuestion(string title, string content, Category category)
@@ -227,7 +228,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IBadge> GetBadgesOfUser(long userId)
         {
-            return repository.GetBadgesOfUser(userId);
+            return repository.GetBadgesOfUser(userId).ToList();
         }
     }
 }

@@ -7,10 +7,10 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class UserFactory
     {
-        private User instance = new();
+        private User instance = new ();
         public UserFactory NewUser()
         {
-            instance = new();
+            instance = new ();
             return this;
         }
         public UserFactory SetName(string name)
@@ -36,7 +36,7 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         public User Get()
         {
             User returnValue = instance;
-            instance = new();
+            instance = new ();
             return returnValue;
         }
     }
