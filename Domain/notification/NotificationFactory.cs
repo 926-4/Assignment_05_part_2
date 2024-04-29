@@ -9,12 +9,17 @@
             instance = new ();
             return this;
         }
+        public NotificationFactory SetID(long id)
+        {
+            instance.ID = id;
+            return this;
+        }
         public NotificationFactory SetText(string text)
         {
             instance.Text = text;
             return this;
         }
-        public NotificationFactory SetPostId(long postId)
+        public NotificationFactory SetPostID(long postId)
         {
             instance.PostID = postId;
             return this;

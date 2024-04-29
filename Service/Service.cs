@@ -107,7 +107,7 @@ namespace UBB_SE_2024_Team_42.Service
             List<IQuestion> listOfQuestions = currentQuestions;
             CollectionSummer<IReaction> reactionValueSummer = new (GetReactionValue);
             void AddMappingForQuestion(IQuestion question) =>
-                questionToReactionValueMap[question] = GetReactionScore(repository.GetVotesOfPostByPostID(question.ID));
+                questionToReactionValueMap[question] = GetReactionScore(repository.GetReactionsOfPostByPostID(question.ID));
 
             listOfQuestions.ForEach(AddMappingForQuestion);
 
