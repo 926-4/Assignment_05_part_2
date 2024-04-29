@@ -17,25 +17,25 @@ using static UBB_SE_2024_Team_42.Domain.Posts.PostFactory;
 
 namespace UBB_SE_2024_Team_42.Repository
 {
-    public class Repository
+    public class Repository : IRepository
     {
         private readonly string sqlConnectionString = @"Data Source = CAMFRIGLACLUJ; Initial Catalog = Team42DB;Integrated Security = True";
-        private readonly NotificationFactory notificationFactory = new ();
-        private readonly CategoryFactory categoryFactory = new ();
-        private readonly BadgeFactory badgeFactory = new ();
-        private readonly UserFactory userFactory = new ();
-        private readonly ReactionFactory reactionFactory = new ();
-        private readonly TagFactory tagFactory = new ();
-        private readonly AnswerFactory answerFactory = new ();
-        private readonly CommentFactory commentFactory = new ();
+        private readonly NotificationFactory notificationFactory = new();
+        private readonly CategoryFactory categoryFactory = new();
+        private readonly BadgeFactory badgeFactory = new();
+        private readonly UserFactory userFactory = new();
+        private readonly ReactionFactory reactionFactory = new();
+        private readonly TagFactory tagFactory = new();
+        private readonly AnswerFactory answerFactory = new();
+        private readonly CommentFactory commentFactory = new();
         private static Image? CellInDBToBadgeImage(object dataRowCell) => Image.FromStream(new MemoryStream((byte[])dataRowCell));
         private DataTable QueryDB(string sqlStatement)
         {
-            SqlConnection connection = new (sqlConnectionString);
+            SqlConnection connection = new(sqlConnectionString);
             connection.Open();
-            SqlCommand command = new (sqlStatement, connection);
-            SqlDataAdapter dataAdapter = new (command);
-            DataTable dataTable = new ();
+            SqlCommand command = new(sqlStatement, connection);
+            SqlDataAdapter dataAdapter = new(command);
+            DataTable dataTable = new();
             dataAdapter.Fill(dataTable);
             connection.Close();
             return dataTable;
@@ -49,14 +49,14 @@ namespace UBB_SE_2024_Team_42.Repository
         private IBadge RowInDBToBadge(DataRow row)
             => badgeFactory.NewBadge()
                 .SetID(Convert.ToInt64(row["id"]))
-                .SetName(row["name"]?.ToString() ?? string.Empty)
+                .SetName(row["name"].ToString() ?? string.Empty)
                 .SetDescription(row["description"]?.ToString() ?? string.Empty)
                 .SetImage(CellInDBToBadgeImage(row["image"]))
                 .Get();
         private ICategory RowInDBToCategory(DataRow row)
             => categoryFactory.NewCategory()
-                .SetCategoryID(Convert.ToInt64(row["id"]))
-                .SetCategoryName(row["name"]?.ToString() ?? string.Empty)
+                .SetID(Convert.ToInt64(row["id"]))
+                .SetName(row["name"].ToString() ?? string.Empty)
                 .Get();
         private IUser RowInDBToUser(DataRow row)
         {
@@ -182,7 +182,7 @@ namespace UBB_SE_2024_Team_42.Repository
         public List<IPost> GetRepliesOfPost(long postId)
         {
             var dataTable = QueryDB("select * from dbo.GetAllRepliesOfPost(" + postId + ")");
-            List<IPost> postList = new ();
+            List<IPost> postList = new();
             foreach (DataRow row in dataTable.Rows)
             {
                 IPost newPost;
@@ -222,9 +222,9 @@ namespace UBB_SE_2024_Team_42.Repository
 
         public void AddQuestion(IQuestion question)
         {
-            SqlConnection sqlConnection = new (sqlConnectionString);
+            SqlConnection sqlConnection = new(sqlConnectionString);
             sqlConnection.Open();
-            SqlCommand command = new ("addQuestion", sqlConnection);
+            SqlCommand command = new("addQuestion", sqlConnection);
             command.Parameters.AddWithValue("@userID", question.UserID);
             command.Parameters.AddWithValue("@content", question.Content);
             command.Parameters.AddWithValue("@title", question.Title);
@@ -239,7 +239,7 @@ namespace UBB_SE_2024_Team_42.Repository
             {
                 return;
             }
-            SqlConnection connection = new (sqlConnectionString);
+            SqlConnection connection = new(sqlConnectionString);
             connection.Open();
             SqlCommand command;
             switch (oldPost.GetType())
