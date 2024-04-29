@@ -10,5 +10,4 @@ namespace UBB_SE_2024_Team_42
     public partial class App : Application
     {
     }
-
 }

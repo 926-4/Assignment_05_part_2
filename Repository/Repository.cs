@@ -50,18 +50,18 @@ namespace UBB_SE_2024_Team_42.Repository
             SqlDataAdapter dataAdapter = new (command);
             DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
-
-            List<ICategory> categoryList = new ();
-            foreach (DataRow row in dataTable.Rows)
-            {
-                categoryList.Add(
-                    new Category(
-                        Convert.ToInt64(row["id"]),
-                        row["name"]?.ToString() ?? string.Empty));
-            }
-
             connection.Close();
-            return categoryList;
+
+            return dataTable.AsEnumerable().Select(RowInDBToCategory).ToList();
+        }
+
+        private ICategory RowInDBToCategory(DataRow row)
+        {
+            CategoryFactory categoryFactory = new ();
+            return categoryFactory.NewCategory()
+                           .SetCategoryID(Convert.ToInt64(row["id"]))
+                           .SetCategoryName(row["name"]?.ToString() ?? string.Empty)
+                           .Get();
         }
 
         public List<IBadge> GetBadgesOfUser(long userId)
@@ -105,15 +105,21 @@ namespace UBB_SE_2024_Team_42.Repository
             DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
             var firstRow = dataTable.Rows[0];
-            IUser user = new UserFactory().NewUser()
-                .SetName(firstRow["name"]?.ToString() ?? string.Empty)
-                .SetNotificationList(GetNotificationsOfUser(userId))
-                .SetCategoriesModeratedList(GetCategoriesModeratedByUser(userId))
-                .SetBadgeList(GetBadgesOfUser(userId))
-                .Get();
+            IUser user = BuildUser(firstRow);
 
             connection.Close();
             return user;
+        }
+
+        private IUser BuildUser(DataRow row)
+        {
+            long userId = Convert.ToInt64(row["id"]);
+            return new UserFactory().NewUser()
+                            .SetName(row["name"]?.ToString() ?? string.Empty)
+                            .SetNotificationList(GetNotificationsOfUser(userId))
+                            .SetCategoriesModeratedList(GetCategoriesModeratedByUser(userId))
+                            .SetBadgeList(GetBadgesOfUser(userId))
+                            .Get();
         }
 
         public List<IUser> GetAllUsers()
@@ -124,17 +130,9 @@ namespace UBB_SE_2024_Team_42.Repository
             SqlDataAdapter dataAdapter = new (command);
             DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
-
-            List<IUser> userList = new ();
-            foreach (DataRow row in dataTable.Rows)
-            {
-                long userId = Convert.ToInt64(row["id"]);
-                userList.Add(GetUser(userId));
-            }
-
             connection.Close();
 
-            return userList;
+            return dataTable.AsEnumerable().Select(BuildUser).ToList();
         }
 
         public List<IReaction> GetVotesOfPostByPostID(long postId)
@@ -167,17 +165,9 @@ namespace UBB_SE_2024_Team_42.Repository
             SqlDataAdapter dataAdapter = new (command);
             DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
-
-            List<ICategory> categoryList = new ();
-            foreach (DataRow row in dataTable.Rows)
-            {
-                categoryList.Add(new Category(
-                    Convert.ToInt64(row["id"]),
-                    row["name"]?.ToString() ?? string.Empty));
-            }
             connection.Close();
 
-            return categoryList;
+            return dataTable.AsEnumerable().Select(RowInDBToCategory).ToList();
         }
 
         public List<ITag> GetTagsOfQuestion(long questionId)
@@ -211,23 +201,30 @@ namespace UBB_SE_2024_Team_42.Repository
             dataAdapter.Fill(dataTable);
             DataRow firstRow = dataTable.Rows[0];
 
+            connection.Close();
+            return BuildQuestion(firstRow);
+        }
+
+        private IQuestion BuildQuestion(DataRow row)
+        {
+            long questionId = Convert.ToInt64(row["id"]);
             List<ITag> tagList = GetTagsOfQuestion(questionId);
             List<IReaction> voteList = GetVotesOfPostByPostID(questionId);
-            ICategory category = GetCategory(Convert.ToInt64(firstRow["categoryId"]));
+            ICategory category = GetCategory(Convert.ToInt64(row["categoryId"]));
 
-            connection.Close();
-            return new Question(
-                Convert.ToInt64(firstRow["id"]),
-                                firstRow["title"]?.ToString() ?? string.Empty,
-                category,
-                tagList,
-                Convert.ToInt64(firstRow["userId"]),
-                                firstRow["content"]?.ToString() ?? string.Empty,
-             Convert.ToDateTime(firstRow["datePosted"]),
-                                firstRow["dateOfLastEdit"] == DBNull.Value
-                                    ? Convert.ToDateTime(firstRow["datePosted"])
-                                    : Convert.ToDateTime(firstRow["dateOfLastEdit"]),
-                                voteList);
+            return new QuestionFactory().NewQuestion()
+                .SetId(Convert.ToInt64(row["id"]))
+                .SetTitle(row["title"]?.ToString() ?? string.Empty)
+                .SetCategory(category)
+                .SetTags(tagList)
+                .SetUserId(Convert.ToInt64(row["userId"]))
+                .SetContent(row["content"]?.ToString() ?? string.Empty)
+                .SetPostTime(Convert.ToDateTime(row["datePosted"]))
+                .SetEditTime(row["dateOfLastEdit"] == DBNull.Value
+                                   ? Convert.ToDateTime(row["datePosted"])
+                                                      : Convert.ToDateTime(row["dateOfLastEdit"]))
+                .SetVoteList(voteList)
+                .GetQuestion();
         }
 
         public List<IQuestion> GetAllQuestions()
@@ -242,7 +239,8 @@ namespace UBB_SE_2024_Team_42.Repository
             List<IQuestion> questionList = new ();
             foreach (DataRow row in dataTable.Rows)
             {
-                questionList.Add(GetQuestion(Convert.ToInt64(row["id"])));
+                IQuestion question = BuildQuestion(row);
+                questionList.Add(question);
             }
             connection.Close();
 
