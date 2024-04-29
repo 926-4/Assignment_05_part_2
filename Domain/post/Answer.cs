@@ -1,10 +1,11 @@
-﻿using UBB_SE_2024_Team_42.Domain.Reactions;
+﻿using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Utils;
 using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {
-    public class Answer : IPost
+    public class Answer : IAnswer
     {
         public long ID { get; set; }
 

@@ -1,6 +1,6 @@
-﻿using UBB_SE_2024_Team_42.Domain;
-using UBB_SE_2024_Team_42.Domain.Badge;
+﻿using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Domain.post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;

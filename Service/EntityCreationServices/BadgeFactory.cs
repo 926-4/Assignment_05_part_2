@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using UBB_SE_2024_Team_42.Domain.Badge;
 
-namespace UBB_SE_2024_Team_42.Domain.Badge
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class BadgeFactory
     {
@@ -20,7 +21,7 @@ namespace UBB_SE_2024_Team_42.Domain.Badge
             instance.Description = description;
             return this;
         }
-        public BadgeFactory SetImage(Image image)
+        public BadgeFactory SetImage(Image? image)
         {
             instance.Image = image;
             return this;
@@ -28,8 +29,14 @@ namespace UBB_SE_2024_Team_42.Domain.Badge
         public Badge Get()
         {
             Badge returnValue = instance;
-            instance = new ();
+            instance = new();
             return returnValue;
+        }
+
+        internal BadgeFactory SetID(long id)
+        {
+            instance.ID = id;
+            return this;
         }
     }
 }

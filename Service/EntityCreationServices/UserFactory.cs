@@ -1,15 +1,16 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Notification;
+using UBB_SE_2024_Team_42.Domain.User;
 
-namespace UBB_SE_2024_Team_42.Domain.User
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class UserFactory
     {
-        private User instance = new ();
+        private User instance = new();
         public UserFactory NewUser()
         {
-            instance = new ();
+            instance = new();
             return this;
         }
         public UserFactory SetName(string name)
@@ -35,7 +36,7 @@ namespace UBB_SE_2024_Team_42.Domain.User
         public User Get()
         {
             User returnValue = instance;
-            instance = new ();
+            instance = new();
             return returnValue;
         }
     }

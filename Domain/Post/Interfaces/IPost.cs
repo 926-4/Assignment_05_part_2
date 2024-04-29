@@ -1,7 +1,7 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Utils.Functionals;
 
-namespace UBB_SE_2024_Team_42.Domain
+namespace UBB_SE_2024_Team_42.Domain.Post.Interfaces
 {
     public interface IPost
     {
@@ -11,7 +11,7 @@ namespace UBB_SE_2024_Team_42.Domain
         DateTime DatePosted { get; set; }
         DateTime DateOfLastEdit { get; set; }
         List<IReaction> Reactions { get; set; }
-        private static readonly Func<IReaction, int> MapReactionToInt = (IReaction ireaction) => ireaction.Value;
+        private static readonly Func<IReaction, int> MapReactionToInt = (ireaction) => ireaction.Value;
         int Score() => CollectionSummerFactory<IReaction>.GetFromMapping(MapReactionToInt).ApplyTo(Reactions);
         void AddReaction(IReaction reaction) => Reactions.Add(reaction);
     }
