@@ -392,7 +392,7 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
         }
 
-        public List<IPost> GetAnswersOfUser(long userId)
+        public List<Answer> GetAnswersOfUser(long userId)
         {
             SqlConnection connection = new (sqlConnectionString);
             connection.Open();
@@ -402,32 +402,18 @@ namespace UBB_SE_2024_Team_42.Repository
             dataAdapter.Fill(dataTable);
             connection.Close();
 
-            List<IPost> answerList = new ();
-            var answerFactory = new AnswerFactory();
-            var rowInDBToAnswer = (DataRow row) => answerFactory
-            .NewAnswer()
-            .SetId(Convert.ToInt64(row["id"]))
-            .SetUserId(Convert.ToInt64(row["userId"]))
-            .SetContent(Convert.ToString(row["content"]) ?? string.Empty)
-            .SetDatePosted(Convert.ToDateTime(row["datePosted"]))
-            .SetDateOfLastEdit(Convert.ToDateTime(row["dateOfLastEdit"]))
-            .Get();
-            foreach (DataRow row in dataTable.Rows)
-            {
-                string type = row["type"]?.ToString() ?? string.Empty;
-                if ((PostType)Enum.Parse(typeof(PostType), type) == PostType.ANSWER)
-                {
-                    answerList.Add(
-                        new Answer(
-                            Convert.ToInt64(row["id"]),
-                            Convert.ToInt64(row["userId"]),
-                            Convert.ToString(row["content"]) ?? string.Empty,
-                            Convert.ToDateTime(row["datePosted"]),
-                            Convert.ToDateTime(row["dateOfLastEdit"]),
-             GetReactionsOfPostByPostID(Convert.ToInt64(row["id"]))));
-                }
-            }
-            return answerList;
+            AnswerFactory answerFactory = new ();
+            bool FilterForAnswers(DataRow row) => (row["type"].ToString() ?? string.Empty) == "answer";
+            Answer RowInDBToAnswer(DataRow row) => answerFactory.NewAnswer()
+                                                                .SetId(Convert.ToInt64(row["id"]))
+                                                                .SetUserId(Convert.ToInt64(row["userId"]))
+                                                                .SetContent(Convert.ToString(row["content"]) ?? string.Empty)
+                                                                .SetDatePosted(Convert.ToDateTime(row["datePosted"]))
+                                                                .SetDateOfLastEdit(Convert.ToDateTime(row["dateOfLastEdit"]))
+                                                                .SetReactions(GetReactionsOfPostByPostID(Convert.ToInt64(row["id"])))
+                                                                .Get();
+
+            return dataTable.AsEnumerable().Where(FilterForAnswers).Select(RowInDBToAnswer).ToList();
         }
 
         public List<IPost> GetCommentsOfUser(long userId)
