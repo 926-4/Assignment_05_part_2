@@ -4,22 +4,22 @@ namespace UBB_SE_2024_Team_42.Domain.Category
 {
     public class Category : ICategory
     {
-        public long CategoryID { get; }
-        public string CategoryName { get; set; }
+        public long ID { get; }
+        public string Name { get; set; }
         public Category()
         {
-            CategoryID = IDGenerator.RandomLong();
-            CategoryName = "Unnamed category";
+            ID = IDGenerator.RandomLong();
+            Name = "Unnamed category";
         }
-        internal Category(long newCategoryID, string newCategoryName)
+        internal Category(long id, string name)
         {
-            CategoryID = newCategoryID;
-            CategoryName = newCategoryName;
+            ID = id;
+            Name = name;
         }
 
         public override string ToString()
         {
-            return $"Category(categoryID: {CategoryID}, categoryName: {CategoryName}) \n";
+            return $"Category(categoryID: {ID}, categoryName: {Name}) \n";
         }
     }
 }

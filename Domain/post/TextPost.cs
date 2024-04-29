@@ -6,7 +6,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 {
     public class TextPost : IPost
     {
-        public long PostID { get; }
+        public long ID { get; }
         public long UserID { get; set; }
         public string Content { get; set; }
         public DateTime DatePosted { get; set; }
@@ -14,7 +14,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         public List<IReaction> Reactions { get; set; }
         public TextPost(long postingUserID, string content)
         {
-            PostID = IDGenerator.RandomLong();
+            ID = IDGenerator.RandomLong();
             UserID = postingUserID;
             Content = content;
             DatePosted = DateTime.Now;
@@ -24,7 +24,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         internal TextPost(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
         {
-            PostID = postID;
+            ID = postID;
             UserID = userID;
             Content = content;
             DatePosted = postTime;
@@ -34,14 +34,14 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public TextPost()
         {
-            PostID = IDGenerator.RandomLong();
+            ID = IDGenerator.RandomLong();
             Content = "None";
             Reactions = new ();
         }
 
         public override string ToString()
         {
-            return $"TextPost {{postID: {PostID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})\n" +
+            return $"TextPost {{postID: {ID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})\n" +
                 $"{Content}\n" +
                 $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}}}";
         }

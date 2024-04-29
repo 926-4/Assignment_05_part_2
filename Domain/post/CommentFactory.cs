@@ -4,42 +4,42 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 {
     internal class CommentFactory
     {
-        public Comment Instance = new ();
+        private Comment instance = new ();
 
         public CommentFactory NewAnswer()
         {
-            Instance = new ();
+            instance = new ();
             return this;
         }
         public CommentFactory SetUserId(long userId)
         {
-            Instance.UserID = userId;
+            instance.UserID = userId;
             return this;
         }
         public CommentFactory SetContent(string content)
         {
-            Instance.Content = content;
+            instance.Content = content;
             return this;
         }
         public CommentFactory SetDatePosted(DateTime datePosted)
         {
-            Instance.DatePosted = datePosted;
+            instance.DatePosted = datePosted;
             return this;
         }
         public CommentFactory SetDateOfLastEdit(DateTime dateOfLastEdit)
         {
-            Instance.DateOfLastEdit = dateOfLastEdit;
+            instance.DateOfLastEdit = dateOfLastEdit;
             return this;
         }
         public CommentFactory SetReactions(List<IReaction> reactions)
         {
-            Instance.Reactions = reactions;
+            instance.Reactions = reactions;
             return this;
         }
         public Comment Get()
         {
-            Comment comment = Instance;
-            Instance = new ();
+            Comment comment = instance;
+            instance = new ();
             return comment;
         }
     }

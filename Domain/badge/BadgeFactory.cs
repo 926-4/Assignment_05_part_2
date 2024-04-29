@@ -4,31 +4,31 @@ namespace UBB_SE_2024_Team_42.Domain.Badge
 {
     internal class BadgeFactory
     {
-        public Badge Instance = new ();
+        private Badge instance = new ();
         public BadgeFactory NewBadge()
         {
-            Instance = new ();
+            instance = new ();
             return this;
         }
         public BadgeFactory SetName(string name)
         {
-            Instance.Name = name;
+            instance.Name = name;
             return this;
         }
         public BadgeFactory SetDescription(string description)
         {
-            Instance.Description = description;
+            instance.Description = description;
             return this;
         }
         public BadgeFactory SetImage(Image image)
         {
-            Instance.Image = image;
+            instance.Image = image;
             return this;
         }
         public Badge Get()
         {
-            Badge returnValue = Instance;
-            Instance = new ();
+            Badge returnValue = instance;
+            instance = new ();
             return returnValue;
         }
     }

@@ -14,27 +14,27 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         }
         public QuestionFactory SetUserId(long userId)
         {
-            Instance.Post.UserID = userId;
+            Instance.UserID = userId;
             return this;
         }
         public QuestionFactory SetContent(string content)
         {
-            Instance.Post.Content = content;
+            Instance.Content = content;
             return this;
         }
         public QuestionFactory SetDatePosted(DateTime datePosted)
         {
-            Instance.Post.DatePosted = datePosted;
+            Instance.DatePosted = datePosted;
             return this;
         }
         public QuestionFactory SetDateOfLastEdit(DateTime dateOfLastEdit)
         {
-            Instance.Post.DateOfLastEdit = dateOfLastEdit;
+            Instance.DateOfLastEdit = dateOfLastEdit;
             return this;
         }
         public QuestionFactory SetReactions(List<IReaction> reactions)
         {
-            Instance.Post.Reactions = reactions;
+            Instance.Reactions = reactions;
             return this;
         }
         public QuestionFactory SetTitle(string title)

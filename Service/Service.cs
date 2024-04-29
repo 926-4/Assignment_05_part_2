@@ -47,7 +47,7 @@ namespace UBB_SE_2024_Team_42.Service
 
             foreach (IQuestion question in questions)
             {
-                if ((question.Category?.CategoryName ?? string.Empty) == category.CategoryName)
+                if ((question.Category?.Name ?? string.Empty) == category.Name)
                 {
                     filteredQuestions.Add(question);
                 }
@@ -58,7 +58,7 @@ namespace UBB_SE_2024_Team_42.Service
         public List<IQuestion> GetQuestionsWithAtLeastOneAnswer()
         {
             static bool IsAnswer(IPost ipost) => ipost is Answer;
-            bool QuestionHasAtLeastOneAnswer(IQuestion question) => repository.GetRepliesOfPost(question.PostID).Any(IsAnswer);
+            bool QuestionHasAtLeastOneAnswer(IQuestion question) => repository.GetRepliesOfPost(question.ID).Any(IsAnswer);
             List<IQuestion> filteredQuestions = repository.GetAllQuestions().Where(QuestionHasAtLeastOneAnswer).ToList();
             return filteredQuestions;
         }
@@ -100,14 +100,14 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> GetQuestionsSortedByScoreAscending()
         {
-            static int GetReactionValue(IReaction ireaction) => ireaction.ReactionValue;
+            static int GetReactionValue(IReaction ireaction) => ireaction.Value;
 
             Dictionary<IQuestion, int> questionToReactionValueMap = new ();
 
             List<IQuestion> listOfQuestions = currentQuestions;
             CollectionSummer<IReaction> reactionValueSummer = new (GetReactionValue);
             void AddMappingForQuestion(IQuestion question) =>
-                questionToReactionValueMap[question] = GetReactionScore(repository.GetVotesOfPostByPostID(question.PostID));
+                questionToReactionValueMap[question] = GetReactionScore(repository.GetVotesOfPostByPostID(question.ID));
 
             listOfQuestions.ForEach(AddMappingForQuestion);
 
@@ -126,7 +126,7 @@ namespace UBB_SE_2024_Team_42.Service
 
         private static int GetReactionScore(List<IReaction> voteList)
         {
-            static int GetReactionValue(IReaction ireaction) => ireaction.ReactionValue;
+            static int GetReactionValue(IReaction ireaction) => ireaction.Value;
             CollectionReducer<IReaction, int> summer = new (
                 mapper: GetReactionValue,
                 folder: (x, y) => x + y,
@@ -142,7 +142,7 @@ namespace UBB_SE_2024_Team_42.Service
             foreach (IQuestion question in listOfQuestions)
             {
                 int numberOfAnswers = 0;
-                long questionId = question.PostID;
+                long questionId = question.ID;
                 List<IPost> repliesFromPost = repository.GetRepliesOfPost(questionId);
                 foreach (IPost ipost in repliesFromPost)
                 {

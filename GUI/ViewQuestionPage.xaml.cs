@@ -25,8 +25,8 @@ namespace UBB_SE_2024_Team_42.GUI
             Service.Service service = this.manager.Service;
             // Service service = manager.Service;
             DataContext = this;
-            Comments = new ObservableCollection<IPost>(service.GetRepliesOfPost(question.PostID));
-            Tags = new ObservableCollection<ITag>(service.GetTagsOfQuestion(question.PostID));
+            Comments = new ObservableCollection<IPost>(service.GetRepliesOfPost(question.ID));
+            Tags = new ObservableCollection<ITag>(service.GetTagsOfQuestion(question.ID));
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

@@ -2,15 +2,8 @@
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {
-    internal class PostFactory
+    internal partial class PostFactory
     {
-        internal enum PostType
-        {
-            TEXT_POST,
-            QUESTION,
-            ANSWER,
-            COMMENT
-        }
         internal static IPost CreateNewPost(PostType option, long userID, string content)
         {
             return option switch

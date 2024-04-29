@@ -6,7 +6,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 {
     public class Comment : IPost
     {
-        public long PostID { get; }
+        public long ID { get; }
 
         public long UserID { get; set; }
 
@@ -19,7 +19,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Comment(long postingUserID, string content)
         {
-            PostID = IDGenerator.RandomLong();
+            ID = IDGenerator.RandomLong();
             UserID = postingUserID;
             Content = content;
             DatePosted = DateTime.Now;
@@ -29,7 +29,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         internal Comment(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
         {
-            PostID = postID;
+            ID = postID;
             UserID = userID;
             Content = content;
             DatePosted = postTime;
@@ -39,14 +39,14 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Comment()
         {
-            PostID = IDGenerator.RandomLong();
+            ID = IDGenerator.RandomLong();
             Content = "None";
             Reactions = new ();
         }
 
         public override string ToString()
         {
-            return $"Comment {{postID: {PostID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit}) \n"
+            return $"Comment {{postID: {ID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit}) \n"
                 + $"{Content} \n"
                 + $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}}} \n";
         }

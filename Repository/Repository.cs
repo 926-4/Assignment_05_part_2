@@ -321,7 +321,7 @@ namespace UBB_SE_2024_Team_42.Repository
             command.Parameters.AddWithValue("@userID", question.UserID);
             command.Parameters.AddWithValue("@content", question.Content);
             command.Parameters.AddWithValue("@title", question.Title);
-            command.Parameters.AddWithValue("@categoryId", question.Category?.CategoryID);
+            command.Parameters.AddWithValue("@categoryId", question.Category?.ID);
             command.CommandType = CommandType.StoredProcedure;
             command.ExecuteNonQuery();
             sqlConnection.Close();
@@ -332,7 +332,7 @@ namespace UBB_SE_2024_Team_42.Repository
             SqlConnection sqlConnection = new (sqlConnectionString);
             sqlConnection.Open();
             SqlCommand command = new ("updateQuestion", sqlConnection);
-            command.Parameters.AddWithValue("@questionId", oldQuestion.PostID);
+            command.Parameters.AddWithValue("@questionId", oldQuestion.ID);
             command.Parameters.AddWithValue("@content", newQuestion.Content);
             command.Parameters.AddWithValue("@title", newQuestion.Title);
             command.Parameters.AddWithValue("@categoryId", newQuestion.Category);
@@ -352,19 +352,19 @@ namespace UBB_SE_2024_Team_42.Repository
                     command = new SqlCommand("AddAnswer", connection);
                     command.Parameters.AddWithValue("@userId", post.UserID);
                     command.Parameters.AddWithValue("@content", post.Content);
-                    command.Parameters.AddWithValue("@postId", post.PostID);
+                    command.Parameters.AddWithValue("@postId", post.ID);
                     break;
                 case Type t when t == typeof(Comment):
                     command = new SqlCommand("AddComment", connection);
                     command.Parameters.AddWithValue("@userId", post.UserID);
                     command.Parameters.AddWithValue("@content", post.Content);
-                    command.Parameters.AddWithValue("@postId", post.PostID);
+                    command.Parameters.AddWithValue("@postId", post.ID);
                     break;
             }
 
             SqlCommand reply_command = new ("AddReply", connection);
-            reply_command.Parameters.AddWithValue("@idOfPostRepliedOn", postRepliedOn.PostID);
-            reply_command.Parameters.AddWithValue("@idOfReply", post.PostID);
+            reply_command.Parameters.AddWithValue("@idOfPostRepliedOn", postRepliedOn.ID);
+            reply_command.Parameters.AddWithValue("@idOfReply", post.ID);
             if (command != null)
             {
                 command.CommandType = CommandType.StoredProcedure;
@@ -383,12 +383,12 @@ namespace UBB_SE_2024_Team_42.Repository
             {
                 case Type t when t == typeof(Answer):
                     command = new SqlCommand("UpdateAnswer", connection);
-                    command.Parameters.AddWithValue("@answerId", newPost.PostID);
+                    command.Parameters.AddWithValue("@answerId", newPost.ID);
                     command.Parameters.AddWithValue("@content", newPost.Content);
                     break;
                 case Type t when t == typeof(Comment):
                     command = new SqlCommand("UpdateComment", connection);
-                    command.Parameters.AddWithValue("@commentId", newPost.PostID);
+                    command.Parameters.AddWithValue("@commentId", newPost.ID);
                     command.Parameters.AddWithValue("@content", newPost.Content);
                     break;
                 default:

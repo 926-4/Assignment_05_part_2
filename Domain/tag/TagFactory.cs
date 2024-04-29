@@ -2,24 +2,24 @@
 {
     internal class TagFactory
     {
-        public Tag Instance = new ();
+        private Tag instance = new ();
 
         public TagFactory NewTag()
         {
-            Instance = new ();
+            instance = new ();
             return this;
         }
 
         public TagFactory SetName(string name)
         {
-            Instance.Name = name;
+            instance.Name = name;
             return this;
         }
 
         public Tag Get()
         {
-            Tag returnValue = Instance;
-            Instance = new ();
+            Tag returnValue = instance;
+            instance = new ();
             return returnValue;
         }
     }

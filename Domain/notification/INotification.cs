@@ -2,7 +2,7 @@
 {
     public interface INotification
     {
-        long NotificationId { get; }
+        long ID { get; }
         string Text { get; set; }
         long? BadgeID { get; }
         long? PostID { get; }

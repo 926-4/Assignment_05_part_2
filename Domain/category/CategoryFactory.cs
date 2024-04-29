@@ -11,7 +11,7 @@
         }
         public CategoryFactory SetCategoryName(string categoryName)
         {
-            Instance.CategoryName = categoryName;
+            Instance.Name = categoryName;
             return this;
         }
         public Category Get()

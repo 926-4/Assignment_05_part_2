@@ -9,60 +9,51 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
     {
         public string? Title { get; set; }
         public ICategory? Category { get; set; }
-        public IPost Post { get; set; }
-
+        private readonly IPost post;
         public List<ITag> Tags { get; set; }
-
-        public long PostID => Post.PostID;
-
-        public long UserID => Post.UserID;
-
-        public string Content => Post.Content;
-
-        public DateTime DatePosted => Post.DatePosted;
-
-        public DateTime DateOfLastEdit => Post.DateOfLastEdit;
-        public List<IReaction> Reactions => Post.Reactions;
-
-        long IPost.UserID
+        public long ID
         {
-            get => Post.UserID; set { Post.UserID = value; }
+            get => post.ID; set { post.ID = value; }
+        }
+        public long UserID
+        {
+            get => post.UserID; set { post.UserID = value; }
         }
 
-        string IPost.Content
+        public string Content
         {
-            get => Post.Content; set { Post.Content = value; }
+            get => post.Content; set { post.Content = value; }
         }
-        DateTime IPost.DatePosted
+        public DateTime DatePosted
         {
-            get => Post.DatePosted; set { Post.DatePosted = value; }
+            get => post.DatePosted; set { post.DatePosted = value; }
         }
-        DateTime IPost.DateOfLastEdit
+        public DateTime DateOfLastEdit
         {
-            get => Post.DateOfLastEdit; set { Post.DateOfLastEdit = value; }
+            get => post.DateOfLastEdit; set { post.DateOfLastEdit = value; }
         }
-        List<IReaction> IPost.Reactions
+        public List<IReaction> Reactions
         {
-            get => Post.Reactions; set { Post.Reactions = value; }
+            get => post.Reactions; set { post.Reactions = value; }
         }
 
         public Question(long userID, string content)
         {
-            Post = new TextPost(userID, content);
+            post = new TextPost(userID, content);
             Title = string.Empty;
             Category = null;
             Tags = new ();
         }
         public Question(long userID, string content, ICategory category)
         {
-            Post = new TextPost(userID, content);
+            post = new TextPost(userID, content);
             Title = string.Empty;
             Category = category;
             Tags = new ();
         }
         public Question(long userID, string content, ICategory category, string title)
         {
-            Post = new TextPost(userID, content);
+            post = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = new ();
@@ -70,14 +61,14 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Question(string title, ICategory category, long userID, string content)
         {
-            Post = new TextPost(userID, content);
+            post = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = new ();
         }
         public Question(string title, ICategory category, List<ITag> tags, long userID, string content)
         {
-            Post = new TextPost(userID, content);
+            post = new TextPost(userID, content);
             Title = title;
             Category = category;
             Tags = tags;
@@ -92,7 +83,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
                         DateTime editTime,
                         List<IReaction> reactions)
         {
-            Post = new TextPost(postID, userID, content, postTime, editTime, reactions);
+            post = new TextPost(postID, userID, content, postTime, editTime, reactions);
             Title = title;
             Category = category;
             Tags = tags;
@@ -100,13 +91,13 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public Question()
         {
-            Post = new TextPost();
+            post = new TextPost();
             Tags = new ();
         }
 
         public override string ToString()
         {
-            return $"Question(postID: {PostID}, userID: {UserID}, title:{Title} , category: {Category}) \n"
+            return $"Question(postID: {ID}, userID: {UserID}, title:{Title} , category: {Category}) \n"
                 + $"{Content} \n"
                 + $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}\n"
                 + $"tags: {CollectionStringifier<ITag>.ApplyTo(Tags)}";
