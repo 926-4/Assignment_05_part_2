@@ -6,7 +6,7 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 {
     public class Answer : IPost
     {
-        public long ID { get; }
+        public long ID { get; set; }
 
         public long UserID { get; set; }
 
