@@ -1,4 +1,4 @@
-﻿using UBB_SE_2024_Team_42.Domain.post.Interfaces;
+﻿using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Post;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 

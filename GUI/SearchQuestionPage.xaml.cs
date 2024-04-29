@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using UBB_SE_2024_Team_42.Domain.Category;
-using UBB_SE_2024_Team_42.Domain.post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
