@@ -211,22 +211,28 @@ namespace UBB_SE_2024_Team_42.Repository
             dataAdapter.Fill(dataTable);
             DataRow firstRow = dataTable.Rows[0];
 
+            connection.Close();
+            return BuildQuestion(firstRow);
+        }
+
+        private IQuestion BuildQuestion(DataRow row)
+        {
+            long questionId = Convert.ToInt64(row["id"]);
             List<ITag> tagList = GetTagsOfQuestion(questionId);
             List<IReaction> voteList = GetVotesOfPostByPostID(questionId);
-            ICategory category = GetCategory(Convert.ToInt64(firstRow["categoryId"]));
+            ICategory category = GetCategory(Convert.ToInt64(row["categoryId"]));
 
-            connection.Close();
             return new QuestionFactory().NewQuestion()
-                .SetId(Convert.ToInt64(firstRow["id"]))
-                .SetTitle(firstRow["title"]?.ToString() ?? string.Empty)
+                .SetId(Convert.ToInt64(row["id"]))
+                .SetTitle(row["title"]?.ToString() ?? string.Empty)
                 .SetCategory(category)
                 .SetTags(tagList)
-                .SetUserId(Convert.ToInt64(firstRow["userId"]))
-                .SetContent(firstRow["content"]?.ToString() ?? string.Empty)
-                .SetPostTime(Convert.ToDateTime(firstRow["datePosted"]))
-                .SetEditTime(firstRow["dateOfLastEdit"] == DBNull.Value
-                                   ? Convert.ToDateTime(firstRow["datePosted"])
-                                                      : Convert.ToDateTime(firstRow["dateOfLastEdit"]))
+                .SetUserId(Convert.ToInt64(row["userId"]))
+                .SetContent(row["content"]?.ToString() ?? string.Empty)
+                .SetPostTime(Convert.ToDateTime(row["datePosted"]))
+                .SetEditTime(row["dateOfLastEdit"] == DBNull.Value
+                                   ? Convert.ToDateTime(row["datePosted"])
+                                                      : Convert.ToDateTime(row["dateOfLastEdit"]))
                 .SetVoteList(voteList)
                 .GetQuestion();
         }
@@ -243,7 +249,8 @@ namespace UBB_SE_2024_Team_42.Repository
             List<IQuestion> questionList = new ();
             foreach (DataRow row in dataTable.Rows)
             {
-                questionList.Add(GetQuestion(Convert.ToInt64(row["id"])));
+                IQuestion question = BuildQuestion(row);
+                questionList.Add(question);
             }
             connection.Close();
 
