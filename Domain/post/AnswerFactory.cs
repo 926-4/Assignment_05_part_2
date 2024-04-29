@@ -10,6 +10,11 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             instance = new ();
             return this;
         }
+        public AnswerFactory SetId(long id)
+        {
+            instance.ID = id;
+            return this;
+        }
         public AnswerFactory SetUserId(long userId)
         {
             instance.UserID = userId;

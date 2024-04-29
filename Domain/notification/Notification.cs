@@ -4,7 +4,7 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
 {
     public class Notification : INotification
     {
-        public long ID { get; }
+        public long ID { get; set; }
         public string Text { get; set; }
         public long? PostID { get; set; }
         public long? BadgeID { get; set; }

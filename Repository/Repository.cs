@@ -26,20 +26,14 @@ namespace UBB_SE_2024_Team_42.Repository
             SqlDataAdapter dataAdapter = new (command);
             DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
-
-            List<INotification> notificationList = new ();
-            foreach (DataRow row in dataTable.Rows)
-            {
-                notificationList.Add(
-                    new Notification(
-                        Convert.ToInt64(row["id"]),
-                        Convert.ToInt64(row["postId"]),
-                        Convert.ToInt64(row["badgeId"])));
-            }
-
             connection.Close();
-
-            return notificationList;
+            NotificationFactory factory = new ();
+            INotification RowInDBToNotification(DataRow row) => factory.NewNotification()
+                                                                       .SetID(Convert.ToInt64(row["id"]))
+                                                                       .SetPostID(Convert.ToInt64(row["postId"]))
+                                                                       .SetBadgeId(Convert.ToInt64(row["badgeId"]))
+                                                                       .Get();
+            return dataTable.AsEnumerable().Select(RowInDBToNotification).ToList();
         }
 
         public List<ICategory> GetCategoriesModeratedByUser(long userId)
@@ -135,7 +129,7 @@ namespace UBB_SE_2024_Team_42.Repository
             return dataTable.AsEnumerable().Select(BuildUser).ToList();
         }
 
-        public List<IReaction> GetVotesOfPostByPostID(long postId)
+        public List<IReaction> GetReactionsOfPostByPostID(long postId)
         {
             SqlConnection connection = new (sqlConnectionString);
             connection.Open();
@@ -143,18 +137,14 @@ namespace UBB_SE_2024_Team_42.Repository
             SqlDataAdapter dataAdapter = new (command);
             DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
-
-            List<IReaction> voteList = new ();
-            foreach (DataRow row in dataTable.Rows)
-            {
-                voteList.Add(
-                    new Reaction(
-                        Convert.ToInt32(row["value"]),
-                        Convert.ToInt64(row["userId"])));
-            }
             connection.Close();
 
-            return voteList;
+            var reactionFactory = new ReactionFactory();
+            IReaction RowInDBToIReaction(DataRow row) => reactionFactory.NewReaction()
+                                                                                            .SetReacterUserId(Convert.ToInt64(row["userId"]))
+                                                                                            .SetReactionValue(Convert.ToInt32(row["value"]))
+                                                                                            .Get();
+            return dataTable.AsEnumerable().Select(RowInDBToIReaction).ToList();
         }
 
         public List<ICategory> GetAllCategories()
@@ -222,7 +212,7 @@ namespace UBB_SE_2024_Team_42.Repository
                 .SetPostTime(Convert.ToDateTime(row["datePosted"]))
                 .SetEditTime(row["dateOfLastEdit"] == DBNull.Value
                                    ? Convert.ToDateTime(row["datePosted"])
-                                                      : Convert.ToDateTime(row["dateOfLastEdit"]))
+                                   : Convert.ToDateTime(row["dateOfLastEdit"]))
                 .SetVoteList(voteList)
                 .GetQuestion();
         }
@@ -237,6 +227,7 @@ namespace UBB_SE_2024_Team_42.Repository
             dataAdapter.Fill(dataTable);
 
             List<IQuestion> questionList = new ();
+
             foreach (DataRow row in dataTable.Rows)
             {
                 IQuestion question = BuildQuestion(row);
@@ -284,7 +275,7 @@ namespace UBB_SE_2024_Team_42.Repository
                     : Convert.ToDateTime(row["dateOfLastEdit"]);
                 string type = row["type"]?.ToString() ?? string.Empty;
                 string content = row["content"]?.ToString() ?? string.Empty;
-                List<IReaction> votes = GetVotesOfPostByPostID(postId);
+                List<IReaction> votes = GetReactionsOfPostByPostID(postId);
                 PostType postType = type switch
                 {
                     "post" => PostType.TEXT_POST,
@@ -399,7 +390,7 @@ namespace UBB_SE_2024_Team_42.Repository
             connection.Close();
         }
 
-        public List<IPost> GetAnswersOfUser(long userId)
+        public List<Answer> GetAnswersOfUser(long userId)
         {
             SqlConnection connection = new (sqlConnectionString);
             connection.Open();
@@ -407,26 +398,20 @@ namespace UBB_SE_2024_Team_42.Repository
             SqlDataAdapter dataAdapter = new (command);
             DataTable dataTable = new ();
             dataAdapter.Fill(dataTable);
-
-            List<IPost> answerList = new ();
-            foreach (DataRow row in dataTable.Rows)
-            {
-                string type = row["type"]?.ToString() ?? string.Empty;
-                if ((PostType)Enum.Parse(typeof(PostType), type) == PostType.ANSWER)
-                {
-                    answerList.Add(
-                        new Answer(
-                            Convert.ToInt64(row["id"]),
-                            Convert.ToInt64(row["userId"]),
-                            Convert.ToString(row["content"]) ?? string.Empty,
-                            Convert.ToDateTime(row["datePosted"]),
-                            Convert.ToDateTime(row["dateOfLastEdit"]),
-             GetVotesOfPostByPostID(Convert.ToInt64(row["id"]))));
-                }
-            }
             connection.Close();
 
-            return answerList;
+            AnswerFactory answerFactory = new ();
+            bool FilterForAnswers(DataRow row) => (row["type"].ToString() ?? string.Empty) == "answer";
+            Answer RowInDBToAnswer(DataRow row) => answerFactory.NewAnswer()
+                                                                .SetId(Convert.ToInt64(row["id"]))
+                                                                .SetUserId(Convert.ToInt64(row["userId"]))
+                                                                .SetContent(Convert.ToString(row["content"]) ?? string.Empty)
+                                                                .SetDatePosted(Convert.ToDateTime(row["datePosted"]))
+                                                                .SetDateOfLastEdit(Convert.ToDateTime(row["dateOfLastEdit"]))
+                                                                .SetReactions(GetReactionsOfPostByPostID(Convert.ToInt64(row["id"])))
+                                                                .Get();
+
+            return dataTable.AsEnumerable().Where(FilterForAnswers).Select(RowInDBToAnswer).ToList();
         }
 
         public List<IPost> GetCommentsOfUser(long userId)
@@ -455,7 +440,7 @@ namespace UBB_SE_2024_Team_42.Repository
                             Convert.ToString(row["content"]) ?? string.Empty,
                             Convert.ToDateTime(row["datePosted"]),
                             dateOfLastEdit,
-                            GetVotesOfPostByPostID(Convert.ToInt64(row["id"]))));
+                            GetReactionsOfPostByPostID(Convert.ToInt64(row["id"]))));
                 }
             }
             // cam asta s-a intamplat cand codul asta a primit validare la pull request https://www.youtube.com/watch?v=rR4n-0KYeKQ
@@ -489,7 +474,7 @@ namespace UBB_SE_2024_Team_42.Repository
                             Convert.ToString(row["content"]) ?? string.Empty,
                             Convert.ToDateTime(row["datePosted"]),
                             Convert.ToDateTime(row["dateOfLastEdit"]),
-                            GetVotesOfPostByPostID(Convert.ToInt64(row["id"]))));
+                            GetReactionsOfPostByPostID(Convert.ToInt64(row["id"]))));
                 }
             }
             connection.Close();
