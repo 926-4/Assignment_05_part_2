@@ -2,8 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using UBB_SE_2024_Team_42.Domain;
-using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Domain.post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Tag;
 
 namespace UBB_SE_2024_Team_42.GUI
@@ -23,10 +22,10 @@ namespace UBB_SE_2024_Team_42.GUI
             this.manager = manager;
             InitializeComponent();
             Service.Service service = this.manager.Service;
-            // Service service = manager.Service;
+            // Service service = Manager.Service;
             DataContext = this;
-            Comments = new ObservableCollection<IPost>(service.GetRepliesOfPost(question.PostID));
-            Tags = new ObservableCollection<ITag>(service.GetTagsOfQuestion(question.PostID));
+            Comments = new ObservableCollection<IPost>(service.GetRepliesOfPost(question.ID));
+            Tags = new ObservableCollection<ITag>(service.GetTagsOfQuestion(question.ID));
         }
 
         private void Back_Click(object sender, RoutedEventArgs e)

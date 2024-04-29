@@ -2,17 +2,17 @@
 {
     public class Reaction : IReaction
     {
-        public int ReactionValue { get; set; }
-        public long ReacterUserID { get; set; }
+        public int Value { get; set; }
+        public long UserID { get; set; }
         public Reaction(long voterId)
         {
-            ReacterUserID = voterId;
-            ReactionValue = 0;
+            UserID = voterId;
+            Value = 0;
         }
         internal Reaction(int voteValue, long voterID)
         {
-            ReactionValue = voteValue;
-            ReacterUserID = voterID;
+            Value = voteValue;
+            UserID = voterID;
         }
 
         public Reaction()
@@ -21,7 +21,7 @@
 
         public override string ToString()
         {
-            return $"ReactionValue: {ReactionValue}, ReacterUserID: {ReacterUserID}) \n";
+            return $"Value: {Value}, ID: {UserID}) \n";
         }
     }
 }

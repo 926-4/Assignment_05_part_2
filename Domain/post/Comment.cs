@@ -2,11 +2,11 @@
 using UBB_SE_2024_Team_42.Utils;
 using UBB_SE_2024_Team_42.Utils.Functionals;
 
-namespace UBB_SE_2024_Team_42.Domain.Posts
+namespace UBB_SE_2024_Team_42.Domain.Post
 {
-    public class Comment : IPost
+    public class Comment : IComment
     {
-        public long PostID { get; }
+        public long ID { get; set; }
 
         public long UserID { get; set; }
 
@@ -16,20 +16,30 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
-
-        public Comment(long postingUserID, string content)
+        internal Comment()
         {
-            PostID = IDGenerator.RandomLong();
-            UserID = postingUserID;
-            Content = content;
+            ID = IDGenerator.RandomLong();
+            UserID = IDGenerator.RandomLong();
+            Content = string.Empty;
             DatePosted = DateTime.Now;
             DateOfLastEdit = DateTime.Now;
             Reactions = new ();
         }
+        public Comment(long postingUserID, string content)
+        {
+            ID = IDGenerator.RandomLong();
+            UserID = postingUserID;
+            Content = content;
+            DatePosted = DateTime.Now;
+            DateOfLastEdit = DateTime.Now;
+#pragma warning disable IDE0028 // Simplify collection initialization
+            Reactions = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
+        }
 
         internal Comment(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
         {
-            PostID = postID;
+            ID = postID;
             UserID = userID;
             Content = content;
             DatePosted = postTime;
@@ -37,16 +47,9 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Reactions = reactions;
         }
 
-        public Comment()
-        {
-            PostID = IDGenerator.RandomLong();
-            Content = "None";
-            Reactions = new ();
-        }
-
         public override string ToString()
         {
-            return $"Comment {{postID: {PostID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit}) \n"
+            return $"Comment {{postID: {ID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit}) \n"
                 + $"{Content} \n"
                 + $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}}} \n";
         }

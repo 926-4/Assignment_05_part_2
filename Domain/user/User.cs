@@ -9,32 +9,34 @@ namespace UBB_SE_2024_Team_42.Domain.User
 {
     public class User : IUser
     {
-        public long UserID { get; }
-        public string UserName { get; set; }
+        public long ID { get; set; }
+        public string Name { get; set; }
         public List<INotification> NotificationList { get; set; }
         public List<ICategory> CategoriesModeratedList { get; set; }
         public List<IBadge> BadgeList { get; set; }
         public Image? ProfilePicture { get; set; }
         public User()
         {
-            UserID = IDGenerator.RandomLong();
-            UserName = string.Empty;
+            ID = IDGenerator.RandomLong();
+            Name = string.Empty;
+#pragma warning disable IDE0028 // Simplify collection initialization
             NotificationList = new ();
             CategoriesModeratedList = new ();
             BadgeList = new ();
         }
         public User(string username)
         {
-            UserID = IDGenerator.RandomLong();
-            UserName = username;
+            ID = IDGenerator.RandomLong();
+            Name = username;
             NotificationList = new ();
             CategoriesModeratedList = new ();
             BadgeList = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
         }
-        internal User(long userID, string userName, List<INotification> notificationList, List<ICategory> categoriesModeratedList, List<IBadge> badgeList)
+        internal User(long id, string name, List<INotification> notificationList, List<ICategory> categoriesModeratedList, List<IBadge> badgeList)
         {
-            UserID = userID;
-            UserName = userName;
+            ID = id;
+            Name = name;
             NotificationList = notificationList;
             CategoriesModeratedList = categoriesModeratedList;
             BadgeList = badgeList;
@@ -45,7 +47,7 @@ namespace UBB_SE_2024_Team_42.Domain.User
 
         public override string ToString()
         {
-            return $"User(userID: {UserID}, userName: {UserName}) \n" + $"notifications: {ToStringNotificationList()} \n" + $"categoriesModerated: {ToStringCategoryList()} \n" + $"badges: {ToStringBadgeList()} \n";
+            return $"User(id: {ID}, name: {Name}) \n" + $"notifications: {ToStringNotificationList()} \n" + $"categoriesModerated: {ToStringCategoryList()} \n" + $"badges: {ToStringBadgeList()} \n";
         }
     }
 }

@@ -1,16 +1,11 @@
-﻿using UBB_SE_2024_Team_42.Domain.Reactions;
+﻿using UBB_SE_2024_Team_42.Domain.post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Post;
+using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Domain.Posts
 {
-    internal class PostFactory
+    internal partial class PostFactory
     {
-        internal enum PostType
-        {
-            TEXT_POST,
-            QUESTION,
-            ANSWER,
-            COMMENT
-        }
         internal static IPost CreateNewPost(PostType option, long userID, string content)
         {
             return option switch

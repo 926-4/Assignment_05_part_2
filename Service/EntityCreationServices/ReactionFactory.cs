@@ -1,31 +1,33 @@
-﻿namespace UBB_SE_2024_Team_42.Domain.Reactions
+﻿using UBB_SE_2024_Team_42.Domain.Reactions;
+
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class ReactionFactory
     {
-        public Reaction Instance = new ();
+        private Reaction instance = new ();
 
         public ReactionFactory NewReaction()
         {
-            Instance = new ();
+            instance = new ();
             return this;
         }
 
         public ReactionFactory SetReactionValue(int value)
         {
-            Instance.ReactionValue = value;
+            instance.Value = value;
             return this;
         }
 
         public ReactionFactory SetReacterUserId(long userId)
         {
-            Instance.ReacterUserID = userId;
+            instance.UserID = userId;
             return this;
         }
 
         public Reaction Get()
         {
-            Reaction returnValue = Instance;
-            Instance = new ();
+            Reaction returnValue = instance;
+            instance = new ();
             return returnValue;
         }
     }

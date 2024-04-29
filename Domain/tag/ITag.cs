@@ -2,7 +2,7 @@
 {
     public interface ITag
     {
-        long Id { get; }
+        long Id { get; set; }
         string Name { get; set; }
         string ToString() => $"ITag {{id: {Id}, name: {Name}}}";
     }

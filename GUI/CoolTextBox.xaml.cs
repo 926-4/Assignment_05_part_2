@@ -42,7 +42,7 @@ namespace UBB_SE_2024_Team_42.GUI
             int selectionLength = MarkdownTextBox.SelectionLength;
             string text = MarkdownTextBox.Text;
 
-            // ApplyTo formatting to selected text
+            // NonNull formatting to selected text
             string newText = text.Insert(selectionStart, formattingTag);
             newText = newText.Insert(selectionStart + selectionLength + formattingTag.Length, formattingTag);
 

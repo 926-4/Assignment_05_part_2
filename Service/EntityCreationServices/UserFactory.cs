@@ -1,41 +1,42 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Notification;
+using UBB_SE_2024_Team_42.Domain.User;
 
-namespace UBB_SE_2024_Team_42.Domain.User
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class UserFactory
     {
-        public User Instance = new ();
+        private User instance = new ();
         public UserFactory NewUser()
         {
-            Instance = new ();
+            instance = new ();
             return this;
         }
         public UserFactory SetName(string name)
         {
-            Instance.UserName = name;
+            instance.Name = name;
             return this;
         }
         public UserFactory SetNotificationList(List<INotification> notifications)
         {
-            Instance.NotificationList = notifications;
+            instance.NotificationList = notifications;
             return this;
         }
         public UserFactory SetCategoriesModeratedList(List<ICategory> categories)
         {
-            Instance.CategoriesModeratedList = categories;
+            instance.CategoriesModeratedList = categories;
             return this;
         }
         public UserFactory SetBadgeList(List<IBadge> badges)
         {
-            Instance.BadgeList = badges;
+            instance.BadgeList = badges;
             return this;
         }
         public User Get()
         {
-            User returnValue = Instance;
-            Instance = new ();
+            User returnValue = instance;
+            instance = new ();
             return returnValue;
         }
     }

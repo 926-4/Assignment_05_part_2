@@ -1,45 +1,46 @@
-﻿using UBB_SE_2024_Team_42.Domain.Reactions;
+﻿using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Domain.Reactions;
 
-namespace UBB_SE_2024_Team_42.Domain.Posts
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class TextPostFactory
     {
-        public TextPost Instance = new ();
+        private TextPost instance = new ();
 
         public TextPostFactory NewAnswer()
         {
-            Instance = new ();
+            instance = new ();
             return this;
         }
         public TextPostFactory SetUserId(long userId)
         {
-            Instance.UserID = userId;
+            instance.UserID = userId;
             return this;
         }
         public TextPostFactory SetContent(string content)
         {
-            Instance.Content = content;
+            instance.Content = content;
             return this;
         }
         public TextPostFactory SetDatePosted(DateTime datePosted)
         {
-            Instance.DatePosted = datePosted;
+            instance.DatePosted = datePosted;
             return this;
         }
         public TextPostFactory SetDateOfLastEdit(DateTime dateOfLastEdit)
         {
-            Instance.DateOfLastEdit = dateOfLastEdit;
+            instance.DateOfLastEdit = dateOfLastEdit;
             return this;
         }
         public TextPostFactory SetReactions(List<IReaction> reactions)
         {
-            Instance.Reactions = reactions;
+            instance.Reactions = reactions;
             return this;
         }
         public TextPost Get()
         {
-            TextPost textPost = Instance;
-            Instance = new ();
+            TextPost textPost = instance;
+            instance = new ();
             return textPost;
         }
     }

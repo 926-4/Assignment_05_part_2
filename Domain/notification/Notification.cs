@@ -4,13 +4,13 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
 {
     public class Notification : INotification
     {
-        public long NotificationId { get; }
+        public long ID { get; set; }
         public string Text { get; set; }
         public long? PostID { get; set; }
         public long? BadgeID { get; set; }
         internal Notification(NotificationOption option, long referenceID)
         {
-            NotificationId = IDGenerator.RandomLong();
+            ID = IDGenerator.RandomLong();
             switch (option)
             {
                 case NotificationOption.NONE:
@@ -31,7 +31,7 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
 
         internal Notification(long newNotficationID, long? newPostID, long? newBadgeID)
         {
-            NotificationId = newNotficationID;
+            ID = newNotficationID;
             PostID = newPostID;
             BadgeID = newBadgeID;
             Text = newPostID != null
@@ -43,13 +43,13 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
 
         public Notification()
         {
-            NotificationId = IDGenerator.RandomLong();
+            ID = IDGenerator.RandomLong();
             Text = "None";
         }
 
         public override string ToString()
         {
-            return $"Notification{{notificationID: {NotificationId}, postID: {PostID}, badgeID: {BadgeID}\n"
+            return $"Notification{{notificationID: {ID}, postID: {PostID}, badgeID: {BadgeID}\n"
                 + $"notificationText: {Text}}} \n";
         }
     }

@@ -2,32 +2,37 @@
 {
     internal class NotificationFactory
     {
-        public Notification Instance = new ();
+        private Notification instance = new ();
 
         public NotificationFactory NewNotification()
         {
-            Instance = new ();
+            instance = new ();
+            return this;
+        }
+        public NotificationFactory SetID(long id)
+        {
+            instance.ID = id;
             return this;
         }
         public NotificationFactory SetText(string text)
         {
-            Instance.Text = text;
+            instance.Text = text;
             return this;
         }
-        public NotificationFactory SetPostId(long postId)
+        public NotificationFactory SetPostID(long postId)
         {
-            Instance.PostID = postId;
+            instance.PostID = postId;
             return this;
         }
         public NotificationFactory SetBadgeId(long badgeId)
         {
-            Instance.BadgeID = badgeId;
+            instance.BadgeID = badgeId;
             return this;
         }
         public Notification Get()
         {
-            Notification returnValue = Instance;
-            Instance = new ();
+            Notification returnValue = instance;
+            instance = new ();
             return returnValue;
         }
     }

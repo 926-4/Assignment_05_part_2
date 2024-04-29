@@ -2,7 +2,7 @@
 {
     public interface IReaction
     {
-        long ReacterUserID { get; }
-        int ReactionValue { get; set; }
+        long UserID { get; set; }
+        int Value { get; set; }
     }
 }

@@ -15,16 +15,16 @@ namespace UBB_SE_2024_Team_42.Domain.Badge
             Description = "None provided";
             Image = null;
         }
-        public Badge(long newBadgeID, string newBadgeName, string newBadgeDescription, Image newImage)
+        public Badge(long id, string name, string description, Image image)
         {
-            ID = newBadgeID;
-            Name = newBadgeName;
-            Description = newBadgeDescription;
-            Image = newImage;
+            ID = id;
+            Name = name;
+            Description = description;
+            Image = image;
         }
         public override string ToString()
         {
-            return $"Badge(badgeID: {ID}, badgeName: {Name}, image: {Image}) \n"
+            return $"Badge(id: {ID}, badgeName: {Name}, image: {Image}) \n"
                 + $"badgeDescription: {Description} \n";
         }
     }
