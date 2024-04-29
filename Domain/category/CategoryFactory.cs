@@ -9,6 +9,11 @@
             Instance = new ();
             return this;
         }
+        public CategoryFactory SetCategoryID(long categoryID)
+        {
+            Instance.ID = categoryID;
+            return this;
+        }
         public CategoryFactory SetCategoryName(string categoryName)
         {
             Instance.Name = categoryName;
