@@ -27,6 +27,16 @@ namespace UBB_SE_2024_Team_42.Service
             return repository.GetUser(userId);
         }
 
+        public void UpdatePost(IPost oldPost, IPost newPost)
+        {
+            repository.UpdatePost(oldPost, newPost);
+        }
+
+        public IQuestion GetQuestion(long userId)
+        {
+            return repository.GetQuestion(userId);
+        }
+
         public List<IQuestion> GetAllQuestions()
         {
             return repository.GetAllQuestions().ToList();

@@ -16,12 +16,12 @@ namespace UBB_SE_2024_Team_42
     /// </summary>
     public partial class MainWindow : Window
     {
-        public WindowManager Manager;
+        public Service.Service Service;
         public MainWindow()
         {
-            Manager = new WindowManager();
+            this.Service = new Service.Service(new Repository.Repository());
             InitializeComponent();
-            MainFrame.Navigate(new SearchQuestionPage(Manager));
+            MainFrame.Navigate(new SearchQuestionPage(Service));
         }
     }
 }

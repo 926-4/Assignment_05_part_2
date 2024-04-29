@@ -25,7 +25,7 @@ namespace UBB_SE_2024_Team_42.GUI
             post.DateOfLastEdit = DateTime.Now;
             // This is not fine leaving this here until someone fixes
             TextPost newPost = new (post.UserID, text);
-            manager.Repository.UpdatePost(post, newPost);
+            service.UpdatePost(post, newPost);
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)

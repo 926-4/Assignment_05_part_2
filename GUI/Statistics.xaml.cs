@@ -22,7 +22,7 @@ namespace UBB_SE_2024_Team_42.GUI
         {
             DateTime currentDate = DateTime.Now;
             DateTime dateSevenDaysAgo = currentDate.AddDays(-7);
-            List<IQuestion> questionsWithinLast7Days = manager.Repository.GetAllQuestions()
+            List<IQuestion> questionsWithinLast7Days = service.GetAllQuestions()
                 .Where(question => question.DatePosted >= dateSevenDaysAgo && question.DatePosted <= currentDate)
                 .ToList();
 
@@ -41,7 +41,7 @@ namespace UBB_SE_2024_Team_42.GUI
             DateTime firstDayOfMonth = new (currentDate.Year, currentDate.Month, 1);
             DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 
-            List<IQuestion> questionsAnsweredThisMonth = manager.Repository.GetAllQuestions()
+            List<IQuestion> questionsAnsweredThisMonth = service.GetAllQuestions()
                 .Where(question => question.DatePosted >= firstDayOfMonth && question.DatePosted <= lastDayOfMonth)
                 .ToList();
 
@@ -55,7 +55,7 @@ namespace UBB_SE_2024_Team_42.GUI
             DateTime firstDayOfLastYear = new (currentDate.Year - 1, 1, 1);
             DateTime lastDayOfLastYear = new (currentDate.Year - 1, 12, 31);
 
-            List<IQuestion> questionsAnsweredLastYear = manager.Repository.GetAllQuestions()
+            List<IQuestion> questionsAnsweredLastYear = service.GetAllQuestions()
                 .Where(question => question.DatePosted >= firstDayOfLastYear && question.DatePosted <= lastDayOfLastYear)
                 .ToList();
 

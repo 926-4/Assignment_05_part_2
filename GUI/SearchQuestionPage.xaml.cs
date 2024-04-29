@@ -123,13 +123,13 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void OpenProfile_Click(object sender, RoutedEventArgs e)
         {
-            MiniProfile miniProfile = new (manager);
+            MiniProfile miniProfile = new (service);
             miniProfile.Show();
         }
 
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-            Statistics statistics = new (manager);
+            Statistics statistics = new (service);
             statistics.Show();
         }
     }
