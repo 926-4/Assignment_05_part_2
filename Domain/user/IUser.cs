@@ -11,7 +11,7 @@ namespace UBB_SE_2024_Team_42.Domain.User
         List<ICategory> CategoriesModeratedList { get; set; }
         List<INotification> NotificationList { get; set; }
         Image? ProfilePicture { get; set; }
-        long ID { get; }
+        long ID { get; set; }
         string Name { get; set; }
     }
 }

@@ -2,11 +2,11 @@
 using UBB_SE_2024_Team_42.Utils;
 using UBB_SE_2024_Team_42.Utils.Functionals;
 
-namespace UBB_SE_2024_Team_42.Domain.Posts
+namespace UBB_SE_2024_Team_42.Domain.Post
 {
-    public class Comment : IPost
+    public class Comment : IComment
     {
-        public long ID { get; set;  }
+        public long ID { get; set; }
 
         public long UserID { get; set; }
 
@@ -16,7 +16,15 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
-
+        internal Comment()
+        {
+            ID = IDGenerator.RandomLong();
+            UserID = IDGenerator.RandomLong();
+            Content = string.Empty;
+            DatePosted = DateTime.Now;
+            DateOfLastEdit = DateTime.Now;
+            Reactions = new ();
+        }
         public Comment(long postingUserID, string content)
         {
             ID = IDGenerator.RandomLong();
@@ -37,15 +45,6 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             DatePosted = postTime;
             DateOfLastEdit = editTime;
             Reactions = reactions;
-        }
-
-        public Comment()
-        {
-            ID = IDGenerator.RandomLong();
-            Content = "None";
-#pragma warning disable IDE0028 // Simplify collection initialization
-            Reactions = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
         }
 
         public override string ToString()

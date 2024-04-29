@@ -1,12 +1,14 @@
-﻿namespace UBB_SE_2024_Team_42.Domain.Category
+﻿using UBB_SE_2024_Team_42.Domain.Category;
+
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class CategoryFactory
     {
-        public Category Instance = new ();
+        public Category Instance = new();
 
         public CategoryFactory NewCategory()
         {
-            Instance = new ();
+            Instance = new();
             return this;
         }
         public CategoryFactory SetCategoryID(long categoryID)
@@ -22,7 +24,7 @@
         public Category Get()
         {
             Category returnValue = Instance;
-            Instance = new ();
+            Instance = new();
             return returnValue;
         }
     }

@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using UBB_SE_2024_Team_42.Domain;
+using UBB_SE_2024_Team_42.Domain.post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
 
 namespace UBB_SE_2024_Team_42.GUI

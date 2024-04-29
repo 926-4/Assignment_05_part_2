@@ -1,4 +1,5 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Utils.Functionals;
@@ -46,15 +47,6 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Tags = new ();
 #pragma warning restore IDE0028 // Simplify collection initialization
         }
-        public Question(long userID, string content, ICategory category)
-        {
-            post = new TextPost(userID, content);
-            Title = string.Empty;
-            Category = category;
-#pragma warning disable IDE0028 // Simplify collection initialization
-            Tags = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-        }
         public Question(long userID, string content, ICategory category, string title)
         {
             post = new TextPost(userID, content);
@@ -73,13 +65,6 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 #pragma warning disable IDE0028 // Simplify collection initialization
             Tags = new ();
 #pragma warning restore IDE0028 // Simplify collection initialization
-        }
-        public Question(string title, ICategory category, List<ITag> tags, long userID, string content)
-        {
-            post = new TextPost(userID, content);
-            Title = title;
-            Category = category;
-            Tags = tags;
         }
         public Question(long postID,
                         string title,

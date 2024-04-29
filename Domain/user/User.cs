@@ -9,7 +9,7 @@ namespace UBB_SE_2024_Team_42.Domain.User
 {
     public class User : IUser
     {
-        public long ID { get; }
+        public long ID { get; set; }
         public string Name { get; set; }
         public List<INotification> NotificationList { get; set; }
         public List<ICategory> CategoriesModeratedList { get; set; }
@@ -21,25 +21,15 @@ namespace UBB_SE_2024_Team_42.Domain.User
             Name = string.Empty;
 #pragma warning disable IDE0028 // Simplify collection initialization
             NotificationList = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-#pragma warning disable IDE0028 // Simplify collection initialization
             CategoriesModeratedList = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-#pragma warning disable IDE0028 // Simplify collection initialization
             BadgeList = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
         }
         public User(string username)
         {
             ID = IDGenerator.RandomLong();
             Name = username;
-#pragma warning disable IDE0028 // Simplify collection initialization
             NotificationList = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-#pragma warning disable IDE0028 // Simplify collection initialization
             CategoriesModeratedList = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-#pragma warning disable IDE0028 // Simplify collection initialization
             BadgeList = new ();
 #pragma warning restore IDE0028 // Simplify collection initialization
         }

@@ -1,66 +1,68 @@
 ﻿using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
 
-namespace UBB_SE_2024_Team_42.Domain.Posts
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class QuestionFactory
     {
-        public Question? Instance;
+        private IQuestion instance = new Question();
         public QuestionFactory NewQuestion()
         {
-            Instance = new ();
+            instance = new Question();
             return this;
         }
         public QuestionFactory SetId(long id)
         {
-            Instance.ID = id;
+            instance.ID = id;
             return this;
         }
         public QuestionFactory SetTitle(string title)
         {
-            Instance.Title = title;
+            instance.Title = title;
             return this;
         }
         public QuestionFactory SetCategory(ICategory category)
         {
-            Instance.Category = category;
+            instance.Category = category;
             return this;
         }
         public QuestionFactory SetTags(List<ITag> tags)
         {
-            Instance.Tags = tags;
+            instance.Tags = tags;
             return this;
         }
         public QuestionFactory SetUserId(long userId)
         {
-            Instance.UserID = userId;
+            instance.UserID = userId;
             return this;
         }
         public QuestionFactory SetContent(string content)
         {
-            Instance.Content = content;
+            instance.Content = content;
             return this;
         }
         public QuestionFactory SetPostTime(DateTime postTime)
         {
-            Instance.DatePosted = postTime;
+            instance.DatePosted = postTime;
             return this;
         }
         public QuestionFactory SetEditTime(DateTime editTime)
         {
-            Instance.DateOfLastEdit = editTime;
+            instance.DateOfLastEdit = editTime;
             return this;
         }
-        public QuestionFactory SetVoteList(List<Reactions.IReaction> reactions)
+        public QuestionFactory SetVoteList(List<IReaction> reactions)
         {
-            Instance.Reactions = reactions;
+            instance.Reactions = reactions;
             return this;
         }
-        public Question GetQuestion()
+        public IQuestion GetQuestion()
         {
-            Question returnValue = Instance;
-            Instance = null;
+            IQuestion returnValue = instance;
+            instance = new Question();
             return returnValue;
         }
     }

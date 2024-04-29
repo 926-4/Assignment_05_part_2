@@ -1,6 +1,7 @@
-﻿using UBB_SE_2024_Team_42.Domain.Reactions;
+﻿using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Domain.Reactions;
 
-namespace UBB_SE_2024_Team_42.Domain.Posts
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class AnswerFactory
     {

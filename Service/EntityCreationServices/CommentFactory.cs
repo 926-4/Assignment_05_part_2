@@ -1,14 +1,20 @@
-﻿using UBB_SE_2024_Team_42.Domain.Reactions;
+﻿using UBB_SE_2024_Team_42.Domain.Post;
+using UBB_SE_2024_Team_42.Domain.Reactions;
 
-namespace UBB_SE_2024_Team_42.Domain.Posts
+namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class CommentFactory
     {
-        private Comment instance = new ();
+        private IComment instance = new Comment();
 
-        public CommentFactory NewAnswer()
+        public CommentFactory NewComment()
         {
-            instance = new ();
+            instance = new Comment();
+            return this;
+        }
+        public CommentFactory SetId(long id)
+        {
+            instance.ID = id;
             return this;
         }
         public CommentFactory SetUserId(long userId)
@@ -36,10 +42,10 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             instance.Reactions = reactions;
             return this;
         }
-        public Comment Get()
+        public IComment Get()
         {
-            Comment comment = instance;
-            instance = new ();
+            IComment comment = instance;
+            instance = new Comment();
             return comment;
         }
     }
