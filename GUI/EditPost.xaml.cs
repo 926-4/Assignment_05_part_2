@@ -10,10 +10,10 @@ namespace UBB_SE_2024_Team_42.GUI
     public partial class EditPost : Window
     {
         private readonly IPost post;
-        private readonly WindowManager manager;
-        public EditPost(WindowManager manager, IPost post)
+        private readonly Service.Service service;
+        public EditPost(Service.Service service, IPost post)
         {
-            this.manager = manager;
+            this.service = service;
             this.post = post;
             InitializeComponent();
         }
@@ -25,7 +25,7 @@ namespace UBB_SE_2024_Team_42.GUI
             post.DateOfLastEdit = DateTime.Now;
             // This is not fine leaving this here until someone fixes
             TextPost newPost = new (post.UserID, text);
-            manager.Repository.UpdatePost(post, newPost);
+            service.UpdatePost(post, newPost);
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)

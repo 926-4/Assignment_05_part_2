@@ -8,12 +8,12 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class SettingsPop_Up : Window
     {
-        private readonly WindowManager manager;
+        private Service.Service service;
         private readonly long id;
         private readonly bool isQuestion;
-        public SettingsPop_Up(WindowManager manager, long question_id, bool isQuestion)
+        public SettingsPop_Up(Service.Service service, long question_id, bool isQuestion)
         {
-            this.manager = manager;
+            this.service = service;
             id = question_id;
             this.isQuestion = isQuestion;
             InitializeComponent();
@@ -21,8 +21,8 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void Edit_Button_Click(object sender, RoutedEventArgs e)
         {
-            IQuestion question = manager.Repository.GetQuestion(id);
-            EditPost window = new (manager, question);
+            IQuestion question = service.GetQuestion(id);
+            EditPost window = new (service, question);
             Close();
             window.Show();
         }

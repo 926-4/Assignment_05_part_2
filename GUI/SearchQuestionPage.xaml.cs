@@ -14,13 +14,11 @@ namespace UBB_SE_2024_Team_42.GUI
         public ObservableCollection<IQuestion> Posts { get; set; }
         public ObservableCollection<ICategory> Categories { get; set; }
         private readonly Service.Service service;
-        private readonly WindowManager manager;
-        public SearchQuestionPage(WindowManager manager)
+        public SearchQuestionPage(Service.Service service)
         {
             InitializeComponent();
-            service = manager.Service;
+            this.service = service;
             Posts = new ObservableCollection<IQuestion>(service.SortQuestionsByDateDescending());
-            this.manager = manager;
             Categories = new ObservableCollection<ICategory>(service.GetAllCategories());
             DataContext = this; // Set DataContext to enable data binding
         }
@@ -115,23 +113,23 @@ namespace UBB_SE_2024_Team_42.GUI
         private void OnQuestion_Click(object sender, RoutedEventArgs e)
         {
             IQuestion myQuestion = (IQuestion)((Button)sender).DataContext;
-            SearchFrame.Navigate(new ViewQuestionPage(manager, myQuestion));
+            SearchFrame.Navigate(new ViewQuestionPage(service, myQuestion));
         }
 
         private void AskQuestion_Click(object sender, RoutedEventArgs e)
         {
-            SearchFrame.Navigate(new CreateQuestionPage(manager));
+            SearchFrame.Navigate(new CreateQuestionPage(service));
         }
 
         private void OpenProfile_Click(object sender, RoutedEventArgs e)
         {
-            MiniProfile miniProfile = new (manager);
+            MiniProfile miniProfile = new (service);
             miniProfile.Show();
         }
 
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-            Statistics statistics = new (manager);
+            Statistics statistics = new (service);
             statistics.Show();
         }
     }

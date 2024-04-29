@@ -15,15 +15,14 @@ namespace UBB_SE_2024_Team_42.GUI
         public ObservableCollection<IPost> Answers { get; set; }
 
         private readonly Service.Service service;
-        private readonly WindowManager manager;
 
-        public MiniProfile(WindowManager manager)
+        public MiniProfile(Service.Service service)
         {
             InitializeComponent();
-            service = manager.Service;
-            this.manager = manager;
+            this.service = service;
             // sorry for what's coming
             // we're getting the profile of the user with id 3
+            // ?? idk what is this shit here so i'm sure i won't disturb it's natural habitat - Boti
             Answers = new ObservableCollection<IPost>(service.GetCommentsOfUser(3));
             Questions = new ObservableCollection<IQuestion>(service.GetQuestionsOfUser(1));
             DataContext = this; // Set DataContext to enable data binding

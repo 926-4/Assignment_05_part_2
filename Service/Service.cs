@@ -27,6 +27,16 @@ namespace UBB_SE_2024_Team_42.Service
             return repository.GetUser(userId);
         }
 
+        public void UpdatePost(IPost oldPost, IPost newPost)
+        {
+            repository.UpdatePost(oldPost, newPost);
+        }
+
+        public IQuestion GetQuestion(long userId)
+        {
+            return repository.GetQuestion(userId);
+        }
+
         public List<IQuestion> GetAllQuestions()
         {
             return repository.GetAllQuestions().ToList();
@@ -229,6 +239,40 @@ namespace UBB_SE_2024_Team_42.Service
         public List<IBadge> GetBadgesOfUser(long userId)
         {
             return repository.GetBadgesOfUser(userId).ToList();
+        }
+        public int FilterQuestionsByLast7Days()
+        {
+            List<IQuestion> questionsWithinLast7Days = GetAllQuestions()
+                .Where(question => question.DatePosted >= DateTime.Now.AddDays(-7) && question.DatePosted <= DateTime.Now)
+                .ToList();
+
+            return questionsWithinLast7Days.Count;
+        }
+
+        public int FilterQuestionsAnsweredThisMonth()
+        {
+            DateTime currentDate = DateTime.Now;
+            DateTime firstDayOfMonth = new (currentDate.Year, currentDate.Month, 1);
+            DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+            List<IQuestion> questionsAnsweredThisMonth = GetAllQuestions()
+                .Where(question => question.DatePosted >= firstDayOfMonth && question.DatePosted <= lastDayOfMonth)
+                .ToList();
+
+            return questionsAnsweredThisMonth.Count;
+        }
+
+        public int FilterQuestionsAnsweredLastYear()
+        {
+            DateTime currentDate = DateTime.Now;
+            DateTime firstDayOfLastYear = new (currentDate.Year - 1, 1, 1);
+            DateTime lastDayOfLastYear = new (currentDate.Year - 1, 12, 31);
+
+            List<IQuestion> questionsAnsweredLastYear = GetAllQuestions()
+                .Where(question => question.DatePosted >= firstDayOfLastYear && question.DatePosted <= lastDayOfLastYear)
+                .ToList();
+
+            return questionsAnsweredLastYear.Count;
         }
     }
 }
