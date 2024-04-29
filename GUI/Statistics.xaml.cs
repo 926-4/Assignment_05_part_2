@@ -8,11 +8,11 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class Statistics : Window
     {
-        private readonly WindowManager manager;
-        public Statistics(WindowManager manager)
+        private readonly Service.Service service;
+        public Statistics(Service.Service service)
         {
             InitializeComponent();
-            this.manager = manager;
+            this.service = service;
             ThisWeek.Text = FilterQuestionsByLast7Days().ToString();
             ThisMonth.Text = FilterQuestionsAnsweredThisMonth().ToString();
             ThisYear.Text = FilterQuestionsAnsweredLastYear().ToString();

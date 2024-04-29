@@ -10,14 +10,14 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class CreateQuestionPage : Page
     {
-        private readonly WindowManager manager;
+        private readonly Service.Service service;
         public ObservableCollection<ICategory> Categories { get; set; }
 
-        public CreateQuestionPage(WindowManager manager)
+        public CreateQuestionPage(Service.Service service)
         {
             InitializeComponent();
-            this.manager = manager;
-            Categories = new ObservableCollection<ICategory>(manager.Service.GetAllCategories());
+            this.service = service;
+            Categories = new ObservableCollection<ICategory>(service.GetAllCategories());
             DataContext = this;
         }
 
@@ -31,8 +31,8 @@ namespace UBB_SE_2024_Team_42.GUI
             string content = ContentBox.GetText();
             Category category = (Category)CategoryBox1.SelectedItem;
 
-            manager.Service.AddQuestion(title, content, category);
-            CreateQuestionFrame.Navigate(new SearchQuestionPage(manager));
+            service.AddQuestion(title, content, category);
+            CreateQuestionFrame.Navigate(new SearchQuestionPage(service));
             DataContext = this;
         }
 

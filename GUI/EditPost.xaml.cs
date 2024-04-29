@@ -10,10 +10,10 @@ namespace UBB_SE_2024_Team_42.GUI
     public partial class EditPost : Window
     {
         private readonly IPost post;
-        private readonly WindowManager manager;
-        public EditPost(WindowManager manager, IPost post)
+        private readonly Service.Service service;
+        public EditPost(Service.Service service, IPost post)
         {
-            this.manager = manager;
+            this.service = service;
             this.post = post;
             InitializeComponent();
         }
