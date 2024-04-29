@@ -5,11 +5,11 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
     internal class TextPostFactory
     {
-        private TextPost instance = new();
+        private TextPost instance = new ();
 
         public TextPostFactory NewAnswer()
         {
-            instance = new();
+            instance = new ();
             return this;
         }
         public TextPostFactory SetUserId(long userId)
@@ -40,7 +40,7 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         public TextPost Get()
         {
             TextPost textPost = instance;
-            instance = new();
+            instance = new ();
             return textPost;
         }
     }
