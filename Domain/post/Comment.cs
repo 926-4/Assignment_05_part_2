@@ -24,7 +24,9 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Content = content;
             DatePosted = DateTime.Now;
             DateOfLastEdit = DateTime.Now;
+#pragma warning disable IDE0028 // Simplify collection initialization
             Reactions = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
         }
 
         internal Comment(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
@@ -41,7 +43,9 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         {
             ID = IDGenerator.RandomLong();
             Content = "None";
+#pragma warning disable IDE0028 // Simplify collection initialization
             Reactions = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
         }
 
         public override string ToString()

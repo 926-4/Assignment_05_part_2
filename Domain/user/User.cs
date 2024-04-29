@@ -19,17 +19,29 @@ namespace UBB_SE_2024_Team_42.Domain.User
         {
             ID = IDGenerator.RandomLong();
             Name = string.Empty;
+#pragma warning disable IDE0028 // Simplify collection initialization
             NotificationList = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0028 // Simplify collection initialization
             CategoriesModeratedList = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0028 // Simplify collection initialization
             BadgeList = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
         }
         public User(string username)
         {
             ID = IDGenerator.RandomLong();
             Name = username;
+#pragma warning disable IDE0028 // Simplify collection initialization
             NotificationList = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0028 // Simplify collection initialization
             CategoriesModeratedList = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
+#pragma warning disable IDE0028 // Simplify collection initialization
             BadgeList = new ();
+#pragma warning restore IDE0028 // Simplify collection initialization
         }
         internal User(long id, string name, List<INotification> notificationList, List<ICategory> categoriesModeratedList, List<IBadge> badgeList)
         {
