@@ -7,6 +7,7 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Domain.User;
 using UBB_SE_2024_Team_42.Repository;
+using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 using UBB_SE_2024_Team_42.Utils;
 using UBB_SE_2024_Team_42.Utils.Functionals;
 
@@ -118,7 +119,7 @@ namespace UBB_SE_2024_Team_42.Service
             List<IQuestion> listOfQuestions = currentQuestions;
             List<IQuestion> sortedListOfQuestions;
             void ProcessQuestion(IQuestion question)
-                => hash[question] = StreamProcessor<IPost, IPost>.FilterCollection(repository.GetRepliesOfPost(question.ID), Filters.IPostIsAnswer).Count();
+                => hash[question] = StreamProcessor<IPost, IPost>.FilterCollection(repository.GetRepliesOfPost(question.ID), Filters.IPostIsIAnswer).Count();
             listOfQuestions.ForEach(ProcessQuestion);
             var sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
             sortedListOfQuestions = sortedMap.Keys.ToList();
@@ -181,7 +182,7 @@ namespace UBB_SE_2024_Team_42.Service
         public void AddQuestion(string title, string content, Category category)
         {
             long userID = IDGenerator.RandomLong();
-            Question question = new (userID, content, category, title);
+            IQuestion question = new QuestionFactory().Begin().SetUserId(userID).SetContent(content).SetCategory(category).SetTitle(title).End();
             repository.AddQuestion(question);
         }
 

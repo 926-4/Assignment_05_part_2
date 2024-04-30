@@ -19,7 +19,7 @@ namespace UBB_SE_2024_Team_42
         public Service.Service Service;
         public MainWindow()
         {
-            this.Service = new Service.Service(new Repository.Repository());
+            this.Service = new Service.Service(new Repository.TSQLRepository());
             InitializeComponent();
             MainFrame.Navigate(new SearchQuestionPage(Service));
         }

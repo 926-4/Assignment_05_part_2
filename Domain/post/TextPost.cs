@@ -24,20 +24,9 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
             Reactions = new ();
 #pragma warning restore IDE0028 // Simplify collection initialization
         }
-
-        internal TextPost(long postID, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
-        {
-            ID = postID;
-            UserID = userID;
-            Content = content;
-            DatePosted = postTime;
-            DateOfLastEdit = editTime;
-            Reactions = reactions;
-        }
-
         public TextPost()
         {
-            ID = IDGenerator.RandomLong();
+            ID = IDGenerator.Default();
             Content = "None";
 #pragma warning disable IDE0028 // Simplify collection initialization
             Reactions = new ();

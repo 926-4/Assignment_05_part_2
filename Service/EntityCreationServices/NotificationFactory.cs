@@ -11,6 +11,11 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
             instance.ID = id;
             return this;
         }
+        public NotificationFactory SetUserID(long userID)
+        {
+            instance.UserID = userID;
+            return this;
+        }
         public NotificationFactory SetText(string text)
         {
             instance.Text = text;

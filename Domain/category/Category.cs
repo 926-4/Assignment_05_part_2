@@ -8,13 +8,8 @@ namespace UBB_SE_2024_Team_42.Domain.Category
         public string Name { get; set; }
         public Category()
         {
-            ID = IDGenerator.RandomLong();
+            ID = IDGenerator.Default();
             Name = "Unnamed category";
-        }
-        internal Category(long id, string name)
-        {
-            ID = id;
-            Name = name;
         }
 
         public override string ToString()

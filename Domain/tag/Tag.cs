@@ -8,13 +8,8 @@ namespace UBB_SE_2024_Team_42.Domain.Tag
         public string Name { get; set; }
         public Tag()
         {
-            Id = IDGenerator.RandomLong();
+            Id = IDGenerator.Default();
             Name = "None";
-        }
-        internal Tag(long newTagId, string newTagName)
-        {
-            Id = newTagId;
-            Name = newTagName;
         }
         public override string ToString() => $"Tag {{id: {Id}, name: {Name}}}";
     }

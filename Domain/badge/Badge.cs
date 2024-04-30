@@ -10,17 +10,10 @@ namespace UBB_SE_2024_Team_42.Domain.Badge
         public Image? Image { get; set; }
         public Badge()
         {
-            ID = IDGenerator.RandomLong();
+            ID = IDGenerator.Default();
             Name = "New Badge";
             Description = "None provided";
             Image = null;
-        }
-        public Badge(long id, string name, string description, Image image)
-        {
-            ID = id;
-            Name = name;
-            Description = description;
-            Image = image;
         }
         public override string ToString()
         {

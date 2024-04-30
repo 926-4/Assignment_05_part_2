@@ -18,31 +18,9 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
 
-        public Answer(long userID, string content)
-        {
-            ID = IDGenerator.RandomLong();
-            UserID = userID;
-            Content = content;
-            DatePosted = DateTime.Now;
-            DateOfLastEdit = DateTime.Now;
-#pragma warning disable IDE0028 // Simplify collection initialization
-            Reactions = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-        }
-
-        internal Answer(long id, long userID, string content, DateTime postTime, DateTime editTime, List<IReaction> reactions)
-        {
-            ID = id;
-            UserID = userID;
-            Content = content;
-            DatePosted = postTime;
-            DateOfLastEdit = editTime;
-            Reactions = reactions;
-        }
-
         public Answer()
         {
-            ID = IDGenerator.RandomLong();
+            ID = IDGenerator.Default();
             Content = "None";
 #pragma warning disable IDE0028 // Simplify collection initialization
             Reactions = new ();

@@ -17,29 +17,11 @@ namespace UBB_SE_2024_Team_42.Domain.User
         public Image? ProfilePicture { get; set; }
         public User()
         {
-            ID = IDGenerator.RandomLong();
+            ID = IDGenerator.Default();
             Name = string.Empty;
-#pragma warning disable IDE0028 // Simplify collection initialization
             NotificationList = new ();
             CategoriesModeratedList = new ();
             BadgeList = new ();
-        }
-        public User(string username)
-        {
-            ID = IDGenerator.RandomLong();
-            Name = username;
-            NotificationList = new ();
-            CategoriesModeratedList = new ();
-            BadgeList = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-        }
-        internal User(long id, string name, List<INotification> notificationList, List<ICategory> categoriesModeratedList, List<IBadge> badgeList)
-        {
-            ID = id;
-            Name = name;
-            NotificationList = notificationList;
-            CategoriesModeratedList = categoriesModeratedList;
-            BadgeList = badgeList;
         }
         private string ToStringNotificationList() => CollectionStringifier<INotification>.ApplyTo(NotificationList);
         private string ToStringCategoryList() => CollectionStringifier<ICategory>.ApplyTo(CategoriesModeratedList);

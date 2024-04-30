@@ -37,51 +37,6 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
         {
             get => post.Reactions; set { post.Reactions = value; }
         }
-
-        public Question(long userID, string content)
-        {
-            post = new TextPost(userID, content);
-            Title = string.Empty;
-            Category = null;
-#pragma warning disable IDE0028 // Simplify collection initialization
-            Tags = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-        }
-        public Question(long userID, string content, ICategory category, string title)
-        {
-            post = new TextPost(userID, content);
-            Title = title;
-            Category = category;
-#pragma warning disable IDE0028 // Simplify collection initialization
-            Tags = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-        }
-
-        public Question(string title, ICategory category, long userID, string content)
-        {
-            post = new TextPost(userID, content);
-            Title = title;
-            Category = category;
-#pragma warning disable IDE0028 // Simplify collection initialization
-            Tags = new ();
-#pragma warning restore IDE0028 // Simplify collection initialization
-        }
-        public Question(long postID,
-                        string title,
-                        ICategory category,
-                        List<ITag> tags,
-                        long userID,
-                        string content,
-                        DateTime postTime,
-                        DateTime editTime,
-                        List<IReaction> reactions)
-        {
-            post = new TextPost(postID, userID, content, postTime, editTime, reactions);
-            Title = title;
-            Category = category;
-            Tags = tags;
-        }
-
         public Question()
         {
             post = new TextPost();

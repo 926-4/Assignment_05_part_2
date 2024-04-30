@@ -16,9 +16,9 @@ using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Repository
 {
-    public class Repository : IRepository
+    public class TSQLRepository : IRepository
     {
-        private readonly string sqlConnectionString = @"Data Source = CAMFRIGLACLUJ; Initial Catalog = Team42DB;Integrated Security = True";
+        private readonly string sqlConnectionString;
         private readonly NotificationFactory notificationFactory = new ();
         private readonly CategoryFactory categoryFactory = new ();
         private readonly BadgeFactory badgeFactory = new ();
@@ -30,6 +30,14 @@ namespace UBB_SE_2024_Team_42.Repository
         private readonly TextPostFactory textPostFactory = new ();
         private readonly QuestionFactory questionFactory = new ();
         private static Image? CellInDBToBadgeImage(object dataRowCell) => Image.FromStream(new MemoryStream((byte[])dataRowCell));
+        public TSQLRepository()
+        {
+            sqlConnectionString = @"Data Source = CAMFRIGLACLUJ; Initial Catalog = Team42DB;Integrated Security = True";
+        }
+        public TSQLRepository(string customConnectionString)
+        {
+            sqlConnectionString = customConnectionString;
+        }
         private EnumerableRowCollection<DataRow> QueryDB(string sqlStatement)
         {
             SqlConnection connection = new (sqlConnectionString);
@@ -44,6 +52,7 @@ namespace UBB_SE_2024_Team_42.Repository
         private INotification RowInDBToNotification(DataRow row)
             => notificationFactory.Begin()
                 .SetID(Convert.ToInt64(row["id"]))
+                .SetUserID(Convert.ToInt64(row["userId"]))
                 .SetPostID(Convert.ToInt64(row["postId"]))
                 .SetBadgeId(Convert.ToInt64(row["badgeId"]))
                 .End();

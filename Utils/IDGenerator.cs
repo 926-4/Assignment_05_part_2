@@ -9,5 +9,6 @@
             int suffix = Generator.Next();
             return (((long)prefix) << sizeof(int)) + suffix;
         }
+        public static long Default() => 0L;
     }
 }
