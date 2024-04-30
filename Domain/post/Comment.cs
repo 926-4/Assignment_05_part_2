@@ -16,7 +16,7 @@ namespace UBB_SE_2024_Team_42.Domain.Post
 
         public DateTime DateOfLastEdit { get; set; }
         public List<IReaction> Reactions { get; set; }
-        internal Comment()
+        public Comment()
         {
             ID = IDGenerator.RandomLong();
             UserID = IDGenerator.RandomLong();
