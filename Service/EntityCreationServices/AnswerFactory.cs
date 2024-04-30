@@ -5,7 +5,7 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class AnswerFactory : AbstractEntityFactory<IAnswer, Answer>
+    public class AnswerFactory : AbstractEntityFactory<IAnswer, Answer>
     {
         public override AnswerFactory Begin()
         {

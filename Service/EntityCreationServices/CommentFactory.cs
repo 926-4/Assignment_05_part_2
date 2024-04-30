@@ -3,7 +3,7 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class CommentFactory : AbstractEntityFactory<IComment, Comment>
+    public class CommentFactory : AbstractEntityFactory<IComment, Comment>
     {
         public override CommentFactory Begin()
             => (CommentFactory)base.Begin();

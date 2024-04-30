@@ -2,7 +2,7 @@
 
 namespace UBB_SE_2024_Team_42.Domain.Notification
 {
-    internal class NotificationFactory : AbstractEntityFactory<INotification, Notification>
+    public class NotificationFactory : AbstractEntityFactory<INotification, Notification>
     {
         public override NotificationFactory Begin()
         => (NotificationFactory)base.Begin();

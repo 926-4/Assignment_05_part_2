@@ -4,7 +4,7 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class TextPostFactory : AbstractEntityFactory<IPost, TextPost>
+    public class TextPostFactory : AbstractEntityFactory<IPost, TextPost>
     {
         public override TextPostFactory Begin()
             => (TextPostFactory)base.Begin();

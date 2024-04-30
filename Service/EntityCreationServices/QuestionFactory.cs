@@ -6,7 +6,7 @@ using UBB_SE_2024_Team_42.Domain.Tag;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class QuestionFactory : AbstractEntityFactory<IQuestion, Question>
+    public class QuestionFactory : AbstractEntityFactory<IQuestion, Question>
     {
         public override QuestionFactory Begin()
             => (QuestionFactory)base.Begin();

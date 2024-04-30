@@ -2,7 +2,7 @@
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class CategoryFactory : AbstractEntityFactory<ICategory, Category>
+    public class CategoryFactory : AbstractEntityFactory<ICategory, Category>
     {
         public override CategoryFactory Begin()
             => (CategoryFactory)base.Begin();

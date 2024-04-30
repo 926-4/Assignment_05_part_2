@@ -2,9 +2,9 @@
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class ReactionFactory : AbstractEntityFactory<IReaction, Reaction>
+    public class ReactionFactory : AbstractEntityFactory<IReaction, Reaction>
     {
-        public override ReactionFactory Begin() 
+        public override ReactionFactory Begin()
             => (ReactionFactory)base.Begin();
 
         public ReactionFactory SetReactionValue(int value)

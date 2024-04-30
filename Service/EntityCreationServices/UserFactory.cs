@@ -5,7 +5,7 @@ using UBB_SE_2024_Team_42.Domain.User;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class UserFactory : AbstractEntityFactory<IUser, User>
+    public class UserFactory : AbstractEntityFactory<IUser, User>
     {
         public override UserFactory Begin()
             => (UserFactory)base.Begin();

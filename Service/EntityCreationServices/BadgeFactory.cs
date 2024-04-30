@@ -3,7 +3,7 @@ using UBB_SE_2024_Team_42.Domain.Badge;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class BadgeFactory : AbstractEntityFactory<IBadge, Badge>
+    public class BadgeFactory : AbstractEntityFactory<IBadge, Badge>
     {
         public override BadgeFactory Begin()
         {

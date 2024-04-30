@@ -1,6 +1,6 @@
 ﻿namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal abstract class AbstractEntityFactory<T, S>
+    public abstract class AbstractEntityFactory<T, S>
         where S : T
     {
         protected T instance = default(S);
