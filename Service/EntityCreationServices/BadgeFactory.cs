@@ -3,13 +3,11 @@ using UBB_SE_2024_Team_42.Domain.Badge;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class BadgeFactory
+    internal class BadgeFactory : AbstractEntityFactory<IBadge, Badge>
     {
-        private Badge instance = new ();
-        public BadgeFactory NewBadge()
+        public override BadgeFactory Begin()
         {
-            instance = new ();
-            return this;
+            return (BadgeFactory)base.Begin();
         }
         public BadgeFactory SetName(string name)
         {
@@ -25,12 +23,6 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         {
             instance.Image = image;
             return this;
-        }
-        public Badge Get()
-        {
-            Badge returnValue = instance;
-            instance = new ();
-            return returnValue;
         }
 
         internal BadgeFactory SetID(long id)

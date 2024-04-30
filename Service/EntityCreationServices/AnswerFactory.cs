@@ -1,15 +1,15 @@
-﻿using UBB_SE_2024_Team_42.Domain.Posts;
+﻿using UBB_SE_2024_Team_42.Domain.Notification;
+using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class AnswerFactory
+    internal class AnswerFactory : AbstractEntityFactory<IAnswer, Answer>
     {
-        private Answer instance = new ();
-        public AnswerFactory NewAnswer()
+        public override AnswerFactory Begin()
         {
-            instance = new ();
-            return this;
+            return (AnswerFactory)base.Begin();
         }
         public AnswerFactory SetId(long id)
         {
@@ -40,12 +40,6 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         {
             instance.Reactions = reactions;
             return this;
-        }
-        public Answer Get()
-        {
-            Answer answer = instance;
-            instance = new ();
-            return answer;
         }
     }
 }

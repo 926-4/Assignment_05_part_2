@@ -2,15 +2,10 @@
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class TagFactory
+    internal class TagFactory : AbstractEntityFactory<ITag, Tag>
     {
-        private ITag instance = new Tag();
-
-        public TagFactory NewTag()
-        {
-            instance = new Tag();
-            return this;
-        }
+        public override TagFactory Begin()
+            => (TagFactory)base.Begin();
 
         public TagFactory SetID(long id)
         {
@@ -21,13 +16,6 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         {
             instance.Name = name;
             return this;
-        }
-
-        public ITag Get()
-        {
-            ITag returnValue = instance;
-            instance = new Tag();
-            return returnValue;
         }
     }
 }

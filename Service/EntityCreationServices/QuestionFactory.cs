@@ -6,14 +6,10 @@ using UBB_SE_2024_Team_42.Domain.Tag;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class QuestionFactory
+    internal class QuestionFactory : AbstractEntityFactory<IQuestion, Question>
     {
-        private IQuestion instance = new Question();
-        public QuestionFactory NewQuestion()
-        {
-            instance = new Question();
-            return this;
-        }
+        public override QuestionFactory Begin()
+            => (QuestionFactory)base.Begin();
         public QuestionFactory SetId(long id)
         {
             instance.ID = id;
@@ -54,16 +50,10 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
             instance.DateOfLastEdit = editTime;
             return this;
         }
-        public QuestionFactory SetVoteList(List<IReaction> reactions)
+        public QuestionFactory SetReactions(List<IReaction> reactions)
         {
             instance.Reactions = reactions;
             return this;
-        }
-        public IQuestion GetQuestion()
-        {
-            IQuestion returnValue = instance;
-            instance = new Question();
-            return returnValue;
         }
     }
 }

@@ -1,14 +1,11 @@
-﻿namespace UBB_SE_2024_Team_42.Domain.Notification
-{
-    internal class NotificationFactory
-    {
-        private Notification instance = new ();
+﻿using UBB_SE_2024_Team_42.Service.EntityCreationServices;
 
-        public NotificationFactory NewNotification()
-        {
-            instance = new ();
-            return this;
-        }
+namespace UBB_SE_2024_Team_42.Domain.Notification
+{
+    internal class NotificationFactory : AbstractEntityFactory<INotification, Notification>
+    {
+        public override NotificationFactory Begin()
+        => (NotificationFactory)base.Begin();
         public NotificationFactory SetID(long id)
         {
             instance.ID = id;
@@ -28,12 +25,6 @@
         {
             instance.BadgeID = badgeId;
             return this;
-        }
-        public Notification Get()
-        {
-            Notification returnValue = instance;
-            instance = new ();
-            return returnValue;
         }
     }
 }

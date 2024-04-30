@@ -2,15 +2,10 @@
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class ReactionFactory
+    internal class ReactionFactory : AbstractEntityFactory<IReaction, Reaction>
     {
-        private Reaction instance = new ();
-
-        public ReactionFactory NewReaction()
-        {
-            instance = new ();
-            return this;
-        }
+        public override ReactionFactory Begin() 
+            => (ReactionFactory)base.Begin();
 
         public ReactionFactory SetReactionValue(int value)
         {
@@ -22,13 +17,6 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         {
             instance.UserID = userId;
             return this;
-        }
-
-        public Reaction Get()
-        {
-            Reaction returnValue = instance;
-            instance = new ();
-            return returnValue;
         }
     }
 }

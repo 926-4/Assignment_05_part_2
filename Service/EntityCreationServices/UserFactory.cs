@@ -5,14 +5,10 @@ using UBB_SE_2024_Team_42.Domain.User;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class UserFactory
+    internal class UserFactory : AbstractEntityFactory<IUser, User>
     {
-        private User instance = new ();
-        public UserFactory NewUser()
-        {
-            instance = new ();
-            return this;
-        }
+        public override UserFactory Begin()
+            => (UserFactory)base.Begin();
         public UserFactory SetName(string name)
         {
             instance.Name = name;
@@ -32,12 +28,6 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         {
             instance.BadgeList = badges;
             return this;
-        }
-        public User Get()
-        {
-            User returnValue = instance;
-            instance = new ();
-            return returnValue;
         }
     }
 }

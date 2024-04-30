@@ -1,15 +1,16 @@
-﻿using UBB_SE_2024_Team_42.Domain.Posts;
+﻿using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
+using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class TextPostFactory
+    internal class TextPostFactory : AbstractEntityFactory<IPost, TextPost>
     {
-        private TextPost instance = new ();
-
-        public TextPostFactory NewAnswer()
+        public override TextPostFactory Begin()
+            => (TextPostFactory)base.Begin();
+        public TextPostFactory SetID(long id)
         {
-            instance = new ();
+            instance.ID = id;
             return this;
         }
         public TextPostFactory SetUserId(long userId)
@@ -36,12 +37,6 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         {
             instance.Reactions = reactions;
             return this;
-        }
-        public TextPost Get()
-        {
-            TextPost textPost = instance;
-            instance = new ();
-            return textPost;
         }
     }
 }

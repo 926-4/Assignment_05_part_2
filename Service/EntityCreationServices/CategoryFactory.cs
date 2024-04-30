@@ -2,30 +2,20 @@
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class CategoryFactory
+    internal class CategoryFactory : AbstractEntityFactory<ICategory, Category>
     {
-        public Category Instance = new ();
+        public override CategoryFactory Begin()
+            => (CategoryFactory)base.Begin();
 
-        public CategoryFactory NewCategory()
-        {
-            Instance = new ();
-            return this;
-        }
         public CategoryFactory SetID(long categoryID)
         {
-            Instance.ID = categoryID;
+            instance.ID = categoryID;
             return this;
         }
         public CategoryFactory SetName(string categoryName)
         {
-            Instance.Name = categoryName;
+            instance.Name = categoryName;
             return this;
-        }
-        public Category Get()
-        {
-            Category returnValue = Instance;
-            Instance = new ();
-            return returnValue;
         }
     }
 }

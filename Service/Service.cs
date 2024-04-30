@@ -6,6 +6,7 @@ using UBB_SE_2024_Team_42.Domain.Posts;
 using UBB_SE_2024_Team_42.Domain.Reactions;
 using UBB_SE_2024_Team_42.Domain.Tag;
 using UBB_SE_2024_Team_42.Domain.User;
+using UBB_SE_2024_Team_42.Repository;
 using UBB_SE_2024_Team_42.Utils;
 using UBB_SE_2024_Team_42.Utils.Functionals;
 
@@ -13,10 +14,10 @@ namespace UBB_SE_2024_Team_42.Service
 {
     public class Service
     {
-        private readonly Repository.Repository repository;
+        private readonly IRepository repository;
 
         private readonly List<IQuestion> currentQuestions;
-        public Service(Repository.Repository repository)
+        public Service(IRepository repository)
         {
             this.repository = repository;
             currentQuestions = GetAllQuestions();
@@ -51,19 +52,10 @@ namespace UBB_SE_2024_Team_42.Service
         {
             if (category == null)
             {
-                return new List<IQuestion>();
+                return new ();
             }
-            List<IQuestion> questions = repository.GetAllQuestions().ToList();
-            List<IQuestion> filteredQuestions = new ();
-
-            foreach (IQuestion question in questions)
-            {
-                if ((question.Category?.Name ?? string.Empty) == category.Name)
-                {
-                    filteredQuestions.Add(question);
-                }
-            }
-            return filteredQuestions;
+            bool QuestionIsOfCategory(IQuestion iquestion) => iquestion.Category?.Name == category.Name;
+            return StreamProcessor<IQuestion, IQuestion>.FilterCollection(repository.GetAllQuestions(), QuestionIsOfCategory).ToList();
         }
 
         public List<IQuestion> GetQuestionsWithAtLeastOneAnswer()
@@ -76,37 +68,12 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> FindQuestionsByPartialStringInAnyField(string textToBeSearchedBy)
         {
-            List<IQuestion> questions = repository.GetAllQuestions().ToList();
-            List<IQuestion> filteredQuestions = new ();
-
-            foreach (IQuestion question in questions)
-            {
-                bool addedQuestionToList = false;
-
-                foreach (ITag tag in question.Tags)
-                {
-                    if (textToBeSearchedBy.Contains(tag.Name))
-                    {
-                        filteredQuestions.Add(question);
-                        addedQuestionToList = true;
-                        break;
-                    }
-                }
-
-                if (!addedQuestionToList)
-                {
-                    string[] keywords = question.Title?.Split(' ') ?? Array.Empty<string>();
-                    foreach (string keyword in keywords)
-                    {
-                        if (textToBeSearchedBy.Contains(keyword))
-                        {
-                            filteredQuestions.Add(question);
-                            break;
-                        }
-                    }
-                }
-            }
-            return filteredQuestions;
+            bool PartialStringMatches(string str) => str.Contains(textToBeSearchedBy, StringComparison.CurrentCultureIgnoreCase);
+            bool TagNameMatches(ITag itag) => PartialStringMatches(itag.Name);
+            bool AnyTagPartialMatches(IQuestion question) => question.Tags.Where(TagNameMatches).Any();
+            bool AnyKeywordInTitleMatched(IQuestion question) => question.Title?.Split(" ").Where(PartialStringMatches).Any() ?? false;
+            bool MasterFilterCondition(IQuestion question) => AnyTagPartialMatches(question) || AnyKeywordInTitleMatched(question);
+            return StreamProcessor<IQuestion, IQuestion>.FilterCollection(repository.GetAllQuestions(), MasterFilterCondition).ToList();
         }
 
         public List<IQuestion> GetQuestionsSortedByScoreAscending()
@@ -150,21 +117,9 @@ namespace UBB_SE_2024_Team_42.Service
             Dictionary<IQuestion, int> hash = new ();
             List<IQuestion> listOfQuestions = currentQuestions;
             List<IQuestion> sortedListOfQuestions;
-            foreach (IQuestion question in listOfQuestions)
-            {
-                int numberOfAnswers = 0;
-                long questionId = question.ID;
-                List<IPost> repliesFromPost = repository.GetRepliesOfPost(questionId).ToList();
-                foreach (IPost ipost in repliesFromPost)
-                {
-                    if (ipost is Answer)
-                    {
-                        numberOfAnswers += 1;
-                    }
-                }
-                hash[question] = numberOfAnswers;
-            }
-
+            void ProcessQuestion(IQuestion question)
+                => hash[question] = StreamProcessor<IPost, IPost>.FilterCollection(repository.GetRepliesOfPost(question.ID), Filters.IPostIsAnswer).Count();
+            listOfQuestions.ForEach(ProcessQuestion);
             var sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
             sortedListOfQuestions = sortedMap.Keys.ToList();
             return sortedListOfQuestions;
@@ -180,16 +135,10 @@ namespace UBB_SE_2024_Team_42.Service
         public List<IQuestion> SortQuestionsByDateAscending()
         {
             Dictionary<IQuestion, DateTime> hash = new ();
-            List<IQuestion> listOfQuestions = currentQuestions;
-            List<IQuestion> sortedListOfQuestions;
-            foreach (IQuestion question in listOfQuestions)
-            {
-                hash[question] = question.DatePosted;
-            }
-
+            void ProcessQuestion(IQuestion question) => hash[question] = question.DatePosted;
+            currentQuestions.ForEach(ProcessQuestion);
             Dictionary<IQuestion, DateTime> sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
-            sortedListOfQuestions = sortedMap.Keys.ToList();
-            return sortedListOfQuestions;
+            return sortedMap.Keys.ToList();
         }
 
         public List<IQuestion> SortQuestionsByDateDescending()

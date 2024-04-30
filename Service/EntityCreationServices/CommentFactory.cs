@@ -3,15 +3,10 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    internal class CommentFactory
+    internal class CommentFactory : AbstractEntityFactory<IComment, Comment>
     {
-        private IComment instance = new Comment();
-
-        public CommentFactory NewComment()
-        {
-            instance = new Comment();
-            return this;
-        }
+        public override CommentFactory Begin()
+            => (CommentFactory)base.Begin();
         public CommentFactory SetId(long id)
         {
             instance.ID = id;
@@ -41,12 +36,6 @@ namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
         {
             instance.Reactions = reactions;
             return this;
-        }
-        public IComment Get()
-        {
-            IComment comment = instance;
-            instance = new Comment();
-            return comment;
         }
     }
 }
