@@ -30,11 +30,11 @@ namespace UBB_SE_2024_Team_42.Repository
         }
         private EnumerableRowCollection<DataRow> QueryDB(string sqlStatement)
         {
-            SqlConnection connection = new (sqlConnectionString);
+            SqlConnection connection = new(sqlConnectionString);
             connection.Open();
-            SqlCommand command = new (sqlStatement, connection);
-            SqlDataAdapter dataAdapter = new (command);
-            DataTable dataTable = new ();
+            SqlCommand command = new(sqlStatement, connection);
+            SqlDataAdapter dataAdapter = new(command);
+            DataTable dataTable = new();
             dataAdapter.Fill(dataTable);
             connection.Close();
             return dataTable.AsEnumerable();
@@ -190,9 +190,9 @@ namespace UBB_SE_2024_Team_42.Repository
             => StreamProcessor<DataRow, IPost>.MapCollection(QueryDB("select * from dbo.GetAllRepliesOfPost(" + postId + ")"), RowInDBToReply);
         public void AddQuestion(IQuestion question)
         {
-            SqlConnection sqlConnection = new (sqlConnectionString);
+            SqlConnection sqlConnection = new(sqlConnectionString);
             sqlConnection.Open();
-            SqlCommand command = new ("addQuestion", sqlConnection);
+            SqlCommand command = new("addQuestion", sqlConnection);
             command.Parameters.AddWithValue("@userID", question.UserID);
             command.Parameters.AddWithValue("@content", question.Content);
             command.Parameters.AddWithValue("@title", question.Title);
@@ -207,7 +207,7 @@ namespace UBB_SE_2024_Team_42.Repository
             {
                 return;
             }
-            SqlConnection connection = new (sqlConnectionString);
+            SqlConnection connection = new(sqlConnectionString);
             connection.Open();
             SqlCommand command;
             switch (oldPost.GetType())
@@ -227,6 +227,16 @@ namespace UBB_SE_2024_Team_42.Repository
             command.CommandType = CommandType.StoredProcedure;
             command.ExecuteNonQuery();
             connection.Close();
+        }
+
+        public object GetQuestionOfUser(int v)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IPost GetPost(long postId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
