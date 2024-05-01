@@ -11,10 +11,10 @@ using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Repository
 {
-    internal class MemoryRepository : IRepository
+    public class MemoryRepository : IRepository
     {
         private readonly Dictionary<long, IBadge> badges;
-        private readonly Dictionary<long, ICategory> caregories;
+        private readonly Dictionary<long, ICategory> categories;
         private readonly Dictionary<long, INotification> notifications;
         private readonly Dictionary<long, IPost> posts;
         private readonly Dictionary<long, IQuestion> questions;
@@ -24,7 +24,7 @@ namespace UBB_SE_2024_Team_42.Repository
         {
             // TODO pune aici valori
             badges = new Dictionary<long, IBadge>();
-            caregories = new Dictionary<long, ICategory>();
+            categories = new Dictionary<long, ICategory>();
             notifications = new Dictionary<long, INotification>();
             posts = new Dictionary<long, IPost>();
             questions = new Dictionary<long, IQuestion>();
@@ -34,9 +34,14 @@ namespace UBB_SE_2024_Team_42.Repository
         private IAnswer MapIPostToIAnswer(IPost ipost) => (IAnswer)ipost;
         public void AddQuestion(IQuestion question) => questions[question.ID] = question;
 
-        public IEnumerable<ICategory> GetAllCategories() => caregories.Values;
+        public IEnumerable<ICategory> GetAllCategories() => categories.Values;
 
         public IEnumerable<IQuestion> GetAllQuestions() => questions.Values;
+
+        public void AddUser(IUser user)
+        {
+            users.Add(user.ID, user);
+        }
 
         public IEnumerable<IUser> GetAllUsers() => users.Values;
 
@@ -45,7 +50,7 @@ namespace UBB_SE_2024_Team_42.Repository
         public IEnumerable<IBadge> GetBadgesOfUser(long userId) => badges.Values.Where(badge => badgeIdToUserIdAssociation[badge.ID] == userId);
 
         public IEnumerable<ICategory> GetCategoriesModeratedByUser(long userId) => users[userId].CategoriesModeratedList;
-        public ICategory GetCategoryByID(long categoryId) => caregories[categoryId];
+        public ICategory GetCategoryByID(long categoryId) => categories[categoryId];
 
         public IEnumerable<IComment> GetCommentsOfUser(long userId) => posts.Values.Where(ipost => ipost is IComment).Select(ipost => (IComment)ipost);
 
@@ -71,7 +76,9 @@ namespace UBB_SE_2024_Team_42.Repository
 
         public void UpdatePost(IPost oldPost, IPost newPost)
         {
-            throw new NotImplementedException();
+            posts[oldPost.ID].Content = newPost.Content;
+            posts[oldPost.ID].DateOfLastEdit = DateTime.Now;
+            posts[oldPost.ID].Reactions = newPost.Reactions;
         }
     }
 }
