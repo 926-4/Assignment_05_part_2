@@ -2,17 +2,17 @@
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    public class CategoryFactory : AbstractEntityFactory<ICategory, Category>
+    public class CategoryBuilder : AbstractEntityBuilder<ICategory, Category>
     {
-        public override CategoryFactory Begin()
-            => (CategoryFactory)base.Begin();
+        public override CategoryBuilder Begin()
+            => (CategoryBuilder)base.Begin();
 
-        public CategoryFactory SetID(long categoryID)
+        public CategoryBuilder SetID(long categoryID)
         {
             instance.ID = categoryID;
             return this;
         }
-        public CategoryFactory SetName(string categoryName)
+        public CategoryBuilder SetName(string categoryName)
         {
             instance.Name = categoryName;
             return this;

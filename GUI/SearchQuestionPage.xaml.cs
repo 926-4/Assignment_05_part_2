@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
+using UBB_SE_2024_Team_42.Service;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
@@ -13,11 +14,11 @@ namespace UBB_SE_2024_Team_42.GUI
     {
         public ObservableCollection<IQuestion> Posts { get; set; }
         public ObservableCollection<ICategory> Categories { get; set; }
-        private readonly Service.Service service;
-        public SearchQuestionPage(Service.Service service)
+        private readonly IService iservice;
+        public SearchQuestionPage(IService service)
         {
             InitializeComponent();
-            this.service = service;
+            this.iservice = service;
             Posts = new ObservableCollection<IQuestion>(service.SortQuestionsByDateDescending());
             Categories = new ObservableCollection<ICategory>(service.GetAllCategories());
             DataContext = this; // Set DataContext to enable data binding
@@ -32,7 +33,7 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            List<IQuestion> searchedQuestions = service.FindQuestionsByPartialStringInAnyField(SearchBox.Text);
+            List<IQuestion> searchedQuestions = iservice.FindQuestionsByPartialStringInAnyField(SearchBox.Text);
             Posts.Clear();
             foreach (IQuestion question in searchedQuestions)
             {
@@ -43,10 +44,10 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void CategorySelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // service.getQuestionsOfCategory()
+            // iservice.getQuestionsOfCategory()
             var selectedCategory = CategorySelector.SelectedItem as Category;
-            List<IQuestion> questionsOfCategory = service.GetQuestionsOfCategory(selectedCategory);
-            // Posts = service.getQuestionsOfCategory(selectedCategory) as ObservableCollection<Posts>;
+            List<IQuestion> questionsOfCategory = iservice.GetQuestionsOfCategory(selectedCategory);
+            // Posts = iservice.getQuestionsOfCategory(selectedCategory) as ObservableCollection<Posts>;
             Posts.Clear();
             foreach (IQuestion question in questionsOfCategory)
             {
@@ -57,7 +58,7 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void NewestSortButton_Click(object sender, RoutedEventArgs e)
         {
-            List<IQuestion> questions = service.SortQuestionsByDateDescending();
+            List<IQuestion> questions = iservice.SortQuestionsByDateDescending();
             Posts.Clear();
             foreach (IQuestion question in questions)
             {
@@ -68,7 +69,7 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void MostUpvotesSortButton_Click(object sender, RoutedEventArgs e)
         {
-            List<IQuestion> questions = service.GetQuestionsSortedByScoreDescending();
+            List<IQuestion> questions = iservice.GetQuestionsSortedByScoreDescending();
             Posts.Clear();
             foreach (IQuestion question in questions)
             {
@@ -79,7 +80,7 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void MostAnswers_Click(object sender, RoutedEventArgs e)
         {
-            List<IQuestion> questions = service.SortQuestionsByNumberOfAnswersDescending();
+            List<IQuestion> questions = iservice.SortQuestionsByNumberOfAnswersDescending();
             Posts.Clear();
             foreach (IQuestion question in questions)
             {
@@ -97,11 +98,11 @@ namespace UBB_SE_2024_Team_42.GUI
             List<IQuestion> questions;
             if (HideUnAnsweredCheckBox.IsChecked == true)
             {
-                questions = service.GetQuestionsWithAtLeastOneAnswer();
+                questions = iservice.GetQuestionsWithAtLeastOneAnswer();
             }
             else
             {
-                questions = service.GetCurrentQuestions();
+                questions = iservice.GetCurrentQuestions();
             }
             Posts.Clear();
             foreach (IQuestion question in questions)
@@ -113,23 +114,23 @@ namespace UBB_SE_2024_Team_42.GUI
         private void OnQuestion_Click(object sender, RoutedEventArgs e)
         {
             IQuestion myQuestion = (IQuestion)((Button)sender).DataContext;
-            SearchFrame.Navigate(new ViewQuestionPage(service, myQuestion));
+            SearchFrame.Navigate(new ViewQuestionPage(iservice, myQuestion));
         }
 
         private void AskQuestion_Click(object sender, RoutedEventArgs e)
         {
-            SearchFrame.Navigate(new CreateQuestionPage(service));
+            SearchFrame.Navigate(new CreateQuestionPage(iservice));
         }
 
         private void OpenProfile_Click(object sender, RoutedEventArgs e)
         {
-            MiniProfile miniProfile = new (service);
+            MiniProfile miniProfile = new (iservice);
             miniProfile.Show();
         }
 
         private void StatisticsButton_Click(object sender, RoutedEventArgs e)
         {
-            Statistics statistics = new (service);
+            StatisticsView statistics = new (iservice);
             statistics.Show();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
 using UBB_SE_2024_Team_42.Domain.Posts;
+using UBB_SE_2024_Team_42.Service;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
@@ -10,10 +11,10 @@ namespace UBB_SE_2024_Team_42.GUI
     public partial class EditPost : Window
     {
         private readonly IPost post;
-        private readonly Service.Service service;
-        public EditPost(Service.Service service, IPost post)
+        private readonly IService iservice;
+        public EditPost(IService service, IPost post)
         {
-            this.service = service;
+            this.iservice = service;
             this.post = post;
             InitializeComponent();
         }
@@ -25,12 +26,12 @@ namespace UBB_SE_2024_Team_42.GUI
             post.DateOfLastEdit = DateTime.Now;
             // This is not fine leaving this here until someone fixes
             TextPost newPost = new (post.UserID, text);
-            service.UpdatePost(post, newPost);
+            iservice.UpdatePost(post, newPost);
         }
 
         private void Cancel_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

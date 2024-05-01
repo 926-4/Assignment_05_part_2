@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using UBB_SE_2024_Team_42.Domain.Category;
+using UBB_SE_2024_Team_42.Service;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
@@ -10,13 +11,13 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class CreateQuestionPage : Page
     {
-        private readonly Service.Service service;
+        private readonly IService iservice;
         public ObservableCollection<ICategory> Categories { get; set; }
 
-        public CreateQuestionPage(Service.Service service)
+        public CreateQuestionPage(IService service)
         {
             InitializeComponent();
-            this.service = service;
+            iservice = service;
             Categories = new ObservableCollection<ICategory>(service.GetAllCategories());
             DataContext = this;
         }
@@ -31,8 +32,8 @@ namespace UBB_SE_2024_Team_42.GUI
             string content = ContentBox.GetText();
             Category category = (Category)CategoryBox1.SelectedItem;
 
-            service.AddQuestion(title, content, category);
-            CreateQuestionFrame.Navigate(new SearchQuestionPage(service));
+            iservice.AddQuestion(title, content, category);
+            CreateQuestionFrame.Navigate(new SearchQuestionPage(iservice));
             DataContext = this;
         }
 

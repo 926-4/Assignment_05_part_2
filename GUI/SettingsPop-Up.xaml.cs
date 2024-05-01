@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using UBB_SE_2024_Team_42.Domain.Post.Interfaces;
+using UBB_SE_2024_Team_42.Service;
 
 namespace UBB_SE_2024_Team_42.GUI
 {
@@ -8,12 +9,12 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class SettingsPop_Up : Window
     {
-        private Service.Service service;
+        private IService iservice;
         private readonly long id;
         private readonly bool isQuestion;
-        public SettingsPop_Up(Service.Service service, long question_id, bool isQuestion)
+        public SettingsPop_Up(IService service, long question_id, bool isQuestion)
         {
-            this.service = service;
+            iservice = service;
             id = question_id;
             this.isQuestion = isQuestion;
             InitializeComponent();
@@ -21,8 +22,8 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void Edit_Button_Click(object sender, RoutedEventArgs e)
         {
-            IQuestion question = service.GetQuestion(id);
-            EditPost window = new (service, question);
+            IQuestion question = iservice.GetQuestion(id);
+            EditPost window = new (iservice, question);
             Close();
             window.Show();
         }

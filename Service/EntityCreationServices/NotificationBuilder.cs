@@ -2,31 +2,31 @@
 
 namespace UBB_SE_2024_Team_42.Domain.Notification
 {
-    public class NotificationFactory : AbstractEntityFactory<INotification, Notification>
+    public class NotificationBuilder : AbstractEntityBuilder<INotification, Notification>
     {
-        public override NotificationFactory Begin()
-        => (NotificationFactory)base.Begin();
-        public NotificationFactory SetID(long id)
+        public override NotificationBuilder Begin()
+        => (NotificationBuilder)base.Begin();
+        public NotificationBuilder SetID(long id)
         {
             instance.ID = id;
             return this;
         }
-        public NotificationFactory SetUserID(long userID)
+        public NotificationBuilder SetUserID(long userID)
         {
             instance.UserID = userID;
             return this;
         }
-        public NotificationFactory SetText(string text)
+        public NotificationBuilder SetText(string text)
         {
             instance.Text = text;
             return this;
         }
-        public NotificationFactory SetPostID(long postId)
+        public NotificationBuilder SetPostID(long postId)
         {
             instance.PostID = postId;
             return this;
         }
-        public NotificationFactory SetBadgeId(long badgeId)
+        public NotificationBuilder SetBadgeId(long badgeId)
         {
             instance.BadgeID = badgeId;
             return this;

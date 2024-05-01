@@ -2,17 +2,17 @@
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    public class TagFactory : AbstractEntityFactory<ITag, Tag>
+    public class TagBuilder : AbstractEntityBuilder<ITag, Tag>
     {
-        public override TagFactory Begin()
-            => (TagFactory)base.Begin();
+        public override TagBuilder Begin()
+            => (TagBuilder)base.Begin();
 
-        public TagFactory SetID(long id)
+        public TagBuilder SetID(long id)
         {
             instance.Id = id;
             return this;
         }
-        public TagFactory SetName(string name)
+        public TagBuilder SetName(string name)
         {
             instance.Name = name;
             return this;

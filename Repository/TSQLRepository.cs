@@ -19,16 +19,6 @@ namespace UBB_SE_2024_Team_42.Repository
     public class TSQLRepository : IRepository
     {
         private readonly string sqlConnectionString;
-        private readonly NotificationFactory notificationFactory = new ();
-        private readonly CategoryFactory categoryFactory = new ();
-        private readonly BadgeFactory badgeFactory = new ();
-        private readonly UserFactory userFactory = new ();
-        private readonly ReactionFactory reactionFactory = new ();
-        private readonly TagFactory tagFactory = new ();
-        private readonly AnswerFactory answerFactory = new ();
-        private readonly CommentFactory commentFactory = new ();
-        private readonly TextPostFactory textPostFactory = new ();
-        private readonly QuestionFactory questionFactory = new ();
         private static Image? CellInDBToBadgeImage(object dataRowCell) => Image.FromStream(new MemoryStream((byte[])dataRowCell));
         public TSQLRepository()
         {
@@ -50,28 +40,28 @@ namespace UBB_SE_2024_Team_42.Repository
             return dataTable.AsEnumerable();
         }
         private INotification RowInDBToNotification(DataRow row)
-            => notificationFactory.Begin()
+            => new NotificationBuilder().Begin()
                 .SetID(Convert.ToInt64(row["id"]))
                 .SetUserID(Convert.ToInt64(row["userId"]))
                 .SetPostID(Convert.ToInt64(row["postId"]))
                 .SetBadgeId(Convert.ToInt64(row["badgeId"]))
                 .End();
         private IBadge RowInDBToBadge(DataRow row)
-            => badgeFactory.Begin()
+            => new BadgeBuilder().Begin()
                 .SetID(Convert.ToInt64(row["id"]))
                 .SetName(row["name"].ToString() ?? string.Empty)
                 .SetDescription(row["description"].ToString() ?? string.Empty)
                 .SetImage(CellInDBToBadgeImage(row["image"]))
                 .End();
         private ICategory RowInDBToCategory(DataRow row)
-            => categoryFactory.Begin()
+            => new CategoryBuilder().Begin()
                 .SetID(Convert.ToInt64(row["id"]))
                 .SetName(row["name"].ToString() ?? string.Empty)
                 .End();
         private IUser RowInDBToUser(DataRow row)
         {
             long userId = Convert.ToInt64(row["id"]);
-            return userFactory.Begin()
+            return new UserBuilder().Begin()
                               .SetName(row["name"].ToString() ?? string.Empty)
                               .SetNotificationList(GetNotificationsOfUser(userId).ToList())
                               .SetCategoriesModeratedList(GetCategoriesModeratedByUser(userId).ToList())
@@ -79,17 +69,17 @@ namespace UBB_SE_2024_Team_42.Repository
                               .End();
         }
         private IReaction RowInDBToIReaction(DataRow row)
-            => reactionFactory.Begin()
+            => new ReactionBuilder().Begin()
                 .SetReacterUserId(Convert.ToInt64(row["userId"]))
                 .SetReactionValue(Convert.ToInt32(row["value"]))
                 .End();
         private ITag RowInDBToTag(DataRow row)
-            => tagFactory.Begin()
+            => new TagBuilder().Begin()
                 .SetID(Convert.ToInt64(row["id"]))
                 .SetName(row["name"].ToString() ?? string.Empty)
                 .End();
         private IAnswer RowInDBToAnswer(DataRow row)
-            => answerFactory.Begin()
+            => new AnswerBuilder().Begin()
                .SetId(Convert.ToInt64(row["id"]))
                .SetUserId(Convert.ToInt64(row["userId"]))
                .SetContent(Convert.ToString(row["content"]) ?? string.Empty)
@@ -98,7 +88,7 @@ namespace UBB_SE_2024_Team_42.Repository
                .SetReactions(GetReactionsOfPostByPostID(Convert.ToInt64(row["id"])).ToList())
                .End();
         private IComment RowInDBToComment(DataRow row)
-            => commentFactory.Begin()
+            => new CommentBuilder().Begin()
                 .SetId(Convert.ToInt64(row["id"]))
                 .SetUserId(Convert.ToInt64(row["userId"]))
                 .SetContent(Convert.ToString(row["content"]) ?? string.Empty)
@@ -120,7 +110,7 @@ namespace UBB_SE_2024_Team_42.Repository
                 : postDate;
             string title = row["title"]?.ToString() ?? string.Empty;
             string content = row["content"]?.ToString() ?? string.Empty;
-            return questionFactory.Begin()
+            return new QuestionBuilder().Begin()
                                   .SetId(questionId)
                                   .SetTitle(title)
                                   .SetCategory(category)
@@ -145,7 +135,7 @@ namespace UBB_SE_2024_Team_42.Repository
             List<IReaction> reactions = GetReactionsOfPostByPostID(id).ToList();
             if (new List<string>() { "post", "comment", "answer" }.Contains(type))
             {
-                return textPostFactory.Begin()
+                return new TextPostBuilder().Begin()
                     .SetID(id).SetUserId(userId).SetReactions(reactions).SetContent(content)
                     .SetDatePosted(datePosted).SetDateOfLastEdit(dateOfLastEdit).End();
             }
@@ -154,7 +144,7 @@ namespace UBB_SE_2024_Team_42.Repository
                 string title = row["title"].ToString() ?? string.Empty;
                 ICategory category = GetCategoryByID(Convert.ToInt64(row["categoryId"]));
                 List<ITag> tags = GetTagsOfQuestion(id).ToList();
-                return questionFactory.Begin().
+                return new QuestionBuilder().Begin().
                     SetId(id).SetUserId(userId).SetTitle(title).SetCategory(category).
                     SetTags(tags).SetReactions(reactions).SetContent(content).
                     SetPostTime(datePosted).SetEditTime(dateOfLastEdit).End();

@@ -1,12 +1,11 @@
 ﻿namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    public abstract class AbstractEntityFactory<T, S>
+    public abstract class AbstractEntityBuilder<T, S>
         where S : T, new()
     {
         protected T instance = new S();
-        public virtual AbstractEntityFactory<T, S> Begin()
+        public virtual AbstractEntityBuilder<T, S> Begin()
         {
-            // instance = default(S);
             instance = new S();
             return this;
         }

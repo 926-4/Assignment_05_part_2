@@ -13,14 +13,14 @@ namespace UBB_SE_2024_Team_42.GUI
     /// </summary>
     public partial class ViewQuestionPage : Page
     {
-        private readonly Service.Service service;
+        private readonly IService iservice;
         public ObservableCollection<IPost> Comments { get; set; }
         public ObservableCollection<ITag> Tags { get; set; }
         private readonly IQuestion question;
-        public ViewQuestionPage(Service.Service service, IQuestion question)
+        public ViewQuestionPage(IService service, IQuestion question)
         {
             this.question = question;
-            this.service = service;
+            this.iservice = service;
             InitializeComponent();
             DataContext = this;
             Comments = new ObservableCollection<IPost>(service.GetRepliesOfPost(question.ID));
@@ -29,7 +29,7 @@ namespace UBB_SE_2024_Team_42.GUI
 
         private void Back_Click(object sender, RoutedEventArgs e)
         {
-            ViewQuestionFrame.Navigate(new SearchQuestionPage(service));
+            ViewQuestionFrame.Navigate(new SearchQuestionPage(iservice));
             // ViewQuestionFrame.Visibility = Visibility.Collapsed;
         }
 

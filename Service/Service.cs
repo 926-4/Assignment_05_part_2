@@ -13,7 +13,7 @@ using UBB_SE_2024_Team_42.Utils.Functionals;
 
 namespace UBB_SE_2024_Team_42.Service
 {
-    public class Service
+    public class Service : IService
     {
         private readonly IRepository repository;
 
@@ -61,8 +61,8 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> GetQuestionsWithAtLeastOneAnswer()
         {
-            static bool IsAnswer(IPost ipost) => ipost is Answer;
-            bool QuestionHasAtLeastOneAnswer(IQuestion question) => repository.GetRepliesOfPost(question.ID).Any(IsAnswer);
+            static bool IsIAnswer(IPost ipost) => ipost is IAnswer;
+            bool QuestionHasAtLeastOneAnswer(IQuestion question) => repository.GetRepliesOfPost(question.ID).Any(IsIAnswer);
             List<IQuestion> filteredQuestions = repository.GetAllQuestions().Where(QuestionHasAtLeastOneAnswer).ToList();
             return filteredQuestions;
         }
@@ -81,17 +81,17 @@ namespace UBB_SE_2024_Team_42.Service
         {
             static int GetReactionValue(IReaction ireaction) => ireaction.Value;
 
-            Dictionary<IQuestion, int> questionToReactionValueMap = new ();
+            Dictionary<IQuestion, int> questionToReactionValueMapping = new ();
 
             List<IQuestion> listOfQuestions = currentQuestions;
             CollectionSummer<IReaction> reactionValueSummer = new (GetReactionValue);
             void AddMappingForQuestion(IQuestion question) =>
-                questionToReactionValueMap[question] = GetReactionScore(repository.GetReactionsOfPostByPostID(question.ID).ToList());
+                questionToReactionValueMapping[question] = GetReactionScore(repository.GetReactionsOfPostByPostID(question.ID).ToList());
 
             listOfQuestions.ForEach(AddMappingForQuestion);
 
             Dictionary<IQuestion, int> sortedQuestionToReactionValueMap =
-                questionToReactionValueMap.OrderBy(questionValuePair => questionValuePair.Value).ToDictionary();
+                questionToReactionValueMapping.OrderBy(questionValuePair => questionValuePair.Value).ToDictionary();
 
             return sortedQuestionToReactionValueMap.Keys.ToList();
         }
@@ -115,15 +115,13 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> SortQuestionsByNumberOfAnswersAscending()
         {
-            Dictionary<IQuestion, int> hash = new ();
-            List<IQuestion> listOfQuestions = currentQuestions;
-            List<IQuestion> sortedListOfQuestions;
+            Dictionary<IQuestion, int> iQuestionToIAnswerCountMapping = new ();
             void ProcessQuestion(IQuestion question)
-                => hash[question] = StreamProcessor<IPost, IPost>.FilterCollection(repository.GetRepliesOfPost(question.ID), Filters.IPostIsIAnswer).Count();
-            listOfQuestions.ForEach(ProcessQuestion);
-            var sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
-            sortedListOfQuestions = sortedMap.Keys.ToList();
-            return sortedListOfQuestions;
+                => iQuestionToIAnswerCountMapping[question]
+                = StreamProcessor<IPost, IPost>.FilterCollection(repository.GetRepliesOfPost(question.ID), Filters.IPostIsIAnswer).Count();
+            currentQuestions.ForEach(ProcessQuestion);
+            Dictionary<IQuestion, int> sortedMapping = iQuestionToIAnswerCountMapping.OrderBy(x => x.Value).ToDictionary();
+            return sortedMapping.Keys.ToList();
         }
 
         public List<IQuestion> SortQuestionsByNumberOfAnswersDescending()
@@ -135,10 +133,10 @@ namespace UBB_SE_2024_Team_42.Service
 
         public List<IQuestion> SortQuestionsByDateAscending()
         {
-            Dictionary<IQuestion, DateTime> hash = new ();
-            void ProcessQuestion(IQuestion question) => hash[question] = question.DatePosted;
+            Dictionary<IQuestion, DateTime> iQuestionToDatePostedMapping = new ();
+            void ProcessQuestion(IQuestion question) => iQuestionToDatePostedMapping[question] = question.DatePosted;
             currentQuestions.ForEach(ProcessQuestion);
-            Dictionary<IQuestion, DateTime> sortedMap = hash.OrderBy(x => x.Value).ToDictionary();
+            Dictionary<IQuestion, DateTime> sortedMap = iQuestionToDatePostedMapping.OrderBy(keyValuePair => keyValuePair.Value).ToDictionary();
             return sortedMap.Keys.ToList();
         }
 
@@ -182,7 +180,7 @@ namespace UBB_SE_2024_Team_42.Service
         public void AddQuestion(string title, string content, Category category)
         {
             long userID = IDGenerator.RandomLong();
-            IQuestion question = new QuestionFactory().Begin().SetUserId(userID).SetContent(content).SetCategory(category).SetTitle(title).End();
+            IQuestion question = new QuestionBuilder().Begin().SetUserId(userID).SetContent(content).SetCategory(category).SetTitle(title).End();
             repository.AddQuestion(question);
         }
 
@@ -204,12 +202,10 @@ namespace UBB_SE_2024_Team_42.Service
             DateTime currentDate = DateTime.Now;
             DateTime firstDayOfMonth = new (currentDate.Year, currentDate.Month, 1);
             DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-
-            List<IQuestion> questionsAnsweredThisMonth = GetAllQuestions()
-                .Where(question => question.DatePosted >= firstDayOfMonth && question.DatePosted <= lastDayOfMonth)
-                .ToList();
-
-            return questionsAnsweredThisMonth.Count;
+            bool QuestionIsPostedWithinLastCalendarMonth(IQuestion question) => question.DatePosted >= firstDayOfMonth && question.DatePosted <= lastDayOfMonth;
+            return GetAllQuestions()
+                .Where(QuestionIsPostedWithinLastCalendarMonth)
+                .Count();
         }
 
         public int FilterQuestionsAnsweredLastYear()
@@ -217,12 +213,10 @@ namespace UBB_SE_2024_Team_42.Service
             DateTime currentDate = DateTime.Now;
             DateTime firstDayOfLastYear = new (currentDate.Year - 1, 1, 1);
             DateTime lastDayOfLastYear = new (currentDate.Year - 1, 12, 31);
-
-            List<IQuestion> questionsAnsweredLastYear = GetAllQuestions()
-                .Where(question => question.DatePosted >= firstDayOfLastYear && question.DatePosted <= lastDayOfLastYear)
-                .ToList();
-
-            return questionsAnsweredLastYear.Count;
+            bool QuestionIsPostedWithinPreviousCalendarYear(IQuestion question) => question.DatePosted >= firstDayOfLastYear && question.DatePosted <= lastDayOfLastYear;
+            return GetAllQuestions()
+                .Where(QuestionIsPostedWithinPreviousCalendarYear)
+                .Count();
         }
     }
 }

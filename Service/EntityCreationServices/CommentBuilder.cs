@@ -3,36 +3,36 @@ using UBB_SE_2024_Team_42.Domain.Reactions;
 
 namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    public class CommentFactory : AbstractEntityFactory<IComment, Comment>
+    public class CommentBuilder : AbstractEntityBuilder<IComment, Comment>
     {
-        public override CommentFactory Begin()
-            => (CommentFactory)base.Begin();
-        public CommentFactory SetId(long id)
+        public override CommentBuilder Begin()
+            => (CommentBuilder)base.Begin();
+        public CommentBuilder SetId(long id)
         {
             instance.ID = id;
             return this;
         }
-        public CommentFactory SetUserId(long userId)
+        public CommentBuilder SetUserId(long userId)
         {
             instance.UserID = userId;
             return this;
         }
-        public CommentFactory SetContent(string content)
+        public CommentBuilder SetContent(string content)
         {
             instance.Content = content;
             return this;
         }
-        public CommentFactory SetDatePosted(DateTime datePosted)
+        public CommentBuilder SetDatePosted(DateTime datePosted)
         {
             instance.DatePosted = datePosted;
             return this;
         }
-        public CommentFactory SetDateOfLastEdit(DateTime dateOfLastEdit)
+        public CommentBuilder SetDateOfLastEdit(DateTime dateOfLastEdit)
         {
             instance.DateOfLastEdit = dateOfLastEdit;
             return this;
         }
-        public CommentFactory SetReactions(List<IReaction> reactions)
+        public CommentBuilder SetReactions(List<IReaction> reactions)
         {
             instance.Reactions = reactions;
             return this;
