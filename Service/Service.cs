@@ -29,6 +29,11 @@ namespace UBB_SE_2024_Team_42.Service
             return repository.GetUser(userId);
         }
 
+        public IPost GetPost(long postId)
+        {
+            return repository.GetPost(postId);
+        }
+
         public void UpdatePost(IPost oldPost, IPost newPost)
         {
             repository.UpdatePost(oldPost, newPost);
@@ -180,7 +185,8 @@ namespace UBB_SE_2024_Team_42.Service
         public void AddQuestion(string title, string content, Category category)
         {
             long userID = IDGenerator.RandomLong();
-            IQuestion question = new QuestionBuilder().Begin().SetUserId(userID).SetContent(content).SetCategory(category).SetTitle(title).End();
+            long questionId = IDGenerator.RandomLong();
+            IQuestion question = new QuestionBuilder().Begin().SetId(questionId).SetUserId(userID).SetContent(content).SetCategory(category).SetTitle(title).End();
             repository.AddQuestion(question);
         }
 

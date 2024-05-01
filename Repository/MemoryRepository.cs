@@ -43,6 +43,11 @@ namespace UBB_SE_2024_Team_42.Repository
             users.Add(user.ID, user);
         }
 
+        public void AddPost(IPost post)
+        {
+            posts.Add(post.ID, post);
+        }
+
         public IEnumerable<IUser> GetAllUsers() => users.Values;
 
         public IEnumerable<IAnswer> GetAnswersOfUser(long userId) => posts.Values.Where(Filters.IPostIsIAnswer).Select(MapIPostToIAnswer).Where(ianswer => ianswer.UserID == userId);
@@ -73,6 +78,8 @@ namespace UBB_SE_2024_Team_42.Repository
         }
 
         public IUser GetUser(long userId) => users[userId];
+
+        public IPost GetPost(long postId) => posts[postId];
 
         public void UpdatePost(IPost oldPost, IPost newPost)
         {

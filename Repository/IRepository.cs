@@ -27,6 +27,7 @@ namespace UBB_SE_2024_Team_42.Repository
         IEnumerable<IPost> GetRepliesOfPost(long postId);
         IEnumerable<ITag> GetTagsOfQuestion(long questionId);
         IUser GetUser(long userId);
+        IPost GetPost(long postId);
         void UpdatePost(IPost oldPost, IPost newPost);
     }
 }
