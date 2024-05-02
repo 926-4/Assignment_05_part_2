@@ -2,17 +2,17 @@
 
 namespace UBB_SE_2024_Team_42.Utils.Functionals
 {
-    internal class StreamProcessor<S, T>
+    internal class StreamProcessor<InputType, OutputType>
     {
-        public static IEnumerable<S> FilterCollection(IEnumerable<S> source, Func<S, bool> condition)
+        public static IEnumerable<InputType> FilterCollection(IEnumerable<InputType> source, Func<InputType, bool> condition)
             => source.Where(condition);
-        public static T MapOne(IEnumerable<S> source, Func<S, T> mapping)
+        public static OutputType MapOne(IEnumerable<InputType> source, Func<InputType, OutputType> mapping)
             => mapping(source.First());
-        public static IEnumerable<T> MapCollection(IEnumerable<S> source, Func<S, T> mapping)
+        public static IEnumerable<OutputType> MapCollection(IEnumerable<InputType> source, Func<InputType, OutputType> mapping)
             => source.Select(mapping);
-        public static T FilterAndMapOne(IEnumerable<S> source, Func<S, bool> condition, Func<S, T> mapping)
+        public static OutputType FilterAndMapOne(IEnumerable<InputType> source, Func<InputType, bool> condition, Func<InputType, OutputType> mapping)
             => mapping(source.Where(condition).First());
-        public static IEnumerable<T> FilterAndMapCollection(IEnumerable<S> source, Func<S, bool> condition, Func<S, T> mapping)
+        public static IEnumerable<OutputType> FilterAndMapCollection(IEnumerable<InputType> source, Func<InputType, bool> condition, Func<InputType, OutputType> mapping)
             => source.Where(condition).Select(mapping);
     }
 }

@@ -1,19 +1,19 @@
 ﻿namespace UBB_SE_2024_Team_42.Service.EntityCreationServices
 {
-    public abstract class AbstractEntityBuilder<T, S>
-        where S : T, new()
+    public abstract class AbstractEntityBuilder<Interface, Implementation>
+        where Implementation : Interface, new()
     {
-        protected T instance = new S();
-        public virtual AbstractEntityBuilder<T, S> Begin()
+        protected Interface instance = new Implementation();
+        public virtual AbstractEntityBuilder<Interface, Implementation> Begin()
         {
-            instance = new S();
+            instance = new Implementation();
             return this;
         }
-        public T End()
+        public Interface End()
         {
-            T aux = instance;
-            instance = new S();
-            return aux;
+            Interface returnedObject = instance;
+            instance = new Implementation();
+            return returnedObject;
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace UBB_SE_2024_Team_42.Utils.Functionals
 {
-    internal class CollectionSummerFactory<T>
+    internal class CollectionSummerFactory<InputType>
     {
-        static public CollectionSummer<T> GetFromMapping(Func<T, int> mapping)
+        static public CollectionSummer<InputType> GetFromMapping(Func<InputType, int> mapping)
         {
-            return new CollectionSummer<T>(mapping);
+            return new CollectionSummer<InputType>(mapping);
         }
     }
 }

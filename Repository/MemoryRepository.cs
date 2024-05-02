@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UBB_SE_2024_Team_42.Domain.Badge;
+﻿using UBB_SE_2024_Team_42.Domain.Badge;
 using UBB_SE_2024_Team_42.Domain.Category;
 using UBB_SE_2024_Team_42.Domain.Notification;
 using UBB_SE_2024_Team_42.Domain.Post;
@@ -24,75 +23,75 @@ namespace UBB_SE_2024_Team_42.Repository
         private readonly Dictionary<long, long> badgeIdToUserIdAssociation;
         public MemoryRepository()
         {
-            // TODO pune aici valori
-            Badge b1 = new() { Name = "a" };
-            Badge b2 = new() { Name = "b", ID = IDGenerator.RandomLong() };
-            Category c1 = new() { Name = "a" };
-            Category c2 = new() { Name = "b", ID = IDGenerator.RandomLong() };
-            User u1 = new() { Name = "a", CategoriesModeratedList = [c1] };
-            User u2 = new() { ID = IDGenerator.RandomLong(), CategoriesModeratedList = [c2] };
-            Notification n1 = new() { Text = "a", UserID = u1.ID };
-            Notification n2 = new() { Text = "b", ID = IDGenerator.RandomLong(), UserID = u2.ID };
-            TextPost p1 = new() { Content = "a", UserID = u1.ID };
-            TextPost p2 = new() { Content = "b", ID = IDGenerator.RandomLong(), UserID = u1.ID };
-            Question q1 = new() { Content = "a", UserID = u1.ID };
-            Question q2 = new() { Content = "b", ID = IDGenerator.RandomLong(), UserID = u1.ID };
-            Comment c = new() { ID = 2, Content = "a", UserID = u1.ID };
-            Answer a = new() { ID = 3, Content = "a", UserID = u1.ID };
+            Badge badgeA = new () { Name = "answer" };
+            Badge badgeB = new () { Name = "b", ID = IDGenerator.RandomLong() };
             badges = new Dictionary<long, IBadge>()
             {
-                {b1.ID, b1 },
-                {b2.ID, b2 }
+                { badgeA.ID, badgeA },
+                { badgeB.ID, badgeB }
             };
+
+            Category categoryA = new () { Name = "answer" };
+            Category categoryB = new () { Name = "b", ID = IDGenerator.RandomLong() };
             categories = new Dictionary<long, ICategory>()
             {
-                {c1.ID,c1 },
-                {c2.ID,c2 }
+                { categoryA.ID, categoryA },
+                { categoryB.ID, categoryB }
             };
-            notifications = new Dictionary<long, INotification>()
-            {
-                {n1.ID, n1},
-                {n2.ID, n2 }
-            };
-            posts = new Dictionary<long, IPost>()
-            {
-                {p1.ID, p1},
-                {p2.ID,p2 },
-                {c.ID, c },
-                {a.ID, a }
-            };
-            questions = new Dictionary<long, IQuestion>()
-            {
-                {q1.ID, q1 },
-                {q2.ID, q2 }
-            };
+
+            User userA = new () { Name = "answer", CategoriesModeratedList = new () { categoryA } };
+            User userB = new () { ID = IDGenerator.RandomLong(), CategoriesModeratedList = new () { categoryB } };
             users = new Dictionary<long, IUser>()
             {
-                {u1.ID, u1 },
-                {u2.ID, u2 }
+                { userA.ID, userA },
+                { userB.ID, userB }
             };
+
             badgeIdToUserIdAssociation = new Dictionary<long, long>()
             {
-                {b1.ID, u1.ID },
-                {b2.ID, u2.ID }
+                { badgeA.ID, userA.ID },
+                { badgeB.ID, userB.ID }
+            };
+
+            Notification notificationA = new () { Text = "answer", UserID = userA.ID };
+            Notification notificationB = new () { Text = "b", ID = IDGenerator.RandomLong(), UserID = userB.ID };
+            notifications = new Dictionary<long, INotification>()
+            {
+                { notificationA.ID, notificationA },
+                { notificationB.ID, notificationB }
+            };
+
+            Question questionA = new () { Content = "answer", UserID = userA.ID };
+            Question questionB = new () { Content = "b", ID = IDGenerator.RandomLong(), UserID = userA.ID };
+            questions = new Dictionary<long, IQuestion>()
+            {
+                { questionA.ID, questionA },
+                { questionB.ID, questionB }
+            };
+
+            Comment comment = new () { ID = 2, Content = "answer", UserID = userA.ID };
+            Answer answer = new () { ID = 3, Content = "answer", UserID = userA.ID };
+            TextPost postA = new () { Content = "answer", UserID = userA.ID };
+            TextPost postB = new () { Content = "b", ID = IDGenerator.RandomLong(), UserID = userA.ID };
+            posts = new Dictionary<long, IPost>()
+            {
+                { postA.ID, postA },
+                { postB.ID, postB },
+                { comment.ID, comment },
+                { answer.ID, answer }
             };
         }
         private IAnswer MapIPostToIAnswer(IPost ipost) => (IAnswer)ipost;
+        private IComment MapIPostToIComment(IPost ipost) => (IComment)ipost;
         public void AddQuestion(IQuestion question) => questions[question.ID] = question;
 
         public IEnumerable<ICategory> GetAllCategories() => categories.Values;
 
         public IEnumerable<IQuestion> GetAllQuestions() => questions.Values;
 
-        public void AddUser(IUser user)
-        {
-            users.Add(user.ID, user);
-        }
+        public void AddUser(IUser user) => users.Add(user.ID, user);
 
-        public void AddPost(IPost post)
-        {
-            posts.Add(post.ID, post);
-        }
+        public void AddPost(IPost post) => posts.Add(post.ID, post);
 
         public IEnumerable<IUser> GetAllUsers() => users.Values;
 
@@ -103,8 +102,9 @@ namespace UBB_SE_2024_Team_42.Repository
         public IEnumerable<ICategory> GetCategoriesModeratedByUser(long userId) => users[userId].CategoriesModeratedList;
         public ICategory GetCategoryByID(long categoryId) => categories[categoryId];
 
-        public IEnumerable<IComment> GetCommentsOfUser(long userId) => posts.Values.Where(ipost => ipost is IComment).Select(ipost => (IComment)ipost);
+        public IEnumerable<IComment> GetCommentsOfUser(long userId) => posts.Values.Where(Filters.IPostIsIComment).Select(MapIPostToIComment);
 
+        // Some sort of closure could be created here -- not exactly sure how
         public IEnumerable<INotification> GetNotificationsOfUser(long userId) => notifications.Values.Where(notification => notification.UserID == userId);
 
         public IQuestion GetQuestion(long questionId) => questions[questionId];

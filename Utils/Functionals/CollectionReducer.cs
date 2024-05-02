@@ -1,11 +1,11 @@
 ﻿namespace UBB_SE_2024_Team_42.Utils.Functionals
 {
-    internal class CollectionReducer<T1, T2>(Func<T1, T2> mapper, Func<T2, T2, T2> folder, T2 defaultResult)
+    internal class CollectionReducer<InputType, OutputType>(Func<InputType, OutputType> mapper, Func<OutputType, OutputType, OutputType> folder, OutputType defaultResult)
     {
-        private readonly Func<T1, T2> mapper = mapper;
-        private readonly Func<T2, T2, T2> twoByTwoFolder = folder;
-        private readonly T2 defaultResult = defaultResult;
-        internal T2 MapThenFold(IEnumerable<T1> collection) =>
+        private readonly Func<InputType, OutputType> mapper = mapper;
+        private readonly Func<OutputType, OutputType, OutputType> twoByTwoFolder = folder;
+        private readonly OutputType defaultResult = defaultResult;
+        internal OutputType MapThenFold(IEnumerable<InputType> collection) =>
             collection
             .Select(mapper)
             .Aggregate(twoByTwoFolder)
