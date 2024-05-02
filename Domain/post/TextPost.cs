@@ -35,8 +35,8 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public override string ToString()
         {
-            return $"TextPost {{postID: {ID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})\n" +
-                $"{Content}\n" +
+            return $"TextPost {{postID: {ID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})" +
+                $"{Content}" +
                 $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}}}";
         }
     }

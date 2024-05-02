@@ -14,7 +14,7 @@ namespace UBB_SE_2024_Team_42.Domain.Reactions
 
         public override string ToString()
         {
-            return $"Value: {Value}, ID: {UserID}) \n";
+            return $"Value: {Value}, ID: {UserID})";
         }
     }
 }

@@ -14,7 +14,7 @@ namespace UBB_SE_2024_Team_42.Domain.Category
 
         public override string ToString()
         {
-            return $"Category(categoryID: {ID}, categoryName: {Name}) \n";
+            return $"Category(categoryID: {ID}, categoryName: {Name})";
         }
     }
 }

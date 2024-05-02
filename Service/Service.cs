@@ -118,7 +118,7 @@ namespace UBB_SE_2024_Team_42.Service
             static int GetReactionValue(IReaction ireaction) => ireaction.Value;
             CollectionReducer<IReaction, int> summer = new (
                 mapper: GetReactionValue,
-                folder: (x, y) => x + y,
+                folder: Aggregators.Addition,
                 defaultResult: 0);
             return summer.MapThenFold(voteList);
         }
@@ -226,9 +226,13 @@ namespace UBB_SE_2024_Team_42.Service
 
         public int FilterQuestionsAnsweredLastYear()
         {
+            const int JANUARY = 1;
+            const int DECEMBER = 12;
+            const int FIRST_DAY_OF_MONTH = 1;
+            const int LAST_DAY_OF_DECEMBER = 31;
             DateTime currentDate = DateTime.Now;
-            DateTime firstDayOfLastYear = new (currentDate.Year - 1, 1, 1);
-            DateTime lastDayOfLastYear = new (currentDate.Year - 1, 12, 31);
+            DateTime firstDayOfLastYear = new (currentDate.Year - 1, JANUARY, FIRST_DAY_OF_MONTH);
+            DateTime lastDayOfLastYear = new (currentDate.Year - 1, DECEMBER, LAST_DAY_OF_DECEMBER);
             bool QuestionIsPostedWithinPreviousCalendarYear(IQuestion question) => question.DatePosted >= firstDayOfLastYear && question.DatePosted <= lastDayOfLastYear;
             return GetAllQuestions()
                 .Where(QuestionIsPostedWithinPreviousCalendarYear)

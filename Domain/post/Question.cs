@@ -47,9 +47,9 @@ namespace UBB_SE_2024_Team_42.Domain.Posts
 
         public override string ToString()
         {
-            return $"Question(postID: {ID}, userID: {UserID}, title:{Title} , category: {Category}) \n"
-                + $"{Content} \n"
-                + $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}\n"
+            return $"Question(postID: {ID}, userID: {UserID}, title:{Title} , category: {Category})"
+                + $"{Content}"
+                + $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}"
                 + $"tags: {CollectionStringifier<ITag>.ApplyTo(Tags)}";
         }
     }

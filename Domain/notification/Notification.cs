@@ -18,8 +18,8 @@ namespace UBB_SE_2024_Team_42.Domain.Notification
 
         public override string ToString()
         {
-            return $"Notification{{notificationID: {ID}, postID: {PostID}, badgeID: {BadgeID}\n"
-                + $"notificationText: {Text}}} \n";
+            return $"Notification{{notificationID: {ID}, postID: {PostID}, badgeID: {BadgeID}"
+                + $"notificationText: {Text}}}";
         }
     }
 }

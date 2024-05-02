@@ -3,15 +3,14 @@
     internal class CollectionSummer<InputType>
     {
         private readonly CollectionReducer<InputType, int> reducer;
-        private static readonly Func<int, int, int> Sum = (e1, e2) => e1 + e2;
+        internal Func<IEnumerable<InputType>, int> ApplyTo;
         internal CollectionSummer(Func<InputType, int> mapper)
         {
             reducer = new (
                 mapper: mapper,
-                folder: Sum,
+                folder: Aggregators.Addition,
                 defaultResult: 0);
             ApplyTo = (list) => reducer.MapThenFold(list);
         }
-        internal Func<IEnumerable<InputType>, int> ApplyTo;
     }
 }

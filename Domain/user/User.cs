@@ -29,7 +29,8 @@ namespace UBB_SE_2024_Team_42.Domain.User
 
         public override string ToString()
         {
-            return $"User(id: {ID}, name: {Name}) \n" + $"notifications: {ToStringNotificationList()} \n" + $"categoriesModerated: {ToStringCategoryList()} \n" + $"badges: {ToStringBadgeList()} \n";
+            return $"User(id: {ID}, name: {Name}) \n" + $"notifications: {ToStringNotificationList()}"
+                + $"categoriesModerated: {ToStringCategoryList()}" + $"badges: {ToStringBadgeList()}";
         }
     }
 }

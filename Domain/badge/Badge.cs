@@ -17,8 +17,8 @@ namespace UBB_SE_2024_Team_42.Domain.Badge
         }
         public override string ToString()
         {
-            return $"Badge(id: {ID}, badgeName: {Name}, image: {Image}) \n"
-                + $"badgeDescription: {Description} \n";
+            return $"Badge(id: {ID}, badgeName: {Name}, image: {Image})"
+                + $"badgeDescription: {Description}";
         }
     }
 }

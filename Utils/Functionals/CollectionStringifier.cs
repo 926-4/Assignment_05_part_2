@@ -1,14 +1,15 @@
-﻿using UBB_SE_2024_Team_42.Utils.Functionals;
+﻿using NUnit.Framework.Interfaces;
 
 namespace UBB_SE_2024_Team_42.Utils.Functionals
 {
     internal class CollectionStringifier<InputType>
     {
+        private static string StringifyAnything(InputType inputObject) => inputObject?.ToString() ?? string.Empty;
+        private static string ConcatStringWithSpaceBetween(string firstString, string secondString) => $"{firstString} {secondString}";
         private static readonly CollectionReducer<InputType, string> Reducer =
-            new (mapper: e => e?.ToString() ?? string.Empty,
-                folder: (e1, e2) => $"{e1} {e2}",
+            new (mapper: StringifyAnything,
+                folder: ConcatStringWithSpaceBetween,
                 defaultResult: "None");
-
-        internal static Func<IEnumerable<InputType>, string> ApplyTo = (list) => Reducer.MapThenFold(list);
+        public static string ApplyTo(IEnumerable<InputType> collection) => Reducer.MapThenFold(collection);
     }
 }

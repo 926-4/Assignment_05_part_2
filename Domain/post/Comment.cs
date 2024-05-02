@@ -27,9 +27,9 @@ namespace UBB_SE_2024_Team_42.Domain.Post
         }
         public override string ToString()
         {
-            return $"Comment {{postID: {ID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit}) \n"
-                + $"{Content} \n"
-                + $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}}} \n";
+            return $"Comment {{postID: {ID}, userID: {UserID}, datePosted: {DatePosted}, dateOfLastEdit: {DateOfLastEdit})"
+                + $"{Content}"
+                + $"reactions: {CollectionStringifier<IReaction>.ApplyTo(Reactions)}}}";
         }
     }
 }
