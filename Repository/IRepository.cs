@@ -24,6 +24,7 @@ namespace UBB_SE_2024_Team_42.Repository
         IQuestion GetQuestion(long questionId);
         IEnumerable<IQuestion> GetQuestionsOfUser(long userId);
         IEnumerable<IReaction> GetReactionsOfPostByPostID(long postId);
+        public void AddPostReply(IPost reply, long postId);
         IEnumerable<IPost> GetRepliesOfPost(long postId);
         IEnumerable<ITag> GetTagsOfQuestion(long questionId);
         IUser GetUser(long userId);

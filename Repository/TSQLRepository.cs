@@ -185,7 +185,16 @@ namespace UBB_SE_2024_Team_42.Repository
             => StreamProcessor<DataRow, IUser>.MapOne(QueryDB("select * from dbo.getUser(" + userId + ")"), RowInDBToUser);
         public ICategory GetCategoryByID(long categoryId)
             => StreamProcessor<DataRow, ICategory>.MapOne(QueryDB("select * from dbo.getCategoryByID(" + categoryId + ")"), RowInDBToCategory);
-
+        public void AddPostReply(IPost reply, long postId)
+        {
+            SqlConnection sqlConnection = new (sqlConnectionString);
+            sqlConnection.Open();
+            SqlCommand command = new ("INSERT INTO dbo.Replies (idOfPostRepliedOn, idOfReply) VALUES (@idOfPostRepliedOn, @idOfReply)");
+            command.Parameters.AddWithValue("@idOfPostRepliedOn", postId);
+            command.Parameters.AddWithValue("@idOfReply", reply.ID);
+            command.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
         public IEnumerable<IPost> GetRepliesOfPost(long postId)
             => StreamProcessor<DataRow, IPost>.MapCollection(QueryDB("select * from dbo.GetAllRepliesOfPost(" + postId + ")"), RowInDBToReply);
         public void AddQuestion(IQuestion question)

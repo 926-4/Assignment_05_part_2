@@ -49,6 +49,11 @@ namespace UBB_SE_2024_Team_42.Service
             return repository.GetAllQuestions().ToList();
         }
 
+        public void AddPostReply(IPost reply, long postId)
+        {
+            repository.AddPostReply(reply, postId);
+        }
+
         public List<IPost> GetRepliesOfPost(long postId)
         {
             return repository.GetRepliesOfPost(postId).ToList();
@@ -187,6 +192,11 @@ namespace UBB_SE_2024_Team_42.Service
             long userID = IDGenerator.RandomLong();
             long questionId = IDGenerator.RandomLong();
             IQuestion question = new QuestionBuilder().Begin().SetId(questionId).SetUserId(userID).SetContent(content).SetCategory(category).SetTitle(title).End();
+            repository.AddQuestion(question);
+        }
+
+        public void AddQuestionByObject(IQuestion question)
+        {
             repository.AddQuestion(question);
         }
 
