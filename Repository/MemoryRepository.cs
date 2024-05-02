@@ -18,6 +18,7 @@ namespace UBB_SE_2024_Team_42.Repository
         private readonly Dictionary<long, ICategory> categories;
         private readonly Dictionary<long, INotification> notifications;
         private readonly Dictionary<long, IPost> posts;
+        private readonly Dictionary<long, IPost> replies;
         private readonly Dictionary<long, IQuestion> questions;
         private readonly Dictionary<long, IUser> users;
         private readonly Dictionary<long, long> badgeIdToUserIdAssociation;
@@ -80,6 +81,15 @@ namespace UBB_SE_2024_Team_42.Repository
                 { comment.ID, comment },
                 { answer.ID, answer }
             };
+
+            TextPost replyA = new () { Content = "reply", UserID = userA.ID };
+            TextPost replyB = new () { Content = "reply", UserID = userB.ID };
+
+            replies = new Dictionary<long, IPost>()
+            {
+                { replyA.ID, replyA },
+                { replyB.ID, replyB }
+            };
         }
         private IAnswer MapIPostToIAnswer(IPost ipost) => (IAnswer)ipost;
         private IComment MapIPostToIComment(IPost ipost) => (IComment)ipost;
@@ -112,7 +122,7 @@ namespace UBB_SE_2024_Team_42.Repository
         public IEnumerable<IQuestion> GetQuestionsOfUser(long userId) => questions.Values.Where(question => question.UserID == userId);
 
         public IEnumerable<IReaction> GetReactionsOfPostByPostID(long postId) => posts[postId].Reactions;
-
+        public void AddPostReply(IPost reply, long postId) => replies.Add(postId, reply);
         public IEnumerable<IPost> GetRepliesOfPost(long postId) => posts.Values;
 
         public IEnumerable<ITag> GetTagsOfQuestion(long questionId) => questions[questionId].Tags;
