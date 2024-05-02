@@ -243,6 +243,24 @@ namespace UBB_SE_2024_Team_42.Repository
             throw new NotImplementedException();
         }
 
+        public void AddPost(IPost post)
+        {
+            SqlConnection sqlConnection = new (sqlConnectionString);
+            sqlConnection.Open();
+            SqlCommand command = new (
+                "INSER INTO Post (id, userId, content, datePosted, dateOfLastEdit, type, title, categoryId)" +
+                "VALUES (@id, @userId, @content, @datePosted, @dateOfLastEdit, @type, @title, @categoryId)");
+            command.Parameters.AddWithValue("@id", post.ID);
+            command.Parameters.AddWithValue("@userId", post.UserID);
+            command.Parameters.AddWithValue("@content", post.Content);
+            command.Parameters.AddWithValue("@datePosted", post.DatePosted);
+            command.Parameters.AddWithValue("@dateOfLastEdit", post.DateOfLastEdit);
+            command.Parameters.AddWithValue("@type", post.GetType());
+            command.Parameters.AddWithValue("@title", string.Empty);
+            command.Parameters.AddWithValue("@categoryId", string.Empty);
+            sqlConnection.Close();
+        }
+
         public IPost GetPost(long postId)
         {
             throw new NotImplementedException();
