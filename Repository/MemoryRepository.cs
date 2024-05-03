@@ -82,8 +82,8 @@ namespace UBB_SE_2024_Team_42.Repository
                 { answer.ID, answer }
             };
 
-            TextPost replyA = new () { Content = "reply", UserID = userA.ID };
-            TextPost replyB = new () { Content = "reply", UserID = userB.ID };
+            IPost replyA = new TextPost() { Content = "reply", UserID = userA.ID };
+            IPost replyB = new TextPost() { Content = "reply", UserID = userB.ID };
 
             replies = new Dictionary<long, IPost>()
             {

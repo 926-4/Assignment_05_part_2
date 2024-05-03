@@ -211,6 +211,7 @@ namespace UBB_SE_2024_Team_42.Service
         }
         public int FilterQuestionsByLast7Days()
         {
+            // why does it return the number of targeted questions and not the questions themselves?
             List<IQuestion> questionsWithinLast7Days = GetAllQuestions()
                 .Where(question => question.DatePosted >= DateTime.Now.AddDays(-7) && question.DatePosted <= DateTime.Now)
                 .ToList();
