@@ -93,8 +93,12 @@ namespace UBB_SE_2024_Team_42.Repository
         }
         private IAnswer MapIPostToIAnswer(IPost ipost) => (IAnswer)ipost;
         private IComment MapIPostToIComment(IPost ipost) => (IComment)ipost;
-        public void AddQuestion(IQuestion question) => questions[question.ID] = question;
-        public void AddBadge(IBadge badge) => badges.Add(badge.ID, badge);
+        public void AddQuestion(IQuestion question) => questions.Add(question.ID, question);
+        public void AddBadge(IBadge badge, long userId)
+        {
+            badges.Add(badge.ID, badge);
+            badgeIdToUserIdAssociation.Add(badge.ID, userId);
+        }
         public IEnumerable<ICategory> GetAllCategories() => categories.Values;
 
         public IEnumerable<IQuestion> GetAllQuestions() => questions.Values;
@@ -112,7 +116,7 @@ namespace UBB_SE_2024_Team_42.Repository
         public IEnumerable<ICategory> GetCategoriesModeratedByUser(long userId) => users[userId].CategoriesModeratedList;
         public ICategory GetCategoryByID(long categoryId) => categories[categoryId];
 
-        public IEnumerable<IComment> GetCommentsOfUser(long userId) => posts.Values.Where(Filters.IPostIsIComment).Select(MapIPostToIComment);
+        public IEnumerable<IComment> GetCommentsOfUser(long userId) => posts.Values.Where(Filters.IPostIsIComment).Select(MapIPostToIComment).Where(post => post.UserID == userId);
 
         // Some sort of closure could be created here -- not exactly sure how
         public IEnumerable<INotification> GetNotificationsOfUser(long userId) => notifications.Values.Where(notification => notification.UserID == userId);
