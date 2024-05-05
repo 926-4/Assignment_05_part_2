@@ -93,7 +93,11 @@ namespace UBB_SE_2024_Team_42.Repository
         }
         private IAnswer MapIPostToIAnswer(IPost ipost) => (IAnswer)ipost;
         private IComment MapIPostToIComment(IPost ipost) => (IComment)ipost;
-        public void AddQuestion(IQuestion question) => questions.Add(question.ID, question);
+        public void AddQuestion(IQuestion question)
+        {
+            questions.Add(question.ID, question);
+            posts.Add(question.ID, question);
+        }
         public void AddBadge(IBadge badge, long userId)
         {
             badges.Add(badge.ID, badge);
