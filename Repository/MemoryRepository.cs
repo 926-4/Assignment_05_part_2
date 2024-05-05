@@ -93,6 +93,7 @@ namespace UBB_SE_2024_Team_42.Repository
         }
         private IAnswer MapIPostToIAnswer(IPost ipost) => (IAnswer)ipost;
         private IComment MapIPostToIComment(IPost ipost) => (IComment)ipost;
+        public void AddCategory(ICategory category) => categories.Add(category.ID, category);
         public void AddQuestion(IQuestion question)
         {
             questions.Add(question.ID, question);
