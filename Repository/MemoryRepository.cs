@@ -83,7 +83,7 @@ namespace UBB_SE_2024_Team_42.Repository
             };
 
             IPost replyA = new TextPost() { Content = "reply", UserID = userA.ID };
-            IPost replyB = new TextPost() { Content = "reply", UserID = userB.ID };
+            IPost replyB = new TextPost() { Content = "reply", UserID = userB.ID, ID = IDGenerator.RandomLong() };
 
             replies = new Dictionary<long, IPost>()
             {
@@ -94,7 +94,7 @@ namespace UBB_SE_2024_Team_42.Repository
         private IAnswer MapIPostToIAnswer(IPost ipost) => (IAnswer)ipost;
         private IComment MapIPostToIComment(IPost ipost) => (IComment)ipost;
         public void AddQuestion(IQuestion question) => questions[question.ID] = question;
-
+        public void AddBadge(IBadge badge) => badges.Add(badge.ID, badge);
         public IEnumerable<ICategory> GetAllCategories() => categories.Values;
 
         public IEnumerable<IQuestion> GetAllQuestions() => questions.Values;
@@ -123,7 +123,20 @@ namespace UBB_SE_2024_Team_42.Repository
 
         public IEnumerable<IReaction> GetReactionsOfPostByPostID(long postId) => posts[postId].Reactions;
         public void AddPostReply(IPost reply, long postId) => replies.Add(postId, reply);
-        public IEnumerable<IPost> GetRepliesOfPost(long postId) => posts.Values;
+        public IEnumerable<IPost> GetRepliesOfPost(long postId)
+        {
+            List<IPost> targetedReplies = new ();
+
+            foreach (var reply in replies)
+            {
+                if (reply.Key == postId)
+                {
+                    targetedReplies.Add(reply.Value);
+                }
+            }
+
+            return targetedReplies;
+        }
 
         public IEnumerable<ITag> GetTagsOfQuestion(long questionId) => questions[questionId].Tags;
 
